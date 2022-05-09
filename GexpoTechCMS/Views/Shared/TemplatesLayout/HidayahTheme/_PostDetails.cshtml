@@ -1,0 +1,43 @@
+﻿@model GexpoTechCMS.Models.AppModels.PostModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = Model.Title;
+    ViewData["PropertyImage"] = Helpers.BaseUrl(Helpers.GetPostImage(Model.PostID, "Post"));
+    string active_theme = Helpers.GetActiveTheme();
+
+}
+
+@if (active_theme == "Hidayah")
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- CHECK TO SHOW FB COMMENTS -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_ShowFBCheck.cshtml" />
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_Navigation.cshtml" />
+
+        <!-- POST DETAILS MAIN -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_PostDetailsMain.cshtml" />
+
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_Footer.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+</html>
+}

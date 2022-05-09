@@ -1,0 +1,281 @@
+﻿<div class="row list-group search-list d-none">
+    <div class="col-sm-12 col-md-6 search-result-div">
+        <ul class="list-group search-list">
+            <li class="list-group-item text-left">
+                <a asp-action="Index" asp-controller="Admin" class="text-dark">
+                    Dashboard
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Profile" asp-controller="Admin" class="text-dark">
+                    Profile
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Settings" asp-controller="Admin" class="text-dark">
+                    Settings
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Settings" asp-controller="Admin" asp-route-tab="account" class="text-dark">
+                    Account
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Settings" asp-controller="Admin" asp-route-tab="password" class="text-dark">
+                    Passwords
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Settings" asp-controller="Admin" asp-route-tab="delete-account" class="text-dark">
+                    Delete Account
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Settings" asp-controller="Admin" asp-route-tab="notifications" class="text-dark">
+                    Notifications
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="MyActivities" asp-controller="Admin" class="text-dark">
+                    My Activities
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Posts" asp-controller="Admin" class="text-dark">
+                    Posts
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="NewPost" asp-controller="Admin" class="text-dark">
+                    New Post
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Categories" asp-controller="Admin" class="text-dark">
+                    Categories
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Navigation" asp-controller="Admin" class="text-dark">
+                    Navigation
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Pages" asp-controller="Admin" class="text-dark">
+                    Pages
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="NewPage" asp-controller="Admin" class="text-dark">
+                    New Page
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Services" asp-controller="Admin" class="text-dark">
+                    Services
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="NewService" asp-controller="Admin" class="text-dark">
+                    New Service
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Portfolio" asp-controller="Admin" class="text-dark">
+                    Portfolio
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="NewPortfolio" asp-controller="Admin" class="text-dark">
+                    New Portfolio
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Team" asp-controller="Admin" class="text-dark">
+                    Manage Team
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="NewTeamMember" asp-controller="Admin" class="text-dark">
+                    New Team Member
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Partners" asp-controller="Admin" class="text-dark">
+                    Manage Partners
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="NewPartner" asp-controller="Admin" class="text-dark">
+                    New Partner
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Faq" asp-controller="Admin" class="text-dark">
+                    Faq's
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="NewFaq" asp-controller="Admin" class="text-dark">
+                    New Faq
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Testimonials" asp-controller="Admin" class="text-dark">
+                    Manage Testimonials
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="NewTestimonial" asp-controller="Admin" class="text-dark">
+                    New Testimonial
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Contact" asp-controller="Admin" class="text-dark">
+                    Contact Messages
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Appearance" asp-controller="Admin" class="text-dark">
+                    Appearance Settings
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Appearance" asp-controller="Admin" asp-route-tab="sliders" class="text-dark">
+                    Sliders
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Appearance" asp-controller="Admin" asp-route-tab="theme" class="text-dark">
+                    Theme Settings
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="ContentManagement" asp-controller="Admin" class="text-dark">
+                    Content Management
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="ContentManagement" asp-controller="Admin" asp-route-tab="organization" class="text-dark">
+                    Organization
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="ContentManagement" asp-controller="Admin" asp-route-tab="social" class="text-dark">
+                    Social Media <span class="sr-only">Facebook, Twitter, Instagram, YouTube, LinkedIn</span>
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="ContentManagement" asp-controller="Admin" asp-route-tab="service-stat" class="text-dark">
+                    Service Stats
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="ContentManagement" asp-controller="Admin" asp-route-tab="about-info" class="text-dark">
+                    About Info
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="ContentManagement" asp-controller="Admin" asp-route-tab="header-text" class="text-dark">
+                    Header Text
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="ContentManagement" asp-controller="Admin" asp-route-tab="content-isplay" class="text-dark">
+                    Content Display
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="ContentManagement" asp-controller="Admin" asp-route-tab="seo" class="text-dark">
+                    SEO Settings
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="ContentManagement" asp-controller="Admin" class="text-dark">
+                    Logo
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="ContentManagement" asp-controller="Admin" class="text-dark">
+                    Phone Numbers
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="ContentManagement" asp-controller="Admin" class="text-dark">
+                    Emails
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Administration" asp-controller="Admin" class="text-dark">
+                    Administration
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Administration" asp-controller="Admin" asp-route-tab="activity-logs" class="text-dark">
+                    Activity Logs
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Administration" asp-controller="Admin" asp-route-tab="users" class="text-dark">
+                    Manage Users
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Administration" asp-controller="Admin" asp-route-tab="db-backup" class="text-dark">
+                    Backup Database
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Administration" asp-controller="Admin" asp-route-tab="subscriptions" class="text-dark">
+                    Subscriptions
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Configuration" asp-controller="Admin" class="text-dark">
+                    Configuration
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Configuration" asp-controller="Admin" asp-route-tab="google" class="text-dark">
+                    Google Keys
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Configuration" asp-controller="Admin" asp-route-tab="facebook" class="text-dark">
+                    Facebook Comments
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Configuration" asp-controller="Admin" asp-route-tab="twitter" class="text-dark">
+                    Twitter Feeds
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Configuration" asp-controller="Admin" asp-route-tab="email-config" class="text-dark">
+                    Email Configuration
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Configuration" asp-controller="Admin" asp-route-tab="share" class="text-dark">
+                    Share Buttons
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Analytics" asp-controller="Admin" class="text-dark">
+                    Analytics
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a asp-action="Help" asp-controller="Admin" class="text-dark">
+                    Help Center
+                </a>
+            </li>
+            <li class="list-group-item text-left">
+                <a href="#logoutModal" data-toggle="modal" data-target="#logoutModal" class="text-dark">
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

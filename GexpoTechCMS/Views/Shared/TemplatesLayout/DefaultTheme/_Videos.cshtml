@@ -1,0 +1,53 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.VideosModel>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    ViewData["Title"] = "Videos Page";
+    string active_theme = Helpers.GetActiveTheme();
+}
+
+@if (active_theme == "Default" || string.IsNullOrEmpty(active_theme))
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Navigation.cshtml" />
+
+        <main id="main">
+
+            <!-- Action messages partial -->
+            <partial name="~/Views/Shared/TemplatesLayout/Common/_ProcessMessage.cshtml" />
+
+            <!-- RESOURCES PARTIAL -->
+            <partial name="~/Views/Shared/TemplatesLayout/Common/_VideosList.cshtml" />
+
+        </main>
+        <!-- End #main -->
+        <!-- BS4 POPPER JS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_BS4PopperJS.cshtml" />
+
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Footer.cshtml" />
+
+        <!-- PRELOADER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Preloader.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+</html>
+}

@@ -1,0 +1,131 @@
+﻿@model GexpoTechCMS.Models.AppModels.PortfolioModel
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Edit Portfolio";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = "Portfolio";
+    ViewData["BreadCrumb-0-Text"] = "Portfolio";
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Portfolio";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Edit Portfolio</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Portfolio Details</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditPortfolio" asp-controller="Admin" method="Post" class="g-3 needs-validation" novalidate enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide portfolio title">
+                                Title
+                            </label>
+                            <input type="text" class="form-control count-chars" asp-for="PortfolioTitle" placeholder="Title" maxlength="250" data-chars-max="250" data-msg-color="danger" required="">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide portfolio image">
+                                        Preview Image
+                                    </label>
+                                    <input type="file" class="form-control accept-imgs upload-file-select" name="Image" id="Image">
+                                    <small class="form-text text-muted">Max size 5mb.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4 file-preview-div mt-1">
+                                <img src="@PortfolioHelpers.GetPreviewImage(Model.PortfolioID)" height="175" class="img-thumbnail img-fluid file-preview" alt="post image preview">
+                                <small>
+                                    <span class="text-danger text-left file-preview-name"></span>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Select gallery images for post">Slider Images</label>
+                            <div name="GalleryImages" id="GalleryImages">
+                                <a class="text-primary toggle-gallery-images" data-bs-toggle="collapse" href="#collapseGalleryImages" role="button" aria-expanded="false" aria-controls="collapseGalleryImages">
+                                    <i class="align-middle" data-feather="plus"></i> Select Images
+                                </a>
+                            </div>
+                            <div class="collapse mt-3" id="collapseGalleryImages">
+                                <div class="row">
+                                    <div class="col-sm-3 imgUp">
+                                        <div class="imagePreview"></div>
+                                        <label class="btn btn-primary">
+                                            Upload<input type="file" name="ImageGallery" id="ImageGallery" class="uploadFile accept-imgs img" value="Upload Photo">
+                                        </label>
+                                    </div>
+                                    <!-- col-3 -->
+                                    <i class="fa fa-plus imgAdd"></i>
+                                </div>
+                                <!-- Current Gallery Images -->
+                                <div class="row">
+                                    @Helpers.GetEditGalleryImages(Model.PortfolioID, "Portfolio")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set status">Status</label>
+                            <select class="form-control mb-3" asp-for="Status" required="">
+                                <option value="" selected>Select status</option>
+                                <option value="1">Published</option>
+                                <option value="0">Pending</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Use for sorting portfolio tab in front end. e.g. Aid, Education">
+                                Category
+                            </label>
+                            <input type="text" class="form-control text-lowercase no-space count-reach" asp-for="Category" maxlength="50" data-chars-max="50" data-msg-color="danger" placeholder="Category">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide portfolio details">
+                                Portfolio Description
+                            </label>
+                            <textarea class="form-control text-editor" rows="2" asp-for="PortfolioContent"></textarea>
+                        </div>
+                        <div class="col-sm-12">
+                            <input type="hidden" class="form-control" asp-for="ID" value="@Model.ID">
+                            <input type="hidden" class="form-control" asp-for="PortfolioID" />
+                        </div>
+                        <br />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="align-middle" data-feather="save"></i> Save
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

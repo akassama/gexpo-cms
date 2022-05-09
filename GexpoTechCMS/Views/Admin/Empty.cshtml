@@ -1,0 +1,44 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.TeamModel>
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Empty";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = null;
+    ViewData["BreadCrumb-0-Text"] = null;
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Empty";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Empty</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

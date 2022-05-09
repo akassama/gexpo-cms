@@ -1,0 +1,289 @@
+﻿@using NgoExpoApp.App_Code
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    string SessionKey = HttpContextAccessor.HttpContext.Session.GetString("_SessionKey");
+    string AccountID = SqlHelpers.GetTableData("Accounts", "SessionKey", SessionKey, "AccountID");
+    string FirstName = SqlHelpers.GetTableData("Accounts", "SessionKey", SessionKey, "FirstName");
+    string LastName = SqlHelpers.GetTableData("Accounts", "SessionKey", SessionKey, "LastName");
+    string FullName = FirstName + " " + LastName;
+    string ProfilePicture = ProfileHelpers.GetAccountProfilePicture(AccountID);
+}
+
+@{
+    ViewData["Title"] = "Settings";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = null;
+    ViewData["BreadCrumb-0-Text"] = null;
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Settings";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Settings</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-md-3 col-xl-2">
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Profile Settings</h5>
+                </div>
+
+                <div class="list-group list-group-flush" role="tablist">
+                    <a class="list-group-item list-group-item-action account active" data-toggle="list" href="#account" role="tab">
+                        Account
+                    </a>
+                    <a class="list-group-item list-group-item-action password" data-toggle="list" href="#password" role="tab">
+                        Password
+                    </a>
+                    <a class="list-group-item list-group-item-action notifications" data-toggle="list" href="#notifications" role="tab">
+                        Email notifications
+                    </a>
+                    <a class="list-group-item list-group-item-action delete-account" data-toggle="list" href="#delete-account" role="tab">
+                        Delete account
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9 col-xl-10">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="account" role="tabpanel">
+                    <form asp-controller="Admin" asp-action="UpdateAccountInfo" method="post" class="g-3 needs-validation" enctype="multipart/form-data" novalidate>
+                        <div class="card">
+                            <div class="card-header">
+
+                                <h5 class="card-title mb-0">Account info</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <label class="form-label" for="FirstName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your first name">
+                                                    First Name
+                                                </label>
+                                                <input type="text" class="form-control letters-only count-reach" id="FirstName" name="FirstName" value="@ProfileHelpers.GetAccountData(AccountID, "FirstName")" maxlength="50" data-chars-max="50" data-msg-color="danger" required="">
+                                                <div class="invalid-feedback">
+                                                    Please write your first name.
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mb-3">
+                                                <label class="form-label" for="LastName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your last name">Last Name</label>
+                                                <input type="text" class="form-control letters-only count-reach" name="LastName" id="LastName" value="@ProfileHelpers.GetAccountData(AccountID, "LastName")" maxlength="50" data-chars-max="50" data-msg-color="danger" required="">
+                                                <div class="invalid-feedback">
+                                                    Please write your last name.
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mb-3">
+                                                <label class="form-label" for="Email" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your email">Email</label>
+                                                <input type="email" class="form-control count-reach" id="Email" name="Email" value="@ProfileHelpers.GetAccountData(AccountID, "Email")" maxlength="100" data-chars-max="100" data-msg-color="danger" required="">
+                                                <div class="invalid-feedback">
+                                                    Please write your email.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="text-center">
+                                            <img alt="@FullName" src="@ProfilePicture" class="rounded-circle img-responsive file-preview mt-2" width="128" height="128" />
+                                            <div class="mt-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Upload profile picture">
+                                                <span class="btn btn-primary upload-file-button"><i class="fas fa-upload"></i> Upload</span>
+                                            </div>
+                                            <small>
+                                                <span class="text-danger text-left file-preview-name"></span>
+                                            </small>
+                                            <br />
+                                            <small>For best results, use an image at least 128px by 128px in .jpg format</small>
+
+                                            <!-- hidden selected profile picture -->
+                                            <div class="form-group d-none">
+                                                <input type="file" class="form-control-file accept-jpgs upload-file-select" id="ProfileImage" name="ProfileImage">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+
+                                <h5 class="card-title mb-0">More info</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3 col-md-12">
+                                    <label class="form-label" for="Address" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your address">Address</label>
+                                    <textarea class="form-control count-reach" id="Address" name="Address" maxlength="150" data-chars-max="150" data-msg-color="danger" rows="1" required="">@ProfileHelpers.GetAccountData(AccountID, "Address")</textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label" for="Gender" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your gender">Gender</label>
+                                        <select class="form-select" id="Gender" name="Gender" aria-label="Select gender">
+                                            <option>Select your gender</option>
+                                            @if (ProfileHelpers.GetAccountData(AccountID, "Gender") == "Male")
+                                            {
+                                                <option value="Male" selected>Male</option>
+                                                <option value="Female">Female</option>
+                                            }
+                                            @if (ProfileHelpers.GetAccountData(AccountID, "Gender") == "Female")
+                                            {
+                                                <option value="Male">Male</option>
+                                                <option value="Female" selected>Female</option>
+                                            }
+                                            @if (string.IsNullOrEmpty(ProfileHelpers.GetAccountData(AccountID, "Gender")))
+                                            {
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            }
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select your gender.
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label" for="Country" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your country">Country</label>
+                                        @{
+                                            //set country is existing
+                                            var Country = ProfileHelpers.GetAccountData(AccountID, "Country");
+                                            var CountryName = SqlHelpers.GetTableData("Country", "ID", Country, "Name");
+                                            var CountryNameOption = (!string.IsNullOrEmpty(CountryName)) ? "<option value='" + Country + "' class='' selected>" + CountryName + "</option>" : "<option value='' class=''>Select country</option>";
+                                        }
+                                        <select name="Country" id="Country" class="form-control" asp-items="@( new SelectList(@ViewBag.CountriesList,"ID","Name"))" required="">
+                                            @Html.Raw(CountryNameOption)
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label" for="PhoneNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your phone number">Phone Number</label>
+                                        <input type="text" class="form-control count-reach" id="PhoneNumber" name="PhoneNumber" value="@ProfileHelpers.GetAccountData(AccountID, "PhoneNumber")" maxlength="100" data-chars-max="100" data-msg-color="danger" required="">
+                                        <div class="invalid-feedback">
+                                            Please write your phone number.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label" for="FirstName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide a short description (optional)">
+                                        Short Description
+                                    </label>
+                                    <textarea type="text" class="form-control letters-only count-reach" id="Description" name="Description" maxlength="500" data-chars-max="500" data-msg-color="danger">@ProfileHelpers.GetAccountData(AccountID, "Description")</textarea>
+                                    <div class="invalid-feedback">
+                                        Please write your short description.
+                                    </div>
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="password" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Password</h5>
+
+                            <form asp-controller="Admin" asp-action="UpdateAccountPassword" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <label class="form-label" for="CurrentPassword" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your current password">Current password</label>
+                                    <input type="password" class="form-control" id="CurrentPassword" name="CurrentPassword" required="" maxlength="100">
+                                    <small><a asp-action="Index" asp-controller="ForgotPassword" target="_blank">Forgot your password?</a></small>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="NewPassword" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your new password">New password</label>
+                                    <input type="password" class="form-control typed-password" id="NewPassword" name="NewPassword" maxlength="100" required="">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="RepeatPassword" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Re-type new password">Verify password</label>
+                                    <input type="password" class="form-control re-typed-password" id="RepeatPassword" name="RepeatPassword" maxlength="100" required="">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="notifications" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Email Notifications</h5>
+                            <br />
+                            <form asp-controller="Admin" asp-action="UpdateNotificationSetting" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <div class="row">
+                                        @{
+                                            bool EmailNotification = Convert.ToBoolean(ProfileHelpers.GetAccountData(AccountID, "EmailNotification"));
+                                            string EmailOn = (EmailNotification) ? "checked" : "";
+                                            string EmailOff = (!EmailNotification) ? "checked" : "";
+                                        }
+                                        <div class="col-md-12">
+                                            <label data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set email notification on/off">Set Notification</label>
+                                            <label class="form-check">
+                                                <input name="EmailNotification" id="EmailNotification" type="radio" class="form-check-input" value="true" @EmailOn>
+                                                <span class="form-check-label">On</span>
+                                            </label>
+                                            <label class="form-check">
+                                                <input name="EmailNotification" id="EmailNotification" type="radio" class="form-check-input" value="false" @EmailOff>
+                                                <span class="form-check-label">Off</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="delete-account" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Delete Account</h5>
+
+                            <form asp-controller="Admin" asp-action="DeleteAccount" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <label class="form-label" for="AccountEmail" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your email account to delete account">Type your email to delete account</label>
+                                    <input type="email" class="form-control" id="AccountEmail" name="AccountEmail" required="">
+                                    <div class="invalid-feedback">
+                                        Please provide a valid email.
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Delete</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

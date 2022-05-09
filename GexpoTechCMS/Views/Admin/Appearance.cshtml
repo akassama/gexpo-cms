@@ -1,0 +1,249 @@
+﻿@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Appearance";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = null;
+    ViewData["BreadCrumb-0-Text"] = null;
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Appearance";
+}
+
+<div class="container-fluid p-0">
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Appearance</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-md-3 col-xl-2">
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Apearance Settings</h5>
+                </div>
+
+                <div class="list-group list-group-flush" role="tablist">
+                    <a class="list-group-item list-group-item-action sliders active" data-toggle="list" href="#sliders" role="tab">
+                        Sliders
+                    </a>
+                    <a class="list-group-item list-group-item-action theme-colors" data-toggle="list" href="#theme-colors" role="tab">
+                        Theme Colors
+                    </a>
+                    <a class="list-group-item list-group-item-action theme" data-toggle="list" href="#theme" role="tab">
+                        Themes
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9 col-xl-10">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="sliders" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Slider info</h5>
+                            <a href="#SliderForm" class="btn btn-outline-primary smooth-scroll clear-category-form float-right">
+                                <i class="align-middle" data-feather="plus"></i>
+                                Add Slider
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mb-3 col-md-12">
+                                    @if (ViewBag.SlidersDataCount > 0)
+                                    {
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Image</th>
+                                                    <th>Title</th>
+                                                    <th>Sub Text</th>
+                                                    <th>Link (Readmore)</th>
+                                                    <th>Status</th>
+                                                    <th class="d-none d-md-table-cell">Created At</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var slider in ViewBag.SlidersData)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <img src="~/sliders/images/@slider.SliderImage" width="150" heigth="100" class="img-thumbnail" alt="@slider.SliderTitle">
+                                                        </td>
+                                                        <td>
+                                                            @Helpers.FormatLongText(slider.SliderTitle, 150)
+                                                        </td>
+                                                        <td>
+                                                            @Helpers.FormatLongText(slider.SubText, 200)
+                                                        </td>
+                                                        <td>
+                                                            @slider.SliderLink
+                                                        </td>
+                                                        <td>
+                                                            @Helpers.FormatStatus(slider.Status.ToString())
+                                                        </td>
+                                                        <td class="d-none d-md-table-cell">
+                                                            @Helpers.FormatDate(slider.CreatedAt.ToString())
+                                                        </td>
+                                                        <td class="table-action">
+                                                            <a class="text-decoration-none text-primary edit-slider" data-id="@slider.SliderID" data-title="@slider.SliderTitle"
+                                                               data-sub-text="@slider.SubText" data-link="@slider.SliderLink" data-image="@slider.SliderImage" data-status="@slider.Status">
+                                                                <i class="align-middle" data-feather="edit-2"></i>
+                                                            </a>
+                                                            <a class="text-decoration-none text-danger delete-record" data-title="Delete Slider" data-label="Slider" data-key="@slider.SliderID"
+                                                               data-action="/Admin/DeleteRecord" data-model="HomeSliders" data-view="Appearance" data-route-id="">
+                                                                <i class="align-middle" data-feather="trash"></i>
+                                                            </a>
+                                                            <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@slider.SliderID" asp-route-key-name="SliderID" asp-route-model="HomeSliders" asp-route-title="SliderTitle"
+                                                               asp-route-desc="SubText" asp-route-cont="" asp-route-view="Appearance" class="text-decoration-none text-info">
+                                                                <i class="align-middle" data-feather="globe"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-primary alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <div class="alert-message">
+                                                <strong>No slider created</strong>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <form asp-action="NewSlider" asp-controller="Admin" method="post" id="SliderForm" class="g-3 needs-validation" novalidate enctype="multipart/form-data">
+                                <h3>Add Slider</h3>
+                                <div class="mb-3">
+                                    <label class="form-label" for="Title" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide slider title">
+                                        Title
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="SliderTitle" id="SliderTitle" maxlength="100" data-chars-max="100" data-msg-color="danger" placeholder="Title" required="">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label count-reach" for="SubText" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide slider sub text (optional)">
+                                        Sub Text
+                                    </label>
+                                    <textarea type="text" class="form-control" name="SubText" id="SubText" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Sub Text"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label count-reach" for="Link" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide navigation link. Use '/' to start from domain name, '#' to link to page section id, or 'http://page-url.com' to link to an external page">
+                                        Link (Readmore)
+                                    </label>
+                                    <input type="text" class="form-control" name="SliderLink" id="SliderLink" placeholder="Link" maxlength="250" data-chars-max="250" data-msg-color="danger">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set status">Status</label>
+                                    <select class="form-control mb-3" name="Status" id="Status" required="">
+                                        <option value="" selected>Select status</option>
+                                        <option value="1">Published</option>
+                                        <option value="0">Pending</option>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="mb-3">
+                                            <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Select slider image">
+                                                Slider Image
+                                            </label>
+                                            <input type="file" class="form-control accept-imgs upload-file-select" name="SliderImage" id="SliderImage" required="">
+                                            <small class="form-text text-muted">Max size 5mb.</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 file-preview-div mt-1">
+                                        <img src="https://via.placeholder.com/300x175?text=Preview" height="175" class="img-thumbnail img-fluid file-preview" alt="slider image preview">
+                                        <small>
+                                            <span class="text-danger text-left file-preview-name"></span>
+                                        </small>
+                                    </div>
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="theme-colors" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Theme Color Settings</h5>
+                            <hr />
+                            <form asp-action="UpdateThemeColors" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                @{
+                                    //set color input values
+                                    string ThemeColor = SqlHelpers.GetTableData("ThemeSettings", "SettingName", "ThemeColor", "SettingValue");
+                                    ThemeColor = (!string.IsNullOrEmpty(ThemeColor)) ? ThemeColor : "#ED502F";
+                                }
+                                <div class="mb-3">
+                                    <label class="form-label" for="ThemeColor" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Select theme color. The primary color for the front end theme.">
+                                        Theme Color <span class="font-weight-bold">(@ApearanceHelpers.GetColorName(ThemeColor))</span>
+                                    </label>
+                                    <input type="color" class="form-control form-control-color" name="ThemeColor" id="ThemeColor" value="@ThemeColor" title="Choose your color">
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="theme" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Theme Settings</h5>
+                            <hr />
+                            <form asp-action="UpdateTheme" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                @{
+                                    string CurrentTheme = SqlHelpers.GetTableData("ThemeSettings", "SettingName", "SelectedTheme", "SettingValue");
+                                }
+                                <div class="mb-3">
+                                    <label class="form-label" for="Theme" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Select theme.">
+                                        Select Theme
+                                    </label>
+                                    <div>
+                                        <div class="row">
+                                            @Helpers.GetAvailableTheme(ViewBag.AvailableTheme, CurrentTheme)
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

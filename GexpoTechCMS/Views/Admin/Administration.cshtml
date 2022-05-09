@@ -1,0 +1,322 @@
+﻿@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Administration";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = null;
+    ViewData["BreadCrumb-0-Text"] = null;
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Administration";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Administration</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+
+    <div class="row">
+        <div class="col-md-3 col-xl-2">
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Platform Administration</h5>
+                </div>
+
+                <div class="list-group list-group-flush" role="tablist">
+                    <a class="list-group-item list-group-item-action activity-logs active" data-toggle="list" href="#activity-logs" role="tab">
+                        Activity Logs
+                    </a>
+                    <a class="list-group-item list-group-item-action users" data-toggle="list" href="#users" role="tab">
+                        Users
+                    </a>
+                    <a class="list-group-item list-group-item-action db-backup" data-toggle="list" href="#db-backup" role="tab">
+                        Backup Database
+                    </a>
+                    <a class="list-group-item list-group-item-action subscriptions" data-toggle="list" href="#subscriptions" role="tab">
+                        Subscriptions
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9 col-xl-10">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="activity-logs" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Activity Logs</h5>
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @if (ViewBag.ActivityLogsCount > 0)
+                                        {
+                                            <table class="table table-striped dataTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Activity By</th>
+                                                        <th>Type</th>
+                                                        <th>Activity</th>
+                                                        <th>Date</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var activity in ViewBag.ActivityLogsData)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <div class="d-flex align-items-start">
+                                                                    <img src="@ProfileHelpers.GetAccountProfilePicture(activity.ActivityBy)" width="36" height="36" class="rounded-circle mr-2" alt="@ProfileHelpers.GetAccountData(activity.ActivityBy, "FullName")">
+                                                                    <div class="flex-grow-1">
+                                                                        <strong>@ProfileHelpers.GetAccountData(activity.ActivityBy, "FullName")</strong>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                @activity.ActivityType
+                                                            </td>
+                                                            <td>
+                                                                @Html.Raw(activity.Activity)
+                                                            </td>
+                                                            <td>
+                                                                @Helpers.FormatDate(activity.CreatedAt.ToString())
+                                                            </td>
+                                                            <td class="table-action">
+                                                                <a class="text-decoration-none text-danger delete-record" data-title="Delete Activity" data-label="Activity Log" data-key="@activity.ActivityID"
+                                                                   data-action="/Admin/DeleteRecord" data-model="ActivityLogs" data-view="Administration" data-route-id="">
+                                                                    <i class="align-middle" data-feather="trash"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        }
+                                        else
+                                        {
+                                            <div class="alert alert-primary alert-dismissible" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <div class="alert-message">
+                                                    <strong>No logs available</strong>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <paging total-records="ViewBag.TotalRecords"
+                                                page-no="ViewBag.PageNo"
+                                                page-size="ViewBag.PageSize"
+                                                show-prev-next="true"
+                                                show-first-last="true"
+                                                show-total-pages="false"
+                                                show-total-records="false"
+                                                show-page-size-nav="true"
+                                                show-gap="true">
+                                        </paging>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="users" role="tabpanel">
+
+                    <div class="card">
+                        <div class="card-header">
+
+                            <h5 class="card-title mb-0">Manage Users</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    @if (ViewBag.TotalAccounts > 0)
+                                    {
+                                        <table class="table dataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Roles</th>
+                                                    <th class="d-none d-md-table-cell">Created At</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var account in ViewBag.AccountsData)
+                                                {
+                                                    <tr>
+                                                        @{
+                                                            var FullName = $@"{account.FirstName} {account.LastName}";
+                                                            string AuthorRole = (ProfileHelpers.UserHasPermission(account.AccountID, "Author Permissions")) ? "1" : "";
+                                                            string EditorRole = (ProfileHelpers.UserHasPermission(account.AccountID, "Editor Permissions")) ? "1" : "";
+                                                            string AdminRole = (ProfileHelpers.UserHasPermission(account.AccountID, "Admin Permissions")) ? "1" : "";
+                                                        }
+                                                        <td>
+                                                            <img src="@ProfileHelpers.GetAccountProfilePicture(account.AccountID)" width="48" height="48" class="rounded-circle mr-2" alt="@FullName"> @FullName
+                                                        </td>
+                                                        <td>
+                                                            @account.Email
+                                                        </td>
+                                                        <td>
+                                                            @ProfileHelpers.GetAccountRoles(account.AccountID)
+                                                        </td>
+                                                        <td class="d-none d-md-table-cell">
+                                                            @Helpers.FormatDate(account.CreatedAt.ToString())
+                                                        </td>
+                                                        <td>
+                                                            @Helpers.FormatActiveStatus(account.Active)
+                                                        </td>
+                                                        <td class="table-action">
+                                                            <a class="text-decoration-none text-primary" asp-action="EditAccount" asp-controller="Admin" asp-route-id="@account.AccountID">
+                                                                <i class="align-middle" data-feather="edit-2"></i>
+                                                            </a>
+                                                            <a class="text-decoration-none text-warning edit-account-role" data-id="@account.AccountID" data-author="@AuthorRole" data-editor="@EditorRole" data-admin="@AdminRole">
+                                                                <i class="align-middle" data-feather="unlock"></i>
+                                                            </a>
+                                                            <a class="text-decoration-none text-danger delete-record" data-title="Remove Account" data-label="Account"
+                                                               data-key="@account.AccountID" data-action="/Admin/DeleteRecord" data-model="Accounts" data-view="Administration" data-route-id="">
+                                                                <i class="align-middle" data-feather="trash"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-primary alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <div class="alert-message">
+                                                <strong>No available accounts</strong>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="db-backup" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Download Database Backup</h5>
+
+                            <form asp-action="" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                <input type="hidden" value="1" name="Download" id="Download" />
+                                <button type="submit" class="btn btn-primary">Download</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="subscriptions" role="tabpanel">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Manage Subscribers</h5>
+                            <div class="row mb-4">
+                                <div class="col-3 offset-9">
+                                    <a asp-action="EmailSubscribers" asp-controller="Admin" class="btn btn-outline-primary float-right">
+                                        <i class="align-middle" data-feather="mail"></i>
+                                        Email All
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @if (ViewBag.SubscribersCount > 0)
+                                        {
+                                            <table class="table table-striped dataTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Email</th>
+                                                        <th>Date</th>
+                                                        <th class="text-center">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var subscriber in ViewBag.SubscribersData)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @subscriber.Name
+                                                            </td>
+                                                            <td>
+                                                                @subscriber.Email
+                                                            </td>
+                                                            <td>
+                                                                @Helpers.FormatDate(subscriber.CreatedAt.ToString())
+                                                            </td>
+                                                            <td class="table-action text-center">
+                                                                <a asp-action="EmailSubscribers" asp-controller="Admin" asp-route-email="@subscriber.Email" class="text-decoration-none text-info">
+                                                                    <i class="align-middle" data-feather="mail"></i>
+                                                                </a>
+                                                                <a class="text-decoration-none text-danger delete-record" data-title="Remove Subscriber" data-label="Subscriber" data-key="@subscriber.ID"
+                                                                   data-action="/Admin/DeleteRecord" data-model="Subscribers" data-view="Administration" data-route-id="">
+                                                                    <i class="align-middle" data-feather="trash"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        }
+                                        else
+                                        {
+                                            <div class="alert alert-primary alert-dismissible" role="alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <div class="alert-message">
+                                                    <strong>No subscribers available</strong>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

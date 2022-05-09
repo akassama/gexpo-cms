@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    string TestimonialHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Testimonials", "ContentID");
+    string TestimonialHeader = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Testimonials", "ContentValue");
+}
+
+@if (CMSHelpers.ContentDisplay("Testimonials"))
+{
+    <!-- ======= Testimonials Section ======= -->
+    <section id="testimonials" class="testimonials section-bg">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="section-title">
+                        <h2>Testimonials</h2>
+                        <p class="">
+                            @Helpers.GetTranslatableData(TestimonialHeader, SessionLanguage, TestimonialHeaderID, "ContentManagement", "Description")
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="row">
+                        @TempoTemplateHelpers.GetTestimonials(SessionLanguage, 9)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Testimonials Section -->
+}

@@ -1,0 +1,74 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    //Get config values
+    string GoogleAnalyticsKey = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "GoogleAnalyticsKey", "ConfigurationValue");
+    string GoogleAdvertKey = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "GoogleAdvertKey", "ConfigurationValue");
+
+    //if language selected, set session
+    if (!string.IsNullOrEmpty(ViewContext.HttpContext.Request.Query["l"]))
+    {
+        HttpContextAccessor.HttpContext.Session.SetString("_SessionLanguage", ViewContext.HttpContext.Request.Query["l"]);
+    }
+}
+
+
+@if (!string.IsNullOrEmpty(GoogleAnalyticsKey))
+{
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=@GoogleAnalyticsKey"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', '@GoogleAnalyticsKey');
+    </script>
+}
+
+@if (!string.IsNullOrEmpty(GoogleAdvertKey))
+{
+    <!-- Google adsense -->
+    <script data-ad-client="@GoogleAdvertKey" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+}
+
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+<title>@ViewData["Title"] - @ViewData["OrganizationName"]</title>
+<meta name="keywords" content="@ViewData["ContentKeywords"]" />
+<meta name="description" content="@ViewData["ContentDescription"]" />
+<meta name="author" content="@ViewData["PostAuthor"]">
+
+<!-- Favicons -->
+<link rel="shortcut icon" href="~/images/@CMSHelpers.GetCmsData("Favicon", "default-favicon.jpg")" />
+<link rel="apple-touch-icon" href="~/images/@CMSHelpers.GetCmsData("Favicon", "default-favicon.jpg")" />
+
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="@ViewData["Title"]; @ViewData["OrganizationName"]">
+<meta property="og:description" content="@ViewData["PropertyDescription"]">
+<meta property="og:url" content="@ViewData["PropertyUrl"]">
+<meta property="og:site_name" content="@ViewData["OrganizationName"]">
+<meta property="article:publisher" content="@ViewData["OrganizationName"]">
+<meta property="article:section" content="@ViewData["PropertySection"]">
+<meta property="og:updated_time" content="@ViewData["PropertyUpdatedTime"]">
+
+<meta property="og:image" content="@ViewData["PropertyImage"]">
+<meta property="og:image:secure_url" content="@ViewData["PropertyImage"]">
+<meta property="og:image:width" content="900">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="@ViewData["Title"]">
+<meta property="og:image:type" content="image/jpeg">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="@ViewData["Title"]; @ViewData["OrganizationName"]">
+<meta name="twitter:description" content="@ViewData["PropertyDescription"]">
+<meta name="twitter:image" content="@ViewData["PropertyImage"]">
+
+<meta name="url" content="@ViewData["PropertyUrl"]">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">

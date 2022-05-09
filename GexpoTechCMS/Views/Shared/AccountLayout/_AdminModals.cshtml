@@ -1,0 +1,689 @@
+﻿@using NgoExpoApp.App_Code
+<!-- BEGIN category modal -->
+<div class="modal fade edit-category-modal" id="addCategoryModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <form asp-action="AddCategory" asp-controller="Admin" method="post" class="g-3 needs-validation edit-category-action" novalidate>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add/Edit Category</h5>
+                    <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-3">
+                    <div class="mb-3">
+                        <label class="form-label" for="CategoryName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide category name">Name</label>
+                        <input type="text" class="form-control category-name count-reach" name="CategoryName" id="CategoryName" placeholder="Category Name" maxlength="50" data-chars-max="50" data-msg-color="danger" required="">
+                        <div class="invalid-feedback">
+                            Please provide category name.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide short description (optional)">Short Description</label>
+                        <textarea class="form-control short-Description count-reach" name="ShortDescription" id="ShortDescription" maxlength="250" data-chars-max="250" data-msg-color="danger" rows="1"></textarea>
+                        <div class="invalid-feedback">
+                            Please provide short description.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set category status">Status</label>
+                        <select class="form-control mb-3" name="CategoryStatus" id="CategoryStatus" required="">
+                            <option value="">Select status</option>
+                            <option class="category-published" value="1">Published</option>
+                            <option class="category-pending" value="0">Pending</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="Icon" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide category icon class">Icon</label>
+                        <input type="text" class="form-control category-icon count-reach" name="CategoryIcon" id="CategoryIcon" placeholder="fa fa-icon" maxlength="50" data-chars-max="50" data-msg-color="danger">
+                        <div class="invalid-feedback">
+                            Please provide category icon class.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set category order">Order</label>
+                        <select class="form-control mb-3" name="CategoryOrder" id="CategoryOrder" required="">
+                            <option class="category-order" value="" selected>Select category order</option>
+                            @for (int i = 1; i <= 25; i++)
+                            {
+                                <option value="@i">
+                                    @i
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Hidden inputs -->
+                    <input type="hidden" class="form-control category-id" name="CategoryID" id="CategoryID">
+                    <input type="hidden" class="form-control" name="ReturnView" id="ReturnView" value="@ViewBag.ReturnView">
+                    <input type="hidden" class="form-control" name="ReturnViewID" id="ReturnViewID" value="@ViewBag.ReturnViewID">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- END category modal -->
+<!--
+//  █████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗
+//  ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
+-->
+<!-- BEGIN slider modal -->
+<div class="modal fade edit-slider-modal" id="editSliderModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <form asp-action="EditSlider" asp-controller="Admin" method="post" class="g-3 needs-validation edit-category-action" novalidate enctype="multipart/form-data">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Slider</h5>
+                    <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-3">
+                    <div class="mb-3">
+                        <label class="form-label" for="SliderTitle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide slider title">Slider Title</label>
+                        <input type="text" class="form-control slider-title count-reach" name="SliderTitle" id="SliderTitle" placeholder="Slider Title" maxlength="100" data-chars-max="100" data-msg-color="danger" required="">
+                        <div class="invalid-feedback">
+                            Please provide slider title.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="SliderSubText" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide sub text">Sub Text</label>
+                        <textarea type="text" class="form-control slider-sub-text count-reach" name="SliderSubText" id="SliderSubText" placeholder="Sub Text" maxlength="250" data-chars-max="250" data-msg-color="danger"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide navigation link. Use '/' to start from domain name, '#' to link to page section id, or 'http://page-url.com' to link to an external page">
+                            Link
+                        </label>
+                        <input type="text" class="form-control slider-link count-reach" name="SliderLink" id="SliderLink" placeholder="Link" maxlength="250" data-chars-max="250" data-msg-color="danger">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set slider status">Status</label>
+                        <select class="form-control mb-3" name="SliderStatus" id="SliderStatus" required="">
+                            <option value="">Select status</option>
+                            <option class="slider-published" value="1">Published</option>
+                            <option class="slider-pending" value="0">Pending</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Select slider image">
+                            Slider Image
+                        </label>
+                        <input type="file" class="form-control accept-imgs" name="SliderImage" id="SliderImage">
+                        <small class="form-text text-muted">Select image file. 5mb max</small>
+                    </div>
+
+                    <!-- Hidden inputs -->
+                    <input type="hidden" class="form-control slider-id" name="SliderID" id="SliderID">
+                    <input type="hidden" class="form-control" name="ReturnView" id="ReturnView" value="Appearance">
+                    <input type="hidden" class="form-control" name="ReturnViewID" id="ReturnViewID" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- END slider modal -->
+<!--
+//  █████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗
+//  ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
+-->
+<!-- BEGIN navigation modal -->
+<div class="modal fade edit-navigation-modal" id="addNavigationModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <form asp-action="AddNavigation" asp-controller="Admin" method="post" class="g-3 needs-validation edit-navigation-action" novalidate>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Navigation</h5>
+                    <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-3">
+                    <div class="mb-3">
+                        <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide navigation name">
+                            Name
+                        </label>
+                        <input type="text" class="form-control navigation-name callback-input letters-only count-chars" maxlength="50" data-chars-max="50" data-msg-color="danger" name="NavigationName" id="NavigationName" placeholder="Name" data-callback-type="Navigation|NavigationName" required="">
+                        <div class="invalid-feedback callback-input-validation-navigationname">
+                            Please provide navigation name.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide navigation link. Use '/' to start from domain name, '#' to link to page section id, or 'http://page-url.com' to link to an external page">
+                            Link
+                        </label>
+                        <input type="text" class="form-control navigation-link count-reach" name="NavigationLink" id="NavigationLink" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Link" required="">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set navigation status">Status</label>
+                        <select class="form-control mb-3" name="NavigationStatus" id="NavigationStatus" required="">
+                            <option value="">Select status</option>
+                            <option class="navigation-published" value="1">Published</option>
+                            <option class="navigation-pending" value="0">Pending</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide navigation parent if available">Parent</label>
+                        <select class="form-control mb-3" name="NavigationParent" id="NavigationParent">
+                            <option value="" selected>Select parent</option>
+                            @NavigationHelpers.GetNavigationOptions()
+                            <option class="navigation-parent"></option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set navigation order">Order</label>
+                        <select class="form-control mb-3" name="NavigationOrder" id="NavigationOrder">
+                            <option class="navigation-order" value="" selected>Select navigation order</option>
+                            @for (int i = 1; i <= 25; i++)
+                            {
+                                <option value="@i">
+                                    @i
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Hidden inputs -->
+                    <input type="hidden" class="form-control navigation-id" name="NavigationID" id="NavigationID">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success callback-validation-btn">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- END navigation modal -->
+<!--
+//  █████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗
+//  ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
+-->
+<!-- BEGIN service stat modal -->
+<div class="modal fade edit-service-stat-modal" id="ediServiceStatModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <form asp-action="EditServiceStat" asp-controller="Admin" method="post" class="g-3 needs-validation edit-category-action" novalidate enctype="multipart/form-data">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Service Stat</h5>
+                    <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-3">
+                    <div class="mb-3">
+                        <label class="form-label" for="ServiceStatTitle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide service name">Title</label>
+                        <input type="text" class="form-control service-stat-title count-reach" name="ServiceStatTitle" id="ServiceStatTitle" placeholder="Service Name" maxlength="50" data-chars-max="50" data-msg-color="danger" required="">
+                        <div class="invalid-feedback">
+                            Please provide stat title/name.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="ServiceStatValue" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide stat value">Sub Text</label>
+                        <input type="text" class="form-control service-stat-value count-reach" name="ServiceStatValue" id="ServiceStatValue" placeholder="e.g. 21" maxlength="10" data-chars-max="10" data-msg-color="danger">
+                    </div>
+                    <div class="mb-3">
+                        <small class="float-right">
+                            <a href="https://icons.getbootstrap.com/" target="_blank">
+                                Icons
+                            </a>
+                        </small>
+                        <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide service icon (optional)">
+                            Icon
+                        </label>
+                        <input type="text" class="form-control service-stat-icon count-reach" name="ServiceStatIcon" id="ServiceStatIcon" placeholder="e.g. bi bi-icon" maxlength="100" data-chars-max="100" data-msg-color="danger">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide navigation link. Use '/' to start from domain name, '#' to link to page section id, or 'http://page-url.com' to link to an external page">
+                            Link
+                        </label>
+                        <input type="text" class="form-control service-stat-link count-reach" name="ServiceStatLink" id="ServiceStatLink" placeholder="Link" maxlength="250" data-chars-max="250" data-msg-color="danger">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set navigation order">Order</label>
+                        <select class="form-control mb-3" name="ServiceStatOrder" id="ServiceStatOrder">
+                            <option class="service-stat-order" value="" selected>Select order</option>
+                            @for (int i = 1; i <= 25; i++)
+                            {
+                                <option value="@i">
+                                    @i
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set slider status">Status</label>
+                        <select class="form-control mb-3" name="ServiceStatStatus" id="ServiceStatStatus" required="">
+                            <option value="">Select status</option>
+                            <option class="service-stat-published" value="1">Published</option>
+                            <option class="service-stat-pending" value="0">Pending</option>
+                        </select>
+                    </div>
+
+                    <!-- Hidden inputs -->
+                    <input type="hidden" class="form-control service-stat-id" name="ServiceStatID" id="ServiceStatID">
+                    <input type="hidden" class="form-control" name="ReturnView" id="ReturnView" value="ContentManagement">
+                    <input type="hidden" class="form-control" name="ReturnViewID" id="ReturnViewID" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- END service stat modal -->
+<!--
+//  █████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗
+//  ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
+-->
+<!-- BEGIN roles modal -->
+<div class="modal fade edit-account-roles-modal" id="ediAccountRolesModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <form asp-action="UpdateAccountRoles" asp-controller="Admin" method="post" class="g-3 needs-validation edit-category-action" novalidate>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Account Role</h5>
+                    <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-3">
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input account-roles-author" type="checkbox" value="1" name="AuthorRole" id="AuthorRole">
+                            <label class="form-check-label" for="AuthorRole">Author</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input account-roles-editor" type="checkbox" value="1" name="EditorRole" id="EditorRole">
+                            <label class="form-check-label" for="EditorRole">Editor</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input account-roles-admin" type="checkbox" value="1" name="AdminRole" id="AdminRole">
+                            <label class="form-check-label" for="AdminRole">Admin</label>
+                        </div>
+                    </div>
+
+                    <!-- Hidden inputs -->
+                    <input type="hidden" class="form-control account-roles-id" name="AccountID" id="AccountID">
+                    <input type="hidden" class="form-control" name="ReturnView" id="ReturnView" value="Administration">
+                    <input type="hidden" class="form-control" name="ReturnViewID" id="ReturnViewID" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- END roles modal -->
+<!--
+//  █████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗
+//  ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
+-->
+<!-- BEGIN delete modal -->
+<div class="modal fade delete-modal" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <form action="" method="post" class="g-3 needs-validation delete-modal-action" novalidate>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title pulse delete-modal-title font-weight-bold">
+                        <!-- Title -->
+                    </h5>
+                    <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-3">
+                    <div class="mb-1">
+                        <h3 class="mb-0 font-weight-bold">
+                            Are you sure you want to remove <span class="text-danger delete-modal-label"></span>?
+                        </h3>
+
+                        <!-- Hidden inputs -->
+                        <input type="hidden" class="form-control delete-modal-key" name="DeleteKey" id="DeleteKey" required="">
+                        <input type="hidden" class="form-control delete-modal-model" name="DeleteModel" id="DeleteModel" required="">
+                        <input type="hidden" class="form-control delete-modal-view" name="ReturnView" id="ReturnView" required="">
+                        <input type="hidden" class="form-control delete-modal-route-id" name="ReturnViewID" id="ReturnViewID" required="">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success close-modal" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- END delete modal -->
+<!--
+//  █████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗
+//  ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
+-->
+<!-- BEGIN edit donation modal -->
+<div class="modal fade edit-donation-campaign-modal" id="ediDonationCampaignModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <form asp-action="EditDonationCampaign" asp-controller="Admin" method="post" class="g-3 needs-validation edit-category-action" novalidate enctype="multipart/form-data">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Donation Campaign</h5>
+                    <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-3">
+                    <div class="mb-3">
+                        <label class="form-label" for="DonationTitle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide donation title">Title</label>
+                        <input type="text" class="form-control donation-title count-reach" name="DonationTitle" id="DonationTitle" placeholder="Service Name" maxlength="50" data-chars-max="50" data-msg-color="danger" required="">
+                        <div class="invalid-feedback">
+                            Please provide donation title/name.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="DonationDescription" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide description">Description</label>
+                        <textarea class="form-control donation-description count-reach" name="DonationDescription" id="DonationDescription" maxlength="1000" data-chars-max="1000" data-msg-color="danger"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-2">
+                                    <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide campaign image. (optional)">
+                                        Campaign Image
+                                    </label>
+                                    <input type="file" class="form-control accept-imgs preview-input" data-preview-class="campaign-image-preview" name="CampaignImage" id="CampaignImage">
+                                    <small class="form-text text-muted">Max size 5mb.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4 file-preview-div mt-1">
+                                <img src="https://via.placeholder.com/300x175?text=Preview" height="175" class="img-thumbnail img-fluid campaign-image-preview" alt="post image preview">
+                                <small>
+                                    <span class="text-danger text-left file-preview-name"></span>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set donation type">Donation Type</label>
+                        <select class="form-control mb-3" name="DonationType" id="DonationType" required="">
+                            <option value="" selected>Select type</option>
+                            <option value="Bank">Bank Info</option>
+                            <option value="Embed">Embed</option>
+                            <option value="Url">Url Link</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide donation link (optional)">
+                            Link
+                        </label>
+                        <input type="url" class="form-control donation-link count-reach" name="DonationLink" id="DonationLink" maxlength="250" data-chars-max="250" data-msg-color="danger">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set donation status">Status</label>
+                        <select class="form-control mb-3" name="DonationCampaignStatus" id="DonationCampaignStatus" required="">
+                            <option value="">Select status</option>
+                            <option class="donation-published" value="1">Published</option>
+                            <option class="donation-pending" value="0">Pending</option>
+                        </select>
+                    </div>
+
+                    <!-- Hidden inputs -->
+                    <input type="hidden" class="form-control donation-id" name="DonationID" id="DonationID">
+                    <input type="hidden" class="form-control" name="ReturnView" id="ReturnView" value="ContentManagement">
+                    <input type="hidden" class="form-control" name="ReturnViewID" id="ReturnViewID" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- END donation stat modal -->
+<!--
+//  █████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗
+//  ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
+-->
+<!-- BEGIN edit document modal -->
+<div class="modal fade edit-document-modal" id="editVideoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <form asp-action="EditResourceDocument" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate enctype="multipart/form-data">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Resource Document</h5>
+                    <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-3">
+                    <div class="mb-3">
+                        <label class="form-label" for="DocumentName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide document name">Document Name</label>
+                        <input type="text" class="form-control document-name count-reach" name="DocumentName" id="DocumentName" placeholder="Document Name" maxlength="250" data-chars-max="250" data-msg-color="danger" required="">
+                        <div class="invalid-feedback">
+                            Please provide document title/name.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="ShortDescription" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide description">Short Description</label>
+                        <textarea class="form-control document-description count-reach" name="ShortDescription" id="ShortDescription" maxlength="500" data-chars-max="500" data-msg-color="danger"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set document status">Status</label>
+                        <select class="form-control mb-3" name="DocumentStatus" id="DocumentStatus" required="">
+                            <option value="">Select status</option>
+                            <option class="document-published" value="1">Published</option>
+                            <option class="document-pending" value="0">Pending</option>
+                        </select>
+                    </div>
+
+                    <!-- Hidden inputs -->
+                    <input type="hidden" class="form-control document-id" name="DocumentID" id="DocumentID">
+                    <input type="hidden" class="form-control" name="ReturnView" id="ReturnView" value="ContentManagement">
+                    <input type="hidden" class="form-control" name="ReturnViewID" id="ReturnViewID" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- END document modal -->
+<!--
+//  █████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗
+//  ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
+-->
+<!-- BEGIN video modal -->
+<div class="modal fade edit-video-modal" id="editVideoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <form asp-action="EditVideo" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate enctype="multipart/form-data">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Video</h5>
+                    <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-3">
+                    <div class="mb-3">
+                        <label class="form-label" for="VideoTitle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide document name">Video Title</label>
+                        <input type="text" class="form-control video-title count-reach" name="VideoTitle" id="VideoTitle" placeholder="Video Title" maxlength="250" data-chars-max="250" data-msg-color="danger" required="">
+                        <div class="invalid-feedback">
+                            Please provide title/name.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="VideoLink" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide description">Video Link</label>
+                        <input type="text" class="form-control video-link count-reach" name="VideoLink" id="VideoLink" placeholder="Video Link" maxlength="250" data-chars-max="250" data-msg-color="danger" required="">
+                        <div class="invalid-feedback">
+                            Please provide video link.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set video status">Status</label>
+                        <select class="form-control mb-3" name="VideoStatus" id="VideoStatus" required="">
+                            <option value="">Select status</option>
+                            <option class="video-published" value="1">Published</option>
+                            <option class="video-pending" value="0">Pending</option>
+                        </select>
+                    </div>
+
+                    <!-- Hidden inputs -->
+                    <input type="hidden" class="form-control video-id" name="VideoID" id="VideoID">
+                    <input type="hidden" class="form-control" name="ReturnView" id="ReturnView" value="ContentManagement">
+                    <input type="hidden" class="form-control" name="ReturnViewID" id="ReturnViewID" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- END video modal -->
+<!--
+//  █████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗
+//  ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
+-->
+<!-- BEGIN add section modal -->
+<div class="modal fade" id="addPageSectionodal" tabindex="-1" role="dialog" aria-hidden="true">
+    <form asp-action="AddPageSection" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate enctype="multipart/form-data">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Add Page Section
+                    </h5>
+                    <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-3">
+                    <div class="mb-3">
+                        <label class="form-label edit-modal-label" for="SectionTitle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide section title">
+                            Section Title
+                        </label>
+                        <input type="text" class="form-control count-reach" name="SectionTitle" id="SectionTitle" placeholder="Section Title" maxlength="250" data-chars-max="250" data-msg-color="danger" required>
+                        <div class="invalid-feedback">
+                            Please provide section Title
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label edit-modal-label" for="SectionContent" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide section content">
+                            Section Content
+                        </label>
+                        <textarea class="form-control text-editor" name="SectionContent" id="SectionContent" rows="5" placeholder="Section Content" required></textarea>
+                        <div class="invalid-feedback">
+                            Please provide content.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set section order">Order</label>
+                        <select class="form-control mb-3" name="SectionOrder" id="SectionOrder">
+                            <option class="" value="" selected>Select order</option>
+                            @for (int i = 2; i <= 25; i++) //1 reserved for home sliders
+                            {
+                                <option value="@i">
+                                    @i
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <!-- Hidden inputs -->
+                    <input type="hidden" class="form-control" id="SectionType" name="SectionType" value="Content">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- END language modal -->
+<!--
+//  █████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗
+//  ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
+-->
+<!-- BEGIN add language modal -->
+<div class="modal fade edit-modal" id="addLanguageModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <form asp-action="AddLanguage" asp-controller="Admin" method="post" class="g-3 needs-validation edit-modal-action" novalidate>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Add New Language
+                    </h5>
+                    <button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body m-3">
+                    <div class="mb-1">
+                        <label class="form-label edit-modal-label" for="LanguageName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide language name">
+                            Select Language
+                        </label>
+                        <select class="form-control mb-3" name="LanguageName" id="LanguageName" required="">
+                            <option value="">Select language</option>
+                            @ConfigurationHelpers.GetLanguageOptions()
+                        </select>
+                        <div class="invalid-feedback">
+                            Language option is required
+                        </div>
+
+                        <!-- Hidden inputs -->
+                        <input type="hidden" class="form-control edit-modal-key" name="" id="">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success close-modal" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- END language modal -->
+<!--
+//  █████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗
+//  ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
+-->
+<!-- BEGIN logout modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="align-middle" data-feather="log-out"></i> Logout
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body m-3">
+                <h3 class="mb-0">Are you sure you want to logout?</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
+                <a asp-action="Index" asp-controller="Logout" class="btn btn-danger">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END logout modal -->

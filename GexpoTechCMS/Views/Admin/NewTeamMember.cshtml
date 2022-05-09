@@ -1,0 +1,137 @@
+﻿@model GexpoTechCMS.Models.AppModels.TeamModel
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "New Team Member";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = "Team";
+    ViewData["BreadCrumb-0-Text"] = "Team";
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Team";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>New Team Member</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Team Details</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="NewTeamMember" asp-controller="Admin" method="Post" class="g-3 needs-validation" novalidate enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide first name">
+                                First Name
+                            </label>
+                            <input type="text" class="form-control letters-only count-reach" asp-for="FirstName" maxlength="100" data-chars-max="100" data-msg-color="danger" placeholder="First Name" required="">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide last name">
+                                Last Name
+                            </label>
+                            <input type="text" class="form-control letters-only count-reach" asp-for="LastName" maxlength="100" data-chars-max="100" data-msg-color="danger" placeholder="Last Name" required="">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide title">
+                                Title
+                            </label>
+                            <input type="text" class="form-control count-reach" asp-for="Title" maxlength="150" data-chars-max="150" data-msg-color="danger" placeholder="Title" required="">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="mb-3">
+                                    <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide profile image">
+                                        Profile Image
+                                    </label>
+                                    <input type="file" class="form-control accept-imgs upload-file-select" name="ProfileImage" id="ProfileImage" required="">
+                                    <small class="form-text text-muted">Max size 5mb.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3 file-preview-div mt-1">
+                                <img src="https://via.placeholder.com/300x175?text=Preview" height="175" class="img-thumbnail img-fluid file-preview" alt="post image preview">
+                                <small>
+                                    <span class="text-danger text-left file-preview-name"></span>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide prodile details link.  Use '/' to start from domain name, or 'http://page-url.com' to link to an external page">
+                                Details Link
+                            </label>
+                            <input type="text" class="form-control count-reach" asp-for="Link" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Link">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set status">Status</label>
+                            <select class="form-control mb-3" asp-for="Status" required="">
+                                <option value="" selected>Select status</option>
+                                <option value="1">Published</option>
+                                <option value="0">Pending</option>
+                            </select>
+                        </div>
+                        <hr />
+                        <h3>
+                            Social Media
+                        </h3>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide profile Facebook link">
+                                Facebook
+                            </label>
+                            <input type="url" class="form-control count-reach" asp-for="Facebook" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Facebook Link">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label count-reach" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide profile Twitter link">
+                                Twitter
+                            </label>
+                            <input type="url" class="form-control count-reach" asp-for="Twitter" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Twitter Link">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label count-reach" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide profile Instagram link">
+                                Instagram
+                            </label>
+                            <input type="url" class="form-control count-reach" asp-for="Instagram" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Instagram Link">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide profile LinkedIn link">
+                                LinkedIn
+                            </label>
+                            <input type="url" class="form-control count-reach" asp-for="LinkedIn" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="LinkedIn Link">
+                        </div>
+                        <br />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="align-middle" data-feather="save"></i> Save
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

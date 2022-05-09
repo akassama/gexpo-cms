@@ -1,0 +1,107 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    string OrganizationName = SqlHelpers.GetTableData("ContentManagement", "ContentName", "OrganizationName", "ContentValue");
+    string OrganizationAddress = SqlHelpers.GetTableData("ContentManagement", "ContentName", "OrganizationAddress", "ContentValue");
+    string PhoneNumber = SqlHelpers.GetTableData("ContentManagement", "ContentName", "PhoneNumber", "ContentValue");
+    string OptionalPhoneNumber = SqlHelpers.GetTableData("ContentManagement", "ContentName", "OptionalPhoneNumber", "ContentValue");
+    string Email = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Email", "ContentValue");
+
+    string FacebookLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "FacebookLink", "ContentValue");
+    string TwitterLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "TwitterLink", "ContentValue");
+    string InstagramLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "InstagramLink", "ContentValue");
+    string YouTubeLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "YouTubeLink", "ContentValue");
+    string LinkedInLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "LinkedInLink", "ContentValue");
+}
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="mt-5">
+
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-3 col-md-6 footer-contact">
+                    <h3>@OrganizationName</h3>
+                    <p>
+                        <strong>Address:</strong> @OrganizationAddress
+                        <br>
+                        <strong>Phone:</strong> @PhoneNumber<br>
+                        <strong>Email:</strong> @Email<br>
+                    </p>
+                </div>
+
+                <div class="col-lg-2 col-md-6 footer-links">
+                    <h4>Footer Navigation</h4>
+                    <ul>
+                        @TempoTemplateHelpers.GetFooterNavagation(SessionLanguage)
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-links">
+                    <h4>Our Services</h4>
+                    <ul>
+                        @TempoTemplateHelpers.GetFooterServices(SessionLanguage)
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-6 footer-newsletter">
+                    <h4>Join Our Newsletter</h4>
+                    <p>
+                        Subscribe to our newsletter to stay up to date, delivered straight to your inbox.
+                    </p>
+                    <form asp-action="AddSubscriber" asp-controller="Home" method="post">
+                        <input type="email" name="Email" id="Email" required>
+                        <input type="submit" class="" value="Subscribe">
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container d-md-flex py-4">
+
+        <div class="me-md-auto text-center text-md-start">
+            <div class="copyright">
+                &copy; Copyright <strong><span>@OrganizationName</span></strong>. All Rights Reserved
+            </div>
+            <div class="credits">
+                Developed & Maintained by <a href="https://gexpotech.com/">GexpoTech</a>
+            </div>
+        </div>
+        <div class="social-links text-center text-md-right pt-3 pt-md-0">
+            @if (CMSHelpers.ContentDisplay("SocialMedia"))
+            {
+                if (!string.IsNullOrEmpty(TwitterLink))
+                {
+                    <a href="@TwitterLink" class="twitter"><i class="bx bxl-twitter"></i></a>
+                }
+                @if (!string.IsNullOrEmpty(FacebookLink))
+                {
+                    <a href="@FacebookLink" class="facebook"><i class="bx bxl-facebook"></i></a>
+                }
+                @if (!string.IsNullOrEmpty(InstagramLink))
+                {
+                    <a href="@InstagramLink" class="instagram"><i class="bx bxl-instagram"></i></a>
+                }
+                @if (!string.IsNullOrEmpty(YouTubeLink))
+                {
+                    <a href="@YouTubeLink" class="google-plus"><i class="bx bxl-youtube"></i></a>
+                }
+                @if (!string.IsNullOrEmpty(LinkedInLink))
+                {
+                    <a href="@LinkedInLink" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                }
+            }
+        </div>
+    </div>
+</footer>
+<!-- End Footer -->
+
+<!-- SEARCH MODAL PARTIAL -->
+<partial name="~/Views/Shared/TemplatesLayout/Common/_SearchModal.cshtml" />

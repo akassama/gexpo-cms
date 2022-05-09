@@ -1,0 +1,111 @@
+﻿@using NgoExpoApp.App_Code
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    string SessionKey = HttpContextAccessor.HttpContext.Session.GetString("_SessionKey");
+    string AccountID = SqlHelpers.GetTableData("Accounts", "SessionKey", SessionKey, "AccountID");
+    string FirstName = SqlHelpers.GetTableData("Accounts", "SessionKey", SessionKey, "FirstName");
+    string LastName = SqlHelpers.GetTableData("Accounts", "SessionKey", SessionKey, "LastName");
+    string FullName = FirstName + " " + LastName;
+    string ProfilePicture = ProfileHelpers.GetAccountProfilePicture(AccountID);
+}
+
+<nav class="navbar navbar-expand navbar-light navbar-bg">
+    <a class="sidebar-toggle d-flex">
+        <i class="hamburger align-self-center"></i>
+    </a>
+
+    <form class="d-none d-sm-inline-block">
+        <div class="input-group input-group-navbar">
+            <input type="text" class="form-control search-input-filter" placeholder="Search…" aria-label="Search">
+            <button class="btn" type="button">
+                <i class="align-middle" data-feather="search"></i>
+            </button>
+        </div>
+    </form>
+
+    <div class="navbar-collapse collapse">
+        <ul class="navbar-nav navbar-align">
+            <li class="nav-item dropdown">
+                @{
+                    int notification_total = ProfileHelpers.GetTotalNotifications(AccountID);
+                    string notification_label = (notification_total > 0) ? notification_total + " Notifications" : "No New Notifications";
+                    string notification_display = (notification_total > 0) ? "" : "d-none";
+                }
+                <a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-toggle="dropdown">
+                    <div class="position-relative">
+                        <i class="align-middle" data-feather="bell"></i>
+                        <span class="indicator @notification_display">@notification_total</span>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0" aria-labelledby="alertsDropdown">
+                    <div class="dropdown-menu-header">
+                        @notification_label
+                    </div>
+                    <div class="list-group">
+                        @ProfileHelpers.GetNotifications(AccountID)
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-icon dropdown-toggle" href="#" id="messagesDropdown" data-toggle="dropdown">
+                    <div class="position-relative">
+                        <i class="align-middle" data-feather="message-square"></i>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right py-0" aria-labelledby="messagesDropdown">
+                    <div class="dropdown-menu-header">
+                        <div class="position-relative">
+                            @{
+                                int unread_total = ProfileHelpers.GetTotalUnreadMessages(AccountID, 100);
+                                string unread_label = (unread_total > 0) ? "Unread Messages" : "No New Messages";
+                            } 
+                            @unread_label 
+                        </div>
+                    </div>
+                    <div class="list-group">
+                       @ProfileHelpers.GetUnreadMessages(AccountID, 100,  5)
+                    </div>
+                    <div class="dropdown-menu-footer">
+                        <a asp-action="Index" asp-controller="Admin" class="text-muted">Show all messages</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-toggle="dropdown">
+                    <i class="align-middle" data-feather="settings"></i>
+                </a>
+
+                <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
+                    <img src="@ProfilePicture" class="avatar img-fluid rounded mr-1" alt="@FullName" />
+                    <span class="text-dark">
+                        @FullName
+                    </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" asp-action="Profile" asp-controller="Admin">
+                        <i class="align-middle mr-1" data-feather="user"></i> Profile
+                    </a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="Admin">
+                        <i class="align-middle mr-1" data-feather="pie-chart"></i> Analytics
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" asp-action="Settings" asp-controller="Admin">
+                        <i class="align-middle mr-1" data-feather="settings"></i> Settings
+                    </a>
+                    <a class="dropdown-item" asp-action="Help" asp-controller="Admin">
+                        <i class="align-middle mr-1" data-feather="help-circle"></i> Help Center
+                    </a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="Home" target="_blank">
+                        <i class="align-middle mr-1" data-feather="eye"></i> Visit Site
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#logoutModal" data-toggle="modal" data-target="#logoutModal">
+                        <i class="align-middle" data-feather="log-out"></i> Log out
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>

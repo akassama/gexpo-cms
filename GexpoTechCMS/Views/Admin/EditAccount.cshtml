@@ -1,0 +1,195 @@
+﻿@model GexpoTechCMS.Models.AppModels.AccountModel
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Edit Account";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = "Administration";
+    ViewData["BreadCrumb-0-Text"] = "Administration";
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Administration";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Edit Account</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <form asp-controller="Admin" asp-action="EditAccount" method="post" class="g-3 needs-validation" enctype="multipart/form-data" novalidate>
+                <div class="card">
+                    <div class="card-header">
+
+                        <h5 class="card-title mb-0">Account info</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label" for="FirstName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your first name">
+                                            First Name
+                                        </label>
+                                        <input type="text" class="form-control letters-only count-reach" asp-for="FirstName" maxlength="50" data-chars-max="50" data-msg-color="danger" required="">
+                                        <div class="invalid-feedback">
+                                            Please write your first name.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label" for="LastName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your last name">Last Name</label>
+                                        <input type="text" class="form-control letters-only count-reach" asp-for="LastName" maxlength="50" data-chars-max="50" data-msg-color="danger" required="">
+                                        <div class="invalid-feedback">
+                                            Please write your last name.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label" for="Email" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your email">Email</label>
+                                        <input type="email" class="form-control count-reach" asp-for="Email" maxlength="100" data-chars-max="100" data-msg-color="danger" required="">
+                                        <div class="invalid-feedback">
+                                            Please write your email.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    @{
+                                        string FullName = Model.FirstName + " " + Model.LastName;
+                                    }
+                                    <img alt="@FullName" src="@ProfileHelpers.GetAccountProfilePicture(Model.AccountID)" class="rounded-circle img-responsive file-preview mt-2" width="128" height="128" />
+                                    <div class="mt-2" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Upload profile picture">
+                                        <span class="btn btn-primary upload-file-button"><i class="fas fa-upload"></i> Upload</span>
+                                    </div>
+                                    <small>
+                                        <span class="text-danger text-left file-preview-name"></span>
+                                    </small>
+                                    <br />
+                                    <small>For best results, use an image at least 128px by 128px in .jpg format</small>
+
+                                    <!-- hidden selected profile picture -->
+                                    <div class="form-group d-none">
+                                        <input type="file" class="form-control-file accept-jpgs upload-file-select" id="ProfileImage" name="ProfileImage">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+
+                        <h5 class="card-title mb-0">More info</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="mb-3 col-md-8">
+                                <label class="form-label" for="Address" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your address">Address</label>
+                                <textarea class="form-control count-reach" asp-for="Address" maxlength="150" data-chars-max="150" data-msg-color="danger" rows="1" required=""></textarea>
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                @{
+                                    string active = (Model.Active) ? "selected" : "";
+                                    string pending = (!Model.Active) ? "selected" : "";
+                                }
+                                <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set status">Status</label>
+                                <select class="form-control mb-3" asp-for="Active" required="">
+                                    <!option value="">Select status</!option>
+                                    <!option value="true" @active>Active</!option>
+                                    <!option value="false" @pending>Pending</!option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label" for="Gender" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your gender">Gender</label>
+                                <select class="form-select" id="Gender" name="Gender" aria-label="Select gender">
+                                    <option>Select your gender</option>
+                                    @if (ProfileHelpers.GetAccountData(Model.AccountID, "Gender") == "Male")
+                                    {
+                                        <option value="Male" selected>Male</option>
+                                        <option value="Female">Female</option>
+                                    }
+                                    @if (ProfileHelpers.GetAccountData(Model.AccountID, "Gender") == "Female")
+                                    {
+                                        <option value="Male">Male</option>
+                                        <option value="Female" selected>Female</option>
+                                    }
+                                    @if (string.IsNullOrEmpty(ProfileHelpers.GetAccountData(Model.AccountID, "Gender")))
+                                    {
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    }
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select your gender.
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label" for="Country" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your country">Country</label>
+                                @{
+                                    //set country is existing
+                                    var Country = Model.Country;
+                                    var CountryName = SqlHelpers.GetTableData("Country", "ID", Country, "Name");
+                                    var CountryNameOption = (!string.IsNullOrEmpty(CountryName)) ? "<option value='" + Country + "' class='' selected>" + CountryName + "</option>" : "<option value='' class=''>Select country</option>";
+                                }
+                                <select name="Country" id="Country" class="form-control" asp-items="@( new SelectList(@ViewBag.CountriesList,"ID","Name"))" required="">
+                                    @Html.Raw(CountryNameOption)
+                                </select>
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label" for="PhoneNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your phone number">Phone Number</label>
+                                <input type="text" class="form-control count-reach" asp-for="PhoneNumber" maxlength="100" data-chars-max="100" data-msg-color="danger" required="">
+                                <div class="invalid-feedback">
+                                    Please write your phone number.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label" for="FirstName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide a short description (optional)">
+                                Short Description
+                            </label>
+                            <textarea type="text" class="form-control letters-only count-reach" asp-for="Description" maxlength="500" data-chars-max="500" data-msg-color="danger"></textarea>
+                            <div class="invalid-feedback">
+                                Please write your short description.
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <input type="hidden" class="form-control" asp-for="ID" value="@Model.ID" />
+                            <input type="hidden" class="form-control" asp-for="AccountID" />
+                        </div>
+                        <br />
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

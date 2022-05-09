@@ -1,0 +1,162 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.TeamModel>
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Add Data Translation";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = ViewBag.ReturnView;
+    ViewData["BreadCrumb-0-Text"] = ViewBag.ReturnView;
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = ViewBag.ReturnView;
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Add Data Translation</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Translation Details</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddDataTranslation" asp-controller="Admin" class="g-3 needs-validation" novalidate enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label edit-modal-label" for="LanguageName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide language name">
+                                Select Language
+                            </label>
+                            <select class="form-control mb-3" name="Language" id="Language" required="">
+                                <option value="">Select language</option>
+                                @Helpers.GetSiteLanguageOptions("en")
+                            </select>
+                            <div class="invalid-feedback">
+                                Language option is required
+                            </div>
+                        </div>
+
+                        <div class="mb-3 @ViewBag.TitleDispalyClass">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide @ViewBag.TitleLabelName">
+                                @ViewBag.TitleLabelName
+                            </label>
+                            <input type="text" class="form-control" name="TranslationTitle" id="TranslationTitle" @ViewBag.TitleInputValidation>
+                            <div class="invalid-feedback">
+                                @ViewBag.TitleLabelName field is required
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 mb-1">
+                                    <a class="text-info" data-bs-toggle="collapse" href="#collapseTitleTranslations" role="button" aria-expanded="false" aria-controls="collapseTitleTranslations">
+                                        Available Languages <i class="align-middle" data-feather="chevron-down"></i>
+                                    </a>
+                                </div>
+                                <div class="col-12 mb-1 collapse hide" id="collapseTitleTranslations">
+                                    @Helpers.GetAvailableLanguages(ViewBag.DocumentID, ViewBag.DocumentKeyName, ViewBag.DocumentModel, "Title", ViewBag.ModelTitleName, ViewBag.ModelDescriptionName, ViewBag.ModelContentName)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 @ViewBag.DescriptionDispalyClass">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide @ViewBag.DescriptionLabelName ">
+                                @ViewBag.DescriptionLabelName
+                            </label>
+                            <textarea class="form-control" name="TranslationDescription" id="TranslationDescription" rows="2" @ViewBag.DescriptionInputValidation></textarea>
+                            <div class="invalid-feedback">
+                                @ViewBag.DescriptionLabelName field is required
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 mb-1">
+                                    <a class="text-info" data-bs-toggle="collapse" href="#collapseDescriptionTranslations" role="button" aria-expanded="false" aria-controls="collapseDescriptionTranslations">
+                                        Available Languages <i class="align-middle" data-feather="chevron-down"></i>
+                                    </a>
+                                </div>
+                                <div class="col-12 mb-1 collapse hide" id="collapseDescriptionTranslations">
+                                    @Helpers.GetAvailableLanguages(ViewBag.DocumentID, ViewBag.DocumentKeyName, ViewBag.DocumentModel, "Description", ViewBag.ModelTitleName, ViewBag.ModelDescriptionName, ViewBag.ModelContentName)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 @ViewBag.ContentDispalyClass">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide @ViewBag.ContentLabelName">
+                                @ViewBag.ContentLabelName
+                            </label>
+                            <textarea type="text" class="form-control @ViewBag.InputType" name="TranslationContent" id="TranslationContent" @ViewBag.ContentInputValidation></textarea>
+                            <div class="invalid-feedback">
+                                @ViewBag.ContentLabelName field is required
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 mb-1">
+                                    <a class="text-info" data-bs-toggle="collapse" href="#collapseContentTranslations" role="button" aria-expanded="false" aria-controls="collapseContentTranslations">
+                                        Available Languages <i class="align-middle" data-feather="chevron-down"></i>
+                                    </a>
+                                </div>
+                                <div class="col-12 mb-1 collapse hide" id="collapseContentTranslations">
+                                    @Helpers.GetAvailableLanguages(ViewBag.DocumentID, ViewBag.DocumentKeyName, ViewBag.DocumentModel, "Content", ViewBag.ModelTitleName, ViewBag.ModelDescriptionName, ViewBag.ModelContentName)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-1">
+                            <a class="text-dark text-decoration-none" data-bs-toggle="collapse" href="#collapseDetails" role="button" aria-expanded="false" aria-controls="collapseDetails">
+                                Other Document Details
+                            </a>
+                        </div>
+
+                        <div class="row collapse hide" id="collapseDetails">
+                            <div class="mb-3">
+                                <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide Document ID">
+                                    Document ID
+                                </label>
+                                <input type="text" class="form-control" name="DocumentID" id="DocumentID" value="@ViewBag.DocumentID" readonly>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide Document Model">
+                                    Document Model
+                                </label>
+                                <input type="text" class="form-control" name="DocumentModel" id="DocumentModel" value="@ViewBag.DocumentModel" readonly>
+                            </div>
+                        </div>
+
+                        <!-- Hidden inputs -->
+                        <input type="hidden" class="form-control" name="ReturnView" id="ReturnView" value="@ViewBag.ReturnView">
+
+                        <br />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="align-middle" data-feather="save"></i> Save Changes
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

@@ -1,0 +1,43 @@
+﻿
+@using NgoExpoApp.App_Code
+
+@{
+    Layout = null;
+    string active_theme = Helpers.GetActiveTheme();
+}
+
+@if (active_theme == "Default" || string.IsNullOrEmpty(active_theme))
+{
+    <!-- SEARCH LAYOUT -->
+    <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/_Search.cshtml" />
+}
+else if (active_theme == "Tempo")
+{
+    <!-- TEMPO SEARCH LAYOUT -->
+    <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/_Search.cshtml" />
+}
+else if (active_theme == "MyBiz")
+{
+    <!-- MYBIZ SEARCH LAYOUT -->
+    <partial name="~/Views/Shared/TemplatesLayout/MyBizTheme/_Search.cshtml" />
+}
+else if (active_theme == "Mamba")
+{
+    <!-- MAMBA SEARCH LAYOUT -->
+    <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/_Search.cshtml" />
+}
+else if (active_theme == "Hidayah")
+{
+    <!-- HIDAYAH SEARCH LAYOUT -->
+    <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/_Search.cshtml" />
+}
+else if (active_theme == "Shuffle")
+{
+    <!-- SHUFFLE SEARCH LAYOUT -->
+    <partial name="~/Views/Shared/TemplatesLayout/ShuffleTheme/_Search.cshtml" />
+}
+else if (active_theme == "Groovin")
+{
+    <!-- GROOVIN SEARCH LAYOUT -->
+    <partial name="~/Views/Shared/TemplatesLayout/GroovinTheme/_Search.cshtml" />
+}

@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+
+@{
+    string ShowShareThis = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "ShowShareThis", "ConfigurationValue");
+    string ShareThisUrl = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "ShareThisUrl", "ConfigurationValue");
+
+    string EnableJavaScripts = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "EnableJavaScripts", "ConfigurationValue");
+    string HeaderJavaScripts = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "HeaderJavaScripts", "ConfigurationValue");
+}
+
+<!-- Flag Icon CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet" media="all">
+
+@if (!string.IsNullOrEmpty(ShareThisUrl) && Helpers.BooleanParse(ShowShareThis))
+{
+    <!-- share this src -->
+    <script type='text/javascript' src='@ShareThisUrl' async='async'></script>
+}
+
+
+@if (Helpers.BooleanParse(EnableJavaScripts) && !string.IsNullOrEmpty(HeaderJavaScripts))
+{
+    <!-- JavaScript Scripts (Header) -->
+    <span>
+        @Html.Raw(HeaderJavaScripts)
+    </span>
+}
+
+<!-- ajax search call -->
+<script>
+    $(document).ready(function () {
+        //on typing
+        $(".search-query-input").keyup(function () {
+            var search_input = this.value;
+            //alert(search_input);
+            $.post("/Api/GetSearchResults", {
+                searchValue: search_input
+            }, function (data, status) {
+                $("#search-results-div").html(data);
+            });
+        });
+    });
+</script>
+
+<!-- GET SESSION IP-->
+<partial name="~/Views/Shared/_SetSessionIP.cshtml" />

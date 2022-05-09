@@ -1,0 +1,107 @@
+﻿@model GexpoTechCMS.Models.AppModels.LoginViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Sitemap";
+    ViewData["LoggedInPage"] = "false";
+
+    string OrganizationName = SqlHelpers.GetTableData("ContentManagement", "ContentName", "OrganizationName", "ContentValue");
+}
+
+<div class="container-fluid p-0">
+
+    <h1 class="h3 mb-3 text-center">@OrganizationName Sitemap</h1>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                
+                <div class="row p-2">
+                    <div class="col-md-4 text-left mb-3">
+                        <h3>
+                            Site Links
+                        </h3>
+                        <h5>
+                            <a asp-action="Index" asp-controller="Home">
+                                Home
+                            </a>
+                        </h5>
+                    </div>
+                    <div class="col-md-4 text-left mb-3">
+                        <h3>
+                            Posts
+                        </h3>
+                        @foreach (var post in ViewBag.Posts)
+                        {
+                            <h5>
+                                <a asp-action="@post.Slug" asp-controller="Posts">
+                                    @post.Title
+                                </a>
+                            </h5>
+                        }
+                    </div>
+                    <div class="col-md-4 text-left mb-3">
+                        <h3>
+                            Navigations
+                        </h3>
+                        @foreach (var navigation in ViewBag.Navigations)
+                        {
+                            <h5>
+                                <a href="/@navigation.NavigationLink">
+                                    @navigation.NavigationName
+                                </a>
+                            </h5>
+                        }
+                    </div>
+                    <div class="col-md-4 text-left mb-3">
+                        <h3>
+                            Categories
+                        </h3>
+                        @foreach (var category in ViewBag.Categories)
+                        {
+                            <h5>
+                                <a asp-action="@category.ShortCategoryName" asp-controller="Category">
+                                    @category.CategoryName
+                                </a>
+                            </h5>
+                        }
+                    </div>
+                    <div class="col-md-4 text-left mb-3">
+                        <h3>
+                            Teams
+                        </h3>
+                        @foreach (var team in ViewBag.Teams)
+                        {
+                            <h5>
+                                <a href="/#team">
+                                    @team.FirstName @team.LastName
+                                </a>
+                            </h5>
+                        }
+                    </div>
+                    <div class="col-md-4 text-left mb-3">
+                        <h3>
+                            Tags
+                        </h3>
+                        @if (!string.IsNullOrEmpty(ViewBag.PopularTags))
+                        {
+                            string[] PopularTagsList = ViewBag.PopularTags.Split(",");
+
+                            foreach (string tag in PopularTagsList)
+                            {
+                                <h5>
+                                    <a asp-action="@tag" asp-controller="Tags">
+                                        @tag
+                                    </a>
+                                </h5>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

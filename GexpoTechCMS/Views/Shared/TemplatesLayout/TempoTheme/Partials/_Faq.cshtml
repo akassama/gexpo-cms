@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    string FAQHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "FAQ", "ContentID");
+    string FAQHeader = SqlHelpers.GetTableData("ContentManagement", "ContentName", "FAQ", "ContentValue");
+}
+
+@if (CMSHelpers.ContentDisplay("FAQ"))
+{
+    <!-- ======= F.A.Q Section ======= -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <div class="section-title">
+                <h2>F.A.Q</h2>
+                <h3> @Helpers.GetTranslatableData(FAQHeader, SessionLanguage, FAQHeaderID, "ContentManagement", "Description")</h3>
+            </div>
+
+            <ul class="faq-list">
+                @TempoTemplateHelpers.GetHomeFAQ(SessionLanguage)
+            </ul>
+        </div>
+    </section>
+    <!-- End F.A.Q Section -->
+}

@@ -1,0 +1,28 @@
+﻿<!-- Search modal -->
+<div class="modal fade text-dark" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Search</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-5">
+                <form asp-action="Index" asp-controller="Search" method="get" id="searchInput">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="search-addon-icon">
+                                <i class="bi bi-search"></i>
+                            </span>
+                        </div>
+                        <input type="text" class="form-control search-query-input" id="q" name="q" placeholder="What would you like to search for?"
+                               pattern=".{2,}" title="please type 2 or more characters" required>
+                    </div>
+                </form>
+                <br />
+                <ul class="list-group" id="search-results-div">
+                    <!-- search results list populated here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

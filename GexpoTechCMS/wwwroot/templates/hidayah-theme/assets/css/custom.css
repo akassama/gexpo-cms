@@ -1,0 +1,33 @@
+/* Override header style */
+#header {
+	padding: 8px 0 !important;
+}
+
+#header .logo img {
+	max-height: 150px !important;
+}
+
+/* Donor page */
+.donor-image {
+	height: 45em;
+}
+
+.donor-iframe {
+	min-height: 60em;
+}
+
+/* Override back to top bottom space (accomodate chat) */
+.back-to-top {
+	bottom: 90px !important;
+}
+
+/* Fixed Feed Height */
+.fixed-feed-content {
+	width: 100%;
+	max-height: 40em;
+	overflow: auto;
+}
+
+.stat-icon {
+    font-size: 4em;
+}

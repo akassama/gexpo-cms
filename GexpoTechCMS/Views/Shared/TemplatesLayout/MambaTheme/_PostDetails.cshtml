@@ -1,0 +1,50 @@
+﻿@model GexpoTechCMS.Models.AppModels.PostModel
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = Model.Title;
+    ViewData["PropertyImage"] = Helpers.BaseUrl(Helpers.GetPostImage(Model.PostID, "Post"));
+    string active_theme = Helpers.GetActiveTheme();
+
+    //inner page navigation
+    ViewBag.InnNav = "header-inner-pages";
+}
+
+
+@if (active_theme == "Mamba")
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- CHECK TO SHOW FB COMMENTS -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_ShowFBCheck.cshtml" />
+
+        <!-- TOP BAR PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_TopBar.cshtml" />
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_Navigation.cshtml" />
+
+        <!-- POST DETAILS MAIN -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_PostDetailsMain.cshtml" />
+
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_Footer.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+</html>
+}

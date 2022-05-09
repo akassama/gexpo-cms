@@ -1,0 +1,103 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.FAQModel>
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Faq";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = null;
+    ViewData["BreadCrumb-0-Text"] = null;
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Faq";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>FAQ</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">@Helpers.FormatAlert(Model.Count()) FAQ(s)</h5>
+                    <a asp-action="NewFaq" asp-controller="Admin" class="btn btn-outline-primary float-right">
+                        <i class="align-middle" data-feather="plus"></i>
+                        Add FAQ
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <table class="table dataTable">
+                            <thead>
+                                <tr>
+                                    <th>Question</th>
+                                    <th>Answer</th>
+                                    <th class="d-none d-md-table-cell">Created At</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Helpers.FormatLongText(item.Question, 150)
+                                        </td>
+                                        <td>
+                                            @Helpers.FormatLongText(item.Answer, 250)
+                                        </td>
+                                        <td class="d-none d-md-table-cell">
+                                            @Helpers.FormatDate(item.CreatedAt.ToString())
+                                        </td>
+                                        <td>
+                                            @Helpers.FormatStatus(item.Status.ToString())
+                                        </td>
+                                        <td class="table-action">
+                                            <a asp-action="EditFaq" asp-controller="Admin" asp-route-id="@item.FaqID" class="text-primary text-decoration-none">
+                                                <i class="align-middle" data-feather="edit-2"></i>
+                                            </a>
+                                            <a class="text-decoration-none text-danger delete-record" data-title="Delete FAQ" data-label="Faq"
+                                               data-key="@item.FaqID" data-action="/Admin/DeleteRecord" data-model="FAQ" data-view="Faq" data-route-id="">
+                                                <i class="align-middle" data-feather="trash"></i>
+                                            </a>
+                                            <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@item.FaqID" asp-route-key-name="FaqID" asp-route-model="FAQ" asp-route-title="Question"
+                                               asp-route-desc="Answer" asp-route-cont="" asp-route-view="Faq" class="text-decoration-none text-info">
+                                                <i class="align-middle" data-feather="globe"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    //Home Video Data
+    string HomeVideoLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "HomeVideo", "ContentValue");
+    string HomeVideoTitle = SqlHelpers.GetTableData("ContentManagement", "ContentName", "HomeVideoTitle", "ContentValue");
+    string HomeVideoDescription = SqlHelpers.GetTableData("ContentManagement", "ContentName", "HomeVideoDescription", "ContentValue");
+    string HomeVideoID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "HomeVideoTitle", "ContentID");
+}
+
+@if (CMSHelpers.ContentDisplay("HomeVideo"))
+{
+    <!-- ======= Video Section ======= -->
+    <section id="video" class="about">
+        <div class="container">
+            <div class="row mt-5">
+                @if (string.IsNullOrEmpty(HomeVideoTitle) && string.IsNullOrEmpty(HomeVideoDescription))
+                {
+                    <div class="col-lg-12">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item w-100" style="min-height: 22em;" src="https://www.youtube.com/embed/@Helpers.GetYouTubeVideoID(HomeVideoLink)?rel=0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                }
+                else if (!string.IsNullOrEmpty(HomeVideoTitle) && string.IsNullOrEmpty(HomeVideoDescription))
+                {
+                    <div class="col-lg-6">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item w-100" style="min-height: 22em;" src="https://www.youtube.com/embed/@Helpers.GetYouTubeVideoID(HomeVideoLink)?rel=0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 pt-4 pt-lg-0 content">
+                        <h3>@HomeVideoTitle</h3>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-lg-6">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item w-100" style="min-height: 22em;" src="https://www.youtube.com/embed/@Helpers.GetYouTubeVideoID(HomeVideoLink)?rel=0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 pt-4 pt-lg-0 content">
+                        <h3>@HomeVideoTitle</h3>
+                        @Helpers.GetTranslatableData(HomeVideoDescription, SessionLanguage, HomeVideoID, "ContentManagement", "Description")
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+    <!-- End Home Video Section -->
+}

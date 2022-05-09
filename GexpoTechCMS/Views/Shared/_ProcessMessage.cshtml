@@ -1,0 +1,64 @@
+﻿<!-- If any exists all together -->
+@if(TempData["SuccessMessage"] != null || TempData["WarningMessage"] != null || TempData["ErrorMessage"] != null || TempData["InfoMessage"] != null)
+{
+<div class="col-md-12 w-100 text-center p-1">
+    @{
+        if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="alert-icon">
+                    <i class="far fa-fw fa-bell"></i>
+                </div>
+                <div class="alert-message">
+                    <strong>@Html.Raw(TempData["SuccessMessage"])</strong>
+                </div>
+            </div>
+        }
+        else if (TempData["WarningMessage"] != null)
+        {
+            <div class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="alert-icon">
+                    <i class="far fa-fw fa-bell"></i>
+                </div>
+                <div class="alert-message">
+                    <strong>@Html.Raw(TempData["WarningMessage"])</strong>
+                </div>
+            </div>
+        }
+        else if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="alert-icon">
+                    <i class="far fa-fw fa-bell"></i>
+                </div>
+                <div class="alert-message">
+                    <strong>@Html.Raw(TempData["ErrorMessage"])</strong>
+                </div>
+            </div>
+        }
+        else if (TempData["InfoMessage"] != null)
+        {
+            <div class="alert alert-primary alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="alert-icon">
+                    <i class="far fa-fw fa-bell"></i>
+                </div>
+                <div class="alert-message">
+                    <strong>@Html.Raw(TempData["InfoMessage"])</strong>
+                </div>
+            </div>
+        }
+    }
+</div>
+}

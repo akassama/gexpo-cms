@@ -1,0 +1,79 @@
+﻿@using NgoExpoApp.App_Code
+@{
+    int row_count = 0;
+}
+<div class="col-12 col-lg-8 col-xxl-9 d-flex">
+    <div class="card flex-fill">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Latest Posts</h5>
+        </div>
+        <div class="row p-2">
+            @if (ViewBag.TotalPosts > 0)
+            {
+                <table id="dataTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Author</th>
+                            <th class="d-none d-md-table-cell">Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var post in ViewBag.RecentPostsData)
+                        {
+                            row_count++;
+                            <tr>
+                                <td>
+                                    @row_count
+                                </td>
+                                <td>
+                                    <a asp-action="EditPost" asp-controller="Admin" asp-route-id="@post.PostID" class="text-decoration-none text-dark">
+                                        <img src="@Helpers.GetPostImage(post.PostID, "Post")" class="img-thumbnail" width="100" height="75" alt="@Helpers.FormatLongText(post.Title, 100)">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a asp-action="EditPost" asp-controller="Admin" asp-route-id="@post.PostID" class="text-decoration-none text-dark">
+                                        @Helpers.FormatLongText(post.Title, 100)
+                                    </a>
+                                </td>
+                                <td>
+                                    @PostsHelpers.FormatCategories(post.Categories)
+                                </td>
+                                <td>
+                                    @ProfileHelpers.GetAccountData(post.Author, "FullName")
+                                </td>
+                                <td class="d-none d-md-table-cell">
+                                    @Helpers.FormatDate(post.CreatedAt.ToString())
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Author</th>
+                            <th class="d-none d-md-table-cell">Created At</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-primary alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div class="alert-message">
+                        <strong>No posts available</strong>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

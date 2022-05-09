@@ -1,0 +1,42 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.PostModel>
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = ViewBag.CategoryName + " Category";
+    string active_theme = Helpers.GetActiveTheme();
+}
+
+@if (active_theme == "Default" || string.IsNullOrEmpty(active_theme))
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Navigation.cshtml" />
+
+        <!-- MAIN CATEGORY PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_CategoryMain.cshtml" />
+
+        <!-- BS4 POPPER JS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_BS4PopperJS.cshtml" />
+
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Footer.cshtml" />
+
+        <!-- PRELOADER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Preloader.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+</html>
+}

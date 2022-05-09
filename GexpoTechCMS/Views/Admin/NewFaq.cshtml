@@ -1,0 +1,86 @@
+﻿@model GexpoTechCMS.Models.AppModels.FAQModel
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "New Faq";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = "Faq";
+    ViewData["BreadCrumb-0-Text"] = "Faq";
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Faq";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>New FAQ</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">FAQ Details</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="NewFaq" asp-controller="Admin" method="Post" class="g-3 needs-validation" novalidate enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Write the question">
+                                Question
+                            </label>
+                            <textarea class="form-control count-reach" asp-for="Question" maxlength="500" data-chars-max="500" data-msg-color="danger" required=""></textarea>
+                            <div class="invalid-feedback">
+                                Please provide the question.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Write the answer">
+                                Answer
+                            </label>
+                            <textarea class="form-control count-reach" asp-for="Answer" maxlength="1000" data-chars-max="1000" data-msg-color="danger" required=""></textarea>
+                            <div class="invalid-feedback">
+                                Please provide the answer.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set status">Status</label>
+                            <select class="form-control mb-3" asp-for="Status" required="">
+                                <option value="" selected>Select status</option>
+                                <option value="1">Published</option>
+                                <option value="0">Pending</option>
+                            </select>
+                        </div>
+                        <br />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="align-middle" data-feather="save"></i> Save
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

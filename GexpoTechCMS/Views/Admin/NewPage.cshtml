@@ -1,0 +1,167 @@
+﻿@model GexpoTechCMS.Models.AppModels.PageModel
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "New Page";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = "Pages";
+    ViewData["BreadCrumb-0-Text"] = "Pages";
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Pages";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>New Page</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <form asp-action="NewPage" asp-controller="Admin" class="g-3 needs-validation" novalidate enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-12 mb-2">
+                <button type="submit" class="btn btn-primary float-right">
+                    <i class="align-middle" data-feather="save"></i> Save
+                </button>
+            </div>
+            <div class="col-12 col-xl-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Page Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide post title">Title</label>
+                            <textarea class="form-control seo-title count-reach" asp-for="Title" maxlength="250" data-chars-max="250" data-msg-color="danger" rows="1" required=""></textarea>
+                            <div class="invalid-feedback">
+                                Please provide a title.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Short description for post">Description</label>
+                            <textarea class="form-control count-reach" asp-for="ShortDescription" maxlength="500" data-chars-max="500" data-msg-color="danger" placeholder="Short Description"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide post content">Page Content</label>
+                            <textarea class="form-control text-editor" asp-for="Content" required=""></textarea>
+                            <div class="invalid-feedback">
+                                Please provide page content.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Select gallery images for post">Gallery Images</label>
+                            <div name="GalleryImages" id="GalleryImages">
+                                <a class="text-primary toggle-gallery-images" data-bs-toggle="collapse" href="#collapseGalleryImages" role="button" aria-expanded="false" aria-controls="collapseGalleryImages">
+                                    <i class="align-middle" data-feather="plus"></i> Select Images
+                                </a>
+                            </div>
+                            <div class="collapse mt-3" id="collapseGalleryImages">
+                                <div class="row">
+                                    <div class="col-sm-3 imgUp">
+                                        <div class="imagePreview"></div>
+                                        <label class="btn btn-primary">
+                                            Upload<input type="file" name="ImageGallery" id="ImageGallery" class="uploadFile accept-imgs img" value="Upload Photo">
+                                        </label>
+                                    </div>
+                                    <!-- col-3 -->
+                                    <i class="fa fa-plus imgAdd"></i>
+                                </div>
+                                <!-- row -->
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit SEO info">Search Engine Optimize</label>
+                            <a class="float-right" data-bs-toggle="collapse" href="#collapseSEO" role="button" aria-expanded="false" aria-controls="collapseSEO">
+                                Edit SEO Meta
+                            </a>
+                            <div class="col-12 seo-display-div d-none">
+                                <hr />
+                                <h3 class="text-primary seo-display-title">
+                                </h3>
+                                <p class="text-success seo-display-link">
+                                </p>
+                                <p class="text-muted seo-display-date">
+                                </p>
+                                <hr />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="mb-3">
+                            <div class="collapse" id="collapseSEO">
+                                <div class="mb-3">
+                                    <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit SEO title">SEO Title</label>
+                                    <input type="text" class="form-control seo-title-data" asp-for="SEOTitle" placeholder="SEO Title">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit SEO description">SEO Description</label>
+                                    <input type="text" class="form-control seo-description-data" asp-for="SEODescription" placeholder="SEO Description">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit SEO keywords">SEO Keywords</label>
+                                    <input type="text" class="form-control seo-keywords-data" asp-for="SEOKeywords" placeholder="SEO Keywords">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Page Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide post image">Page Image</label>
+                            <input type="file" class="form-control accept-imgs upload-file-select" name="PageImage" id="PageImage">
+                            <small class="form-text text-muted">Max image size 5mb.</small>
+
+                            <div class="col-12 file-preview-div mt-1">
+                                <img src="https://via.placeholder.com/300x175?text=Preview" height="175" width="300" class="img-thumbnail img-fluid file-preview" alt="post image preview">
+                                <small>
+                                    <span class="text-danger text-left file-preview-name"></span>
+                                </small>
+                            </div>
+
+                            <div class="mb-3 mt-1">
+                                <textarea class="form-control" asp-for="ImageCaption" rows="1" placeholder="Describe image caption here..."></textarea>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set status">Status</label>
+                            <select class="form-control mb-3" asp-for="Status" required="">
+                                <option value="" selected>Select status</option>
+                                <option value="1">Published</option>
+                                <option value="0">Pending</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

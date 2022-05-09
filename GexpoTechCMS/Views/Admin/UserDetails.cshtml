@@ -1,0 +1,136 @@
+﻿@model GexpoTechCMS.Models.AppModels.AccountModel
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Account Details";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = "Administration";
+    ViewData["BreadCrumb-0-Text"] = "Administration";
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Administration";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Account Details</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Account info</h5>
+                    <a asp-action="EditAccount" asp-controller="Admin" asp-route-id="@Model.AccountID" class="btn btn-outline-primary clear-category-form float-right">
+                        <i class="align-middle" data-feather="edit"></i>
+                        Edit
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label" for="FirstName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your first name">
+                                        First Name
+                                    </label>
+                                    <input type="text" class="form-control disabled" asp-for="FirstName" maxlength="50" data-chars-max="50" data-msg-color="danger" disabled>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label" for="LastName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your last name">Last Name</label>
+                                    <input type="text" class="form-control disabled" asp-for="LastName" maxlength="50" data-chars-max="50" data-msg-color="danger" disabled>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label" for="Email" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your email">Email</label>
+                                    <input type="email" class="form-control disabled" asp-for="Email" maxlength="100" data-chars-max="100" data-msg-color="danger" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                @{
+                                    string FullName = Model.FirstName + " " + Model.LastName;
+                                }
+                                <img alt="@FullName" src="@ProfileHelpers.GetAccountProfilePicture(Model.AccountID)" class="rounded-circle img-responsive file-preview mt-2" width="128" height="128" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+
+                    <h5 class="card-title mb-0">More info</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="mb-3 col-md-8">
+                            <label class="form-label" for="Address" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your address">Address</label>
+                            <textarea class="form-control disabled" asp-for="Address" maxlength="150" data-chars-max="150" data-msg-color="danger" rows="1" disabled></textarea>
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            @{
+                                string active_status = (Model.Active) ? "1" : "0";
+                                string active_status_text = (Model.Active) ? "Active" : "Pending";
+                            }
+                            <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set status">Status</label>
+                            <input type="text" class="form-control disabled" asp-for="Active" maxlength="50" data-chars-max="50" data-msg-color="danger" value="@active_status_text" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label" for="Gender" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your gender">Gender</label>
+                            <input type="text" class="form-control disabled" asp-for="Gender" maxlength="50" data-chars-max="50" data-msg-color="danger" disabled>
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label" for="Country" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your country">Country</label>
+                            @{
+                                //set country is existing
+                                var Country = Model.Country;
+                                var CountryName = SqlHelpers.GetTableData("Country", "ID", Country, "Name");
+                            }
+                            <input type="text" class="form-control disabled" asp-for="Gender" maxlength="50" data-chars-max="50" data-msg-color="danger" value="@CountryName" disabled>
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label" for="PhoneNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your phone number">Phone Number</label>
+                            <input type="text" class="form-control disabled" asp-for="PhoneNumber" maxlength="100" data-chars-max="100" data-msg-color="danger" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label" for="FirstName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide a short description (optional)">
+                            Short Description
+                        </label>
+                        <textarea type="text" class="form-control disabled" asp-for="Description" maxlength="500" data-chars-max="500" data-msg-color="danger" disabled></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

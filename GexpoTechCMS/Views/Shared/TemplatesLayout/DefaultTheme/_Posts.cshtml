@@ -1,0 +1,105 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.PostModel>
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Posts";
+    string active_theme = Helpers.GetActiveTheme();
+}
+
+@if (active_theme == "Default" || string.IsNullOrEmpty(active_theme))
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Navigation.cshtml" />
+
+        <main id="main">
+            <!-- ======= Recent Posts ======= -->
+            <section id="posts" class="services">
+                <div class="container" data-aos="fade-up">
+                    <!-- ======= Breadcrumbs ======= -->
+                    <section id="breadcrumbs" class="breadcrumbs">
+                        <div class="container">
+
+                            <ol>
+                                <li><a asp-action="Index" asp-controller="Home">Home</a></li>
+                                <li>Posts</li>
+                            </ol>
+
+                        </div>
+                    </section>
+                    <!-- End Breadcrumbs -->
+                    <br />
+
+                    <div class="section-title">
+                        <h2>Post</h2>
+                        <p>Our Recent Posts</p>
+                    </div>
+                    <div class="row">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card" style="min-height: 28rem;">
+                                    <a href="/Post/@item.Slug">
+                                        <img src="@Helpers.GetPostImage(item.PostID, "Post")" class="card-img-top" style="max-height: 15rem;" alt="@Helpers.FormatLongText(item.Title, 100)">
+                                    </a>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <a href="/Post/@item.Slug" class="text-dark text-decoration-none">
+                                                @Helpers.FormatLongText(item.Title, 100)
+                                            </a>
+                                        </h5>
+                                        <p class="card-text">
+                                            @Helpers.FormatLongText(item.ShortDescription, 125)
+                                        </p>
+                                        <a href="/Post/@item.Slug" class="btn btn-light">Readmore</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <paging total-records="ViewBag.TotalRecords"
+                                    page-no="ViewBag.PageNo"
+                                    page-size="ViewBag.PageSize"
+                                    show-prev-next="true"
+                                    show-first-last="true"
+                                    show-total-pages="false"
+                                    show-total-records="false"
+                                    show-page-size-nav="true"
+                                    show-gap="true">
+                            </paging>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- End Posts Section -->
+
+        </main>
+        <!-- End #main -->
+        <!-- BS4 POPPER JS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_BS4PopperJS.cshtml" />
+
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Footer.cshtml" />
+
+        <!-- PRELOADER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Preloader.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+</html>
+}

@@ -1,0 +1,180 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{ 
+    string SessionKey = HttpContextAccessor.HttpContext.Session.GetString("_SessionKey");
+    string AccountID = SqlHelpers.GetTableData("Accounts", "SessionKey", SessionKey, "AccountID");
+
+    bool AuthorPermission = ProfileHelpers.UserHasPermission(AccountID, "Author Permissions");
+    bool EditorPermission = ProfileHelpers.UserHasPermission(AccountID, "Editor Permissions");
+    bool AdminPermission = ProfileHelpers.UserHasPermission(AccountID, "Admin Permissions");
+
+    string active_theme = Helpers.GetActiveTheme();
+}
+
+<nav id="sidebar" class="sidebar">
+    <div class="sidebar-content js-simplebar">
+        <a class="sidebar-brand" asp-action="Index" asp-controller="Admin">
+            @{
+                string logo_format = SqlHelpers.GetTableData("ContentManagement", "ContentName", "LogoFormat", "ContentValue");
+                string logo_width = SqlHelpers.GetTableData("ContentManagement", "ContentName", "LogoWidth", "ContentValue");
+            }
+            @Helpers.GetSiteLogo(logo_format, Helpers.Int32Parse(logo_width))
+            <br />
+            <span class="align-middle">Admin Dashboard</span>
+        </a>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-header">
+                Menu
+            </li>
+
+
+            @if (AdminPermission || EditorPermission || AuthorPermission)
+            {
+                <li class="sidebar-item" id="Index">
+                    <a class="sidebar-link" asp-action="Index" asp-controller="Admin">
+                        <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item" id="Profile">
+                    <a class="sidebar-link" asp-action="Profile" asp-controller="Admin">
+                        <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item" id="Settings">
+                    <a class="sidebar-link" asp-action="Settings" asp-controller="Admin">
+                        <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a data-target="#blogs" data-toggle="collapse" class="sidebar-link blogs-tab">
+                        <i class="align-middle mr-2" data-feather="edit-3"></i> <span class="align-middle">Blogs</span>
+                    </a>
+                    <ul id="blogs" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                        <li class="sidebar-item" id="Posts">
+                            <a class="sidebar-link" asp-action="Posts" asp-controller="Admin">
+                                <i class="align-middle mr-2" data-feather="edit"></i> <span class="align-middle">Posts</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item" id="Categories">
+                            <a class="sidebar-link" asp-action="Categories" asp-controller="Admin">
+                                <i class="align-middle" data-feather="check-circle"></i> <span class="align-middle">Categories</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            }
+
+
+            @if (AdminPermission || EditorPermission)
+            {
+                <li class="sidebar-item" id="Navigation">
+                    <a class="sidebar-link" asp-action="Navigation" asp-controller="Admin">
+                        <i class="align-middle mr-2" data-feather="align-center"></i> <span class="align-middle">Navigation</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item" id="Pages">
+                    <a class="sidebar-link" asp-action="Pages" asp-controller="Admin">
+                        <i class="align-middle" data-feather="book"></i> <span class="align-middle">Pages</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item" id="LayoutContent">
+                    <a data-target="#layout-contents" data-toggle="collapse" class="sidebar-link layout-contents-tab">
+                        <i class="align-middle mr-2" data-feather="edit"></i> <span class="align-middle">Layout Content</span>
+                    </a>
+                    <ul id="layout-contents" class="sidebar-dropdown list-unstyled collapse" data-parent="#sidebar">
+                        <li class="sidebar-item" id="Services">
+                            <a class="sidebar-link" asp-action="Services" asp-controller="Admin">
+                                <i class="align-middle mr-2" data-feather="globe"></i> <span class="align-middle">Services</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item" id="Portfolio">
+                            <a class="sidebar-link" asp-action="Portfolio" asp-controller="Admin">
+                                <i class="align-middle mr-2" data-feather="copy"></i> <span class="align-middle">Portfolio</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item" id="Team">
+                            <a class="sidebar-link" asp-action="Team" asp-controller="Admin">
+                                <i class="align-middle mr-2" data-feather="users"></i> <span class="align-middle">Team</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item" id="Partners">
+                            <a class="sidebar-link" asp-action="Partners" asp-controller="Admin">
+                                <i class="align-middle mr-2" data-feather="crop"></i> <span class="align-middle">Partners</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item" id="Faq">
+                            <a class="sidebar-link" asp-action="Faq" asp-controller="Admin">
+                                <i class="align-middle mr-2" data-feather="help-circle"></i> <span class="align-middle">FAQ's</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item" id="Testimonials">
+                            <a class="sidebar-link" asp-action="Testimonials" asp-controller="Admin">
+                                <i class="align-middle mr-2" data-feather="message-circle"></i> <span class="align-middle">Testimonials</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item" id="FooterNavigation">
+                            <a class="sidebar-link" asp-action="FooterNavigation" asp-controller="Admin">
+                                <i class="align-middle mr-2" data-feather="align-center"></i> <span class="align-middle">Footer Navigation</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            }
+
+
+            @if (AdminPermission)
+            {
+                <li class="sidebar-item" id="Contact">
+                    <a class="sidebar-link" asp-action="Contact" asp-controller="Admin">
+                        <i class="align-middle mr-2" data-feather="message-square"></i> <span class="align-middle">Contact</span>
+                    </a>
+                </li>
+            }
+
+            @if (AdminPermission || EditorPermission)
+            {
+                <li class="sidebar-item" id="Appearance">
+                    <a class="sidebar-link" asp-action="Appearance" asp-controller="Admin">
+                        <i class="align-middle mr-2" data-feather="layout"></i> <span class="align-middle">Appearance</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item" id="ContentManagement">
+                    <a class="sidebar-link" asp-action="ContentManagement" asp-controller="Admin">
+                        <i class="align-middle mr-2" data-feather="menu"></i> <span class="align-middle">CMS</span>
+                    </a>
+                </li>
+            }
+
+
+            @if (AdminPermission)
+            {
+                <li class="sidebar-item" id="Administration">
+                    <a class="sidebar-link" asp-action="Administration" asp-controller="Admin">
+                        <i class="align-middle mr-2" data-feather="user-plus"></i> <span class="align-middle">Administration</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item" id="Configuration">
+                    <a class="sidebar-link" asp-action="Configuration" asp-controller="Admin">
+                        <i class="align-middle" data-feather="filter"></i> <span class="align-middle">Configuration</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</nav>

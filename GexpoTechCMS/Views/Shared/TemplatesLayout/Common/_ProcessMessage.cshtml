@@ -1,0 +1,45 @@
+﻿<script>
+    // Scroll to message div if existing 
+    $(document).ready(function () {
+        if ($(".alert-dismissible").length) {
+            $(document).scrollTop($(".alert-dismissible").offset().top -100);
+        }
+    });
+</script>
+
+<!-- If any exists all together -->
+@if (TempData["SuccessMessage"] != null || TempData["WarningMessage"] != null || TempData["ErrorMessage"] != null || TempData["InfoMessage"] != null)
+{
+<div class="col-md-12 w-100 text-center p-1">
+    @{
+        if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>@Html.Raw(TempData["SuccessMessage"])</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        else if (TempData["WarningMessage"] != null)
+        {
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>@Html.Raw(TempData["WarningMessage"])</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        else if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>@Html.Raw(TempData["ErrorMessage"])</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        else if (TempData["InfoMessage"] != null)
+        {
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                <strong>@Html.Raw(TempData["InfoMessage"])</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    }
+</div>
+}

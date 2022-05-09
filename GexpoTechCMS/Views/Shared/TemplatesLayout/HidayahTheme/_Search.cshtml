@@ -1,0 +1,43 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.SearchResultsModel>
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Search results for " + ViewBag.SearchQuery;
+    string active_theme = Helpers.GetActiveTheme();
+
+    //inner page navigation
+    ViewBag.InnNav = "header-inner-pages";
+}
+
+
+@if (active_theme == "Hidayah")
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_Navigation.cshtml" />
+
+        <!-- SEARCH DETAILS MAIN -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_SearchMain.cshtml" />
+
+        <!-- BS4 POPPER JS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_BS4PopperJS.cshtml" />
+
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_Footer.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+</html>
+}

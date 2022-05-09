@@ -1,0 +1,79 @@
+﻿<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="~/templates/mamba-theme/assets/vendor/aos/aos.js"></script>
+<script src="~/templates/mamba-theme/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/templates/mamba-theme/assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="~/templates/mamba-theme/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="~/templates/mamba-theme/assets/vendor/php-email-form/validate.js"></script>
+<script src="~/templates/mamba-theme/assets/vendor/purecounter/purecounter.js"></script>
+<script src="~/templates/mamba-theme/assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+<!-- Template Main JS File -->
+<script src="~/templates/mamba-theme/assets/js/main.js"></script>
+
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- owl carousel js -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script>
+<script>
+    (function () {
+        "use strict";
+
+        var carousels = function () {
+            $(".owl-carousel1").owlCarousel({
+                loop: true,
+                center: true,
+                margin: 0,
+                responsiveClass: true,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 1,
+                        nav: false
+                    },
+                    680: {
+                        items: 2,
+                        nav: false,
+                        loop: false
+                    },
+                    1000: {
+                        items: 3,
+                        nav: true
+                    }
+                }
+            });
+        };
+
+        (function ($) {
+            carousels();
+        })(jQuery);
+    })();
+</script>
+
+<!-- Owl Carousel Partners -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.owl-carousel').owlCarousel({
+            loop: false,
+            margin: 10,
+            nav: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 3
+                },
+                1000: {
+                    items: 5
+                }
+            }
+        })
+    });
+</script>
+
+<!-- SHARED FOOTER JAVASCRIPTS -->
+<partial name="~/Views/Shared/TemplatesLayout/Common/_FooterJavaScripts.cshtml" />

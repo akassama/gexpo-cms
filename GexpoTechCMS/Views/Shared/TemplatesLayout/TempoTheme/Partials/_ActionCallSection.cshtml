@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+
+    //Donate Header Data
+    string DonateHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Donate", "ContentID");
+    string DonateHeader = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Donate", "ContentValue");
+}
+
+@if (CMSHelpers.ContentDisplay("Donate") || CMSHelpers.ContentDisplay("CallToAction"))
+{
+    <script>
+    // A $( document ).ready() block.
+    $(document).ready(function() {
+        var cta_bg_images = Array("ct-bg-01.jpg", "ct-bg-02.jpg", "ct-bg-03.jpg", "ct-bg-04.jpg", "ct-bg-05.jpg", "ct-bg-06.jpg", "ct-bg-07.jpg", "ct-bg-08.jpg", "ct-bg-09.jpg", "ct-bg-10.jpg");
+
+        var cta_bg_image = getBaseUrl() + "/templates/tempo-theme/assets/img/site/cta/"+ cta_bg_images[Math.floor(Math.random() * cta_bg_images.length)];
+
+        cta_bg_image = removeHome(cta_bg_image);
+
+        $('#cta').css("background-image", "url('"+cta_bg_image+"')");
+    });
+    </script>
+
+    <!-- ======= Cta Section ======= -->
+    <section id="cta" class="cta">
+        <div class="container">
+
+            <div class="text-center">
+                <h3>Get In Touch With Us</h3>
+                <a class="cta-btn" href="#contact">Contact</a>
+            </div>
+
+        </div>
+    </section>
+    <!-- End Cta Section -->
+}

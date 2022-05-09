@@ -1,0 +1,103 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.FooterNavigationModel>
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Footer Navigation";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = null;
+    ViewData["BreadCrumb-0-Text"] = null;
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "FooterNavigation";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Footer Navigation</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">@Helpers.FormatAlert(Model.Count()) Nav Item(s)</h5>
+                    <a asp-action="NewFooterNavigation" asp-controller="Admin" class="btn btn-outline-primary float-right">
+                        <i class="align-middle" data-feather="plus"></i>
+                        Add Footer Navigation
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <table class="table dataTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Link</th>
+                                    <th class="d-none d-md-table-cell">Created At</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                           @Html.DisplayFor(modelItem => item.NavigationName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.NavigationLink)
+                                        </td>
+                                        <td class="d-none d-md-table-cell">
+                                            @Helpers.FormatDate(item.CreatedAt.ToString())
+                                        </td>
+                                        <td>
+                                            @Helpers.FormatStatus(item.Status.ToString())
+                                        </td>
+                                        <td class="table-action">
+                                            <a class="text-decoration-none text-primary" asp-action="EditFooterNavigation" asp-controller="Admin" asp-route-id="@item.NavigationID">
+                                                <i class="align-middle" data-feather="edit-2"></i>
+                                            </a>
+                                            <a class="text-decoration-none text-danger delete-record" data-title="Delete Navigation" data-label="Footer Navigation"
+                                               data-key="@item.NavigationID" data-action="/Admin/DeleteRecord" data-model="FooterNavigation" data-view="FooterNavigation" data-route-id="">
+                                                <i class="align-middle" data-feather="trash"></i>
+                                            </a>
+                                            <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@item.NavigationID" asp-route-key-name="NavigationID" asp-route-model="FooterNavigation" asp-route-title="NavigationName"
+                                               asp-route-desc="" asp-route-cont="" asp-route-view="Navigation" class="text-decoration-none text-info">
+                                                <i class="align-middle" data-feather="globe"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

@@ -1,0 +1,167 @@
+﻿@model GexpoTechCMS.Models.AppModels.PageModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = Model.Title;
+    ViewData["PropertyImage"] = Helpers.BaseUrl(Helpers.GetPostImage(Model.PageID, "Page"));
+    string active_theme = Helpers.GetActiveTheme();
+
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    string PageTitle = (SessionLanguage == "en") ? Model.Title : Helpers.GetTranslatableData(Model.Title, SessionLanguage, Model.PageID, "Pages", "Title");
+    string PageContent = (SessionLanguage == "en") ? Model.Content : Helpers.GetTranslatableData(Model.Content, SessionLanguage, Model.PageID, "Pages", "Content");
+
+}
+
+<main id="main">
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/TemplatesLayout/Common/_ProcessMessage.cshtml" />
+
+
+    <!-- ======= Blog Section ======= -->
+    <section id="blog" class="blog mt-5">
+        <div class="container" data-aos="fade-up">
+            <div class="row @ViewBag.SpacerMargin"></div>
+            <div class="row">
+
+                <div class="col-lg-8 entries">
+
+                    <article class="entry entry-single">
+
+                        <h2 class="entry-title mb-3">
+                            <a href="#">@PageTitle</a>
+                        </h2>
+                        <br />
+                        @if (!string.IsNullOrEmpty(Model.PageImage))
+                        {
+                            <div class="entry-img mb-1">
+                                <img src="@Helpers.GetPostImage(Model.PageID, "Page")" alt="" class="img-fluid w-100">
+                                @if (!string.IsNullOrEmpty(Model.ImageCaption))
+                                {
+                                    <div class="bg-dark" style="background: #212121">
+                                        <p class="text-white p-1">
+                                            <small>
+                                                @Model.ImageCaption
+                                            </small>
+                                        </p>
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                        <div class="entry-content">
+                            @Html.Raw(PageContent)
+                        </div>
+                        <div class="row mt-1 mb-2">
+                            @if (Helpers.DocumentHasGallery(Model.PageID))
+                            {
+                                <div class="col-lg-12 portfolio-details">
+                                    <div class="portfolio-details-slider swiper-container">
+                                        <div class="swiper-wrapper align-items-center">
+
+                                            @TempoTemplateHelpers.GetPageGalleryImages(Model.PageID)
+
+                                        </div>
+                                        <div class="swiper-pagination"></div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                    </article>
+                    <!-- End blog entry -->
+
+
+                    <div class="row">
+                        <div class="w-100">
+                            <!-- GETSHOW FB COMMENTS FORM -->
+                            <partial name="~/Views/Shared/TemplatesLayout/Common/_FBCommentForm.cshtml" />
+                        </div>
+                    </div>
+                </div>
+                <!-- End blog entries list -->
+
+                <div class="col-lg-4">
+
+                    <div class="sidebar">
+                        <h3 class="sidebar-title">Search</h3>
+                        <div class="sidebar-item search-form">
+                            <form asp-action="Index" asp-controller="Search" method="get" id="searchInput">
+                                <input type="text" id="q" name="q" placeholder="What would you like to search for?" pattern=".{2,}" title="please type 2 or more characters" required>
+                                <button type="submit"><i class="bi bi-search"></i></button>
+                            </form>
+                        </div><!-- End sidebar search formn-->
+
+                        <h3 class="sidebar-title">Categories</h3>
+                        <div class="sidebar-item categories">
+                            <ul>
+                                @{
+                                    if (!string.IsNullOrEmpty(ViewBag.PopularCategories))
+                                    {
+
+                                        string[] PopularCategoriesList = ViewBag.PopularCategories.Split(",");
+
+                                        // Loop over categories list.
+                                        foreach (string category in PopularCategoriesList)
+                                        {
+                                            <li><a asp-action="@category" asp-controller="Category">@category <span>(@PostsHelpers.GetCategoryCount(category))</span></a></li>
+                                        }
+                                    }
+                                }
+                            </ul>
+                        </div><!-- End sidebar categories-->
+
+
+                        <div class="sidebar-item recent-posts">
+
+                            @if (ViewBag.PopularPostsCount > 0)
+                            {
+                                <h3 class="sidebar-title">Popular Posts</h3>
+                                <div class="row">
+                                    @foreach (var post in ViewBag.PopularPostsData)
+                                    {
+                                        string PostTitle = PostsHelpers.GetPostData(post.DocumentID, "Title");
+                                        string Slug = PostsHelpers.GetPostData(post.DocumentID, "Slug");
+                                        string CreatedAt = PostsHelpers.GetPostData(post.DocumentID, "CreatedAt");
+                                        <div class="post-item clearfix">
+                                            <img src="@Helpers.GetPostImage(post.DocumentID, "Post")" alt="@Helpers.FormatLongText(PostTitle, 100)">
+                                            <h4><a href="/Post/@Slug">@Helpers.FormatLongText(PostTitle, 100)</a></h4>
+                                            <time datetime="@CreatedAt"> @Helpers.FormatDate(CreatedAt)</time>
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+                        </div>
+                        <!-- End sidebar recent posts-->
+
+                        <h3 class="sidebar-title">Tags</h3>
+                        <div class="sidebar-item tags">
+                            <ul>
+                                @{
+                                    if (!string.IsNullOrEmpty(ViewBag.PopularTags))
+                                    {
+                                        string[] PopularTagsList = ViewBag.PopularTags.Split(",");
+
+                                        // Loop over categories list.
+                                        foreach (string tag in PopularTagsList)
+                                        {
+                                            <li><a asp-action="@tag.Replace(" ","")" asp-controller="Tags">@tag</a></li>
+                                        }
+                                    }
+                                }
+                            </ul>
+                        </div><!-- End sidebar tags-->
+
+                    </div><!-- End sidebar -->
+
+                </div><!-- End blog sidebar -->
+
+            </div>
+
+        </div>
+    </section><!-- End Blog Section -->
+
+</main>

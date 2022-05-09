@@ -1,0 +1,143 @@
+﻿@using NgoExpoApp.App_Code
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="@ViewData["Description"]">
+    <meta name="author" content="@ViewData["Author"]">
+    <meta name="keywords" content="@ViewData["Keywords"]">
+
+    <title>@ViewData["Organization"] | @ViewData["Title"]</title>
+
+    <!-- jquery cdn -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- jquery unobtrusive -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+
+    <!-- jquery-ui cdn -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+
+    <!-- bootstrap js cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+    <link href="~/admin/css/app.css" rel="stylesheet">
+
+    <!-- summernote cdn -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-bs4.js"></script>
+
+    <!-- animate css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!-- custom css -->
+    <link href="~/admin/css/custom-style.css" rel="stylesheet">
+
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="~/templates/shared/fontawesome-web/css/all.css">
+
+    <!-- datatable css -->
+    <link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" rel="stylesheet">
+
+    <!-- codemirror -->
+    <link rel="stylesheet" href="codemirror/lib/codemirror.css">
+    <script src="~/admin/codemirror/lib/codemirror.js"></script>
+    <script src="~/admin/codemirror/mode/xml/xml.js"></script>
+    <!-- codemirror addons -->
+    <script src="~/admin/codemirror/addon/edit/closetag.js"></script>
+    <script src="~/admin/codemirror/addon/edit/closebrackets.js"></script>
+    <script src="~/admin/codemirror/addon/edit/matchbrackets.js"></script>
+    <!-- codemirror theme -->
+    <link rel="stylesheet" href="~/admin/codemirror/theme/dracula.css">
+
+    <link rel="shortcut icon" href="~/images/@CMSHelpers.GetCmsData("Favicon", "default-favicon.jpg")" />
+
+    <!-- GET SESSION IP-->
+    <partial name="~/Views/Shared/_SetSessionIP.cshtml" />
+
+</head>
+
+<body>
+    <div class="wrapper">
+        @if (ViewBag.LoggedInPage == "true")
+        {
+            <!-- ACCOUNT LEFT SIDEBAR -->
+            <partial name="~/Views/Shared/AccountLayout/_LeftSidebar.cshtml" />
+        }
+
+
+        <div class="main">
+            @if (ViewBag.LoggedInPage == "true")
+            {
+                <!-- DASHBOARD NAVIGATION -->
+                <partial name="~/Views/Shared/AccountLayout/_DashboardNavigation.cshtml" />
+            }
+
+            <main class="content">
+                @RenderBody()
+            </main>
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row text-muted">
+                        <div class="col-6 text-left">
+                            <p class="mb-0">
+                                <a asp-controller="Home" asp-action="Index" class="text-muted">
+                                    <strong>@ViewData["Organization"]</strong>
+                                </a> &copy;
+                            </p>
+                        </div>
+                        <div class="col-6 text-right">
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <a class="text-muted" asp-controller="SiteInfo" asp-action="Support" target="_blank">Support</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="text-muted" asp-controller="SiteInfo" asp-action="HelpCenter" target="_blank">Help Center</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="text-muted" asp-controller="SiteInfo" asp-action="Privacy" target="_blank">Privacy</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="text-muted" asp-controller="SiteInfo" asp-action="Terms" target="_blank">Terms</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="~/admin/js/app.js"></script>
+
+    <!-- Datatables JS -->
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+
+    <!-- codemirror script -->
+    <script type="text/javascript">
+        function qsa(sel) {
+            return Array.apply(null, document.querySelectorAll(sel));
+        }
+        qsa(".codemirror-editor").forEach(function (editorEl) {
+            CodeMirror.fromTextArea(editorEl, {
+                lineNumbers: true,
+                styleActiveLine: true,
+                matchBrackets: true,
+                theme: 'dracula',
+            });
+        });
+    </script>
+    <!-- custom js -->
+    <script src="~/admin/js/custom-js.js"></script>
+
+</body>
+
+</html>

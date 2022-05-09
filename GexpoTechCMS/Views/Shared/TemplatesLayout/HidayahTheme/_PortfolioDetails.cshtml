@@ -1,0 +1,95 @@
+﻿@model GexpoTechCMS.Models.AppModels.PortfolioModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = Model.PortfolioTitle;
+    ViewData["PropertyImage"] = Helpers.BaseUrl(PortfolioHelpers.GetPreviewImage(Model.PortfolioID));
+    string active_theme = Helpers.GetActiveTheme();
+
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+
+    string PortfolioTitle = (SessionLanguage == "en") ? Model.PortfolioTitle : Helpers.GetTranslatableData(Model.PortfolioTitle, SessionLanguage, Model.PortfolioID, "Portfolio", "Title");
+    string PortfolioContent = (SessionLanguage == "en") ? Model.PortfolioContent : Helpers.GetTranslatableData(Model.PortfolioContent, SessionLanguage, Model.PortfolioID, "Portfolio", "Content");
+
+}
+
+@if (active_theme == "Hidayah")
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- CHECK TO SHOW FB COMMENTS -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_ShowFBCheck.cshtml" />
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_Navigation.cshtml" />
+
+
+        <main id="main">
+            <!-- Action messages partial -->
+            <partial name="~/Views/Shared/TemplatesLayout/Common/_ProcessMessage.cshtml" />
+
+            <!-- ======= Breadcrumbs ======= -->
+            <section id="breadcrumbs" class="breadcrumbs">
+                <div class="container">
+
+                    <ol>
+                        <li><a asp-action="Index" asp-controller="Home" class="theme-color">Home</a></li>
+                        <li><a href="/#portfolio" class="theme-color">Portfolio</a></li>
+                        <li>@Helpers.FormatLongText(PortfolioTitle, 100)</li>
+                    </ol>
+
+                </div>
+            </section>
+            <!-- End Breadcrumbs -->
+            <!-- ======= Portfolio Details Section ======= -->
+            <section id="portfolio-details" class="portfolio-details">
+                <div class="container">
+
+                    <div class="row gy-4">
+                        <div class="col-lg-8">
+                            <div class="portfolio-details-slider swiper-container">
+                                <div class="swiper-wrapper align-items-center">
+                                    <div class="swiper-slide">
+                                        <img src="@PortfolioHelpers.GetPreviewImage(Model.PortfolioID)" alt="Portfolio Image">
+                                    </div>
+                                    @PortfolioHelpers.GetPortfolioImages(Model.PortfolioID)
+                                </div>
+                                <div class="swiper-pagination"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="portfolio-description mt-lg-2">
+                                <h2>@PortfolioTitle</h2>
+                                @Html.Raw(PortfolioContent)
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+            <!-- End Portfolio Details Section -->
+
+        </main>
+        <!-- End #main -->
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_Footer.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+</html>
+}

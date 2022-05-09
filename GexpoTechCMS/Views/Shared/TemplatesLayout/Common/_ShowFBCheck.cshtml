@@ -1,0 +1,13 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+
+@if (ConfigurationHelpers.GetConfigurationStatus("ShowFacebookComments"))
+{
+    string FacebookCommentId = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "FacebookCommentId", "ConfigurationValue");
+
+    <!-- Facebook Comment Pluging -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v8.0&appId=@FacebookCommentId&autoLogAppEvents=1" nonce="Lu86cVkC"></script>
+}

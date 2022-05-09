@@ -1,0 +1,35 @@
+﻿<!-- For Pagination Tag Helper -->
+@*<script>
+    // A $( document ).ready() block.
+    $(document).ready(function () {
+        //removes b5 formating issue with pagination helper
+        $('.page-link span.sr-only').text("");
+    });
+</script>*@
+<style>
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        --webkit-clip-path: inset(50%);
+        clip-path: inset(50%);
+        border: 0;
+    }
+
+    .sr-only-focusable:active, .sr-only-focusable:focus {
+        position: static;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+        --webkit-clip-path: none;
+        clip-path: none;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

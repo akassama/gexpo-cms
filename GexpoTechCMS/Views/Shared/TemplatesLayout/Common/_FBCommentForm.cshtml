@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+
+@if (ConfigurationHelpers.GetConfigurationStatus("ShowFacebookComments"))
+{
+
+    string post_url = $"Post/{Model.Slug}";
+
+    <div class="col-sm-12">
+        <div class="card my-4 mt-5">
+            <h5 class="card-header">Comments</h5>
+            <div class="card-body">
+                <div class="fb-comments" data-href="@Helpers.BaseUrl(post_url)" data-numposts="10" data-mobile="true" data-width="">
+                </div>
+            </div>
+        </div>
+    </div>
+}

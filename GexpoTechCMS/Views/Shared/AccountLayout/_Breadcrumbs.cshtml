@@ -1,0 +1,26 @@
+﻿<div class="col-auto ml-auto text-right mt-n1">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent p-0 mt-1 mb-0">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Admin">Dashboard</a></li>
+            @if (ViewData["BreadCrumb-0"] != null && ViewData["BreadCrumb-0-Text"] != null)
+            {
+                <li class="breadcrumb-item">
+                    <a asp-action="@ViewData["BreadCrumb-0"].ToString()" asp-controller="Admin">
+                        @ViewData["BreadCrumb-0-Text"].ToString()
+                    </a>
+                </li>
+            }
+            @if (ViewData["BreadCrumb-1"] != null && ViewData["BreadCrumb-1-Text"] != null)
+            {
+                <li class="breadcrumb-item">
+                    <a asp-action="@ViewData["BreadCrumb-1"].ToString()" asp-controller="Admin">
+                        @ViewData["BreadCrumb-1-Text"].ToString()
+                    </a>
+                </li>
+            }
+            <li class="breadcrumb-item active" aria-current="page">
+                @ViewData["Title"]
+            </li>
+        </ol>
+    </nav>
+</div>

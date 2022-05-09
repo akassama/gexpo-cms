@@ -1,0 +1,194 @@
+/* Override header style */
+#header {
+	padding: 8px 0 !important;
+}
+
+
+/* Override back to top bottom space (accomodate chat) */
+.back-to-top {
+	bottom: 80px !important;
+}
+
+/* Fixed Feed Height */
+.fixed-feed-content {
+	width: 100%;
+	max-height: 40em;
+	overflow: auto;
+}
+
+/* Donor page */
+.donor-image {
+  height:45em;
+}
+
+.donor-iframe {
+	min-height: 60em;
+}
+
+.post-image{
+	height:25em;
+}
+
+.show-small{
+	display: none;
+}
+
+.hide-small{
+	display: block;	
+}
+
+.logo-border {
+	border: 2px solid #F5F5DC;
+}
+
+
+/* submit form */
+.contact .contact-form {
+	box-shadow: 0 0 30px rgba(214, 215, 216, 0.6);
+	padding: 30px;
+	background: #fff;
+}
+
+.contact .contact-form .error-message {
+	display: none;
+	color: #fff;
+	background: #ed3c0d;
+	text-align: left;
+	padding: 15px;
+	font-weight: 600;
+}
+
+.contact .contact-form .error-message br + br {
+	margin-top: 25px;
+}
+
+.contact .contact-form .sent-message {
+	display: none;
+	color: #fff;
+	background: #18d26e;
+	text-align: center;
+	padding: 15px;
+	font-weight: 600;
+}
+
+.contact .contact-form .loading {
+	display: none;
+	background: #fff;
+	text-align: center;
+	padding: 15px;
+}
+
+.contact .contact-form .loading:before {
+	content: "";
+	display: inline-block;
+	border-radius: 50%;
+	width: 24px;
+	height: 24px;
+	margin: 0 10px -6px 0;
+	border: 3px solid #18d26e;
+	border-top-color: #eee;
+	-webkit-animation: animate-loading 1s linear infinite;
+	animation: animate-loading 1s linear infinite;
+}
+
+.contact .contact-form input, .contact .contact-form textarea {
+	border-radius: 0;
+	box-shadow: none;
+	font-size: 14px;
+	border-radius: 4px;
+}
+
+.contact .contact-form input:focus, .contact .contact-form textarea:focus {
+	border-color: #ed502e;
+}
+
+.contact .contact-form input {
+	padding: 10px 15px;
+}
+
+.contact .contact-form textarea {
+	padding: 12px 15px;
+}
+
+.contact .contact-form button[type="submit"] {
+	background: #ed502e;
+	border: 0;
+	padding: 10px 30px;
+	border-radius: 4px;
+	color: #fff;
+	transition: 0.4s;
+}
+
+.contact .contact-form button[type="submit"]:hover {
+	background: #ef6445;
+}
+
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .donor-image {
+	  height:20em;
+	}
+
+	.post-image{
+		height:15em;
+	}
+
+	.show-small{
+		display: block;
+	}
+
+	.hide-small{
+		display: none;	
+	}
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .donor-image {
+	  height:20em;
+	}
+
+	.post-image{
+		height:25em;
+	}
+
+	.show-small{
+		display: block;
+	}
+
+	.hide-small{
+		display: none;	
+	}
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+} 
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+} 
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .donor-image {
+	  height:40em;
+	}
+
+	.post-image{
+		height:35em;
+	}
+
+	.show-small{
+		display: none;
+	}
+
+	.hide-small{
+		display: block;	
+	}
+
+}

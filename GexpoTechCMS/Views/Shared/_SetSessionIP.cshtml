@@ -1,0 +1,11 @@
+﻿<script>
+    $(document).ready(function () {
+        $.getJSON("https://api.ipify.org?format=json", function (data) {
+            //send visit log request
+            var ip_address = data.ip;
+            $.getJSON('/Home/SetSessionIP', { key: ip_address }, function (res) {
+
+            });
+        });
+    });
+</script>

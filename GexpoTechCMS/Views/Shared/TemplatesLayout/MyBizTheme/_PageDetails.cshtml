@@ -1,0 +1,46 @@
+﻿@model GexpoTechCMS.Models.AppModels.PageModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = Model.Title;
+    ViewData["PropertyImage"] = Helpers.BaseUrl(Helpers.GetPostImage(Model.PageID, "Page"));
+    string active_theme = Helpers.GetActiveTheme();
+}
+
+@if (active_theme == "MyBiz")
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MyBizTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- CHECK TO SHOW FB COMMENTS -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_ShowFBCheck.cshtml" />
+
+        <!-- TOP BAR PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MyBizTheme/Partials/_TopBar.cshtml" />
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MyBizTheme/Partials/_Navigation.cshtml" />
+
+        <!-- PAGE DETAILS MAIN -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_PageDetailsMain.cshtml" />
+
+        <!-- End #main -->
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MyBizTheme/Partials/_Footer.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MyBizTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+</html>
+}

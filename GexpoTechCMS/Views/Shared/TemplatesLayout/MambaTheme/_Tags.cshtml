@@ -1,0 +1,43 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.PostModel>
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = ViewBag.c + " Tag";
+    string active_theme = Helpers.GetActiveTheme();
+}
+
+
+@if (active_theme == "Mamba")
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- TOP BAR PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_TopBar.cshtml" />
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_Navigation.cshtml" />
+
+        <!-- TAGS MAIN -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_TagsMain.cshtml" />
+
+        <!-- BS4 POPPER JS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_BS4PopperJS.cshtml" />
+
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_Footer.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+</html>
+}

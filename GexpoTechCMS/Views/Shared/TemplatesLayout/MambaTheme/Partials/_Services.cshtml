@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    string ServicesHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Services", "ContentID");
+    string ServicesHeader = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Services", "ContentValue");
+}
+
+@if (CMSHelpers.ContentDisplay("Services"))
+{
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services">
+        <div class="container" data-aos="fade-up">
+
+            <div class="section-title">
+                <h2>@Helpers.GetTranslatableData(ServicesHeader, SessionLanguage, ServicesHeaderID, "ContentManagement", "Description")</h2>
+            </div>
+
+            <div class="row d-flex justify-content-center">
+                @MambaTemplateHelpers.GetServices(SessionLanguage)
+            </div>
+
+        </div>
+    </section>
+    <!-- End Services Section -->
+}

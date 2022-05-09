@@ -1,0 +1,77 @@
+/* Override header style */
+#header {
+    padding: 8px 0 !important;
+
+    min-height: 105px;
+}
+
+#header .logo img {
+    max-height: 150px;
+}
+
+/* Donor page */
+.donor-image {
+    height: 45em;
+}
+
+.donor-iframe {
+    min-height: 60em;
+}
+
+/* Override back to top bottom space (accomodate chat) */
+.back-to-top {
+    bottom: 90px !important;
+}
+
+/* Fixed Feed Height */
+.fixed-feed-content {
+    width: 100%;
+    max-height: 40em;
+    overflow: auto;
+}
+
+/* BS4 sr-only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.sr-only-focusable:active, .sr-only-focusable:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+}
+
+.box-min-h{
+	min-height: 15em;
+}
+
+.spacer {
+    padding: 3rem;
+    margin-bottom: 1rem;
+}
+
+
+/* Play Video Image */
+.video-thumbnail {
+    position: relative;
+    display: inline-block;
+}
+
+.play-btn {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8em;
+}

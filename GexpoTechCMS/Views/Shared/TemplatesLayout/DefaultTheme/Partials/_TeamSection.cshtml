@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    string TeamHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Team", "ContentID");
+    string TeamHeader = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Team", "ContentValue");
+}
+
+@if (CMSHelpers.ContentDisplay("Team"))
+{
+    <!-- ======= Team Section ======= -->
+    <section id="team" class="team section-bg">
+        <div class="container" data-aos="fade-up">
+
+            <div class="section-title">
+                <h2>Team</h2>
+                <p class="">
+                    @Helpers.GetTranslatableData(TeamHeader, SessionLanguage, TeamHeaderID, "ContentManagement", "Description")
+                </p>
+            </div>
+
+            <div class="row d-flex justify-content-center">
+                @TemplateHelpers.GetHomeTeam(SessionLanguage)
+            </div>
+
+        </div>
+    </section>
+    <!-- End Team Section -->
+}

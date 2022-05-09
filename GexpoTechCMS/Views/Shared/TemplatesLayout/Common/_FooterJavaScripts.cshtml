@@ -1,0 +1,28 @@
+﻿@using NgoExpoApp.App_Code
+
+@{
+    //Get config values
+    string EnableJavaScripts = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "EnableJavaScripts", "ConfigurationValue");
+    string ShowCookieConcent = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "ShowCookieConcent", "ConfigurationValue");
+    string CookieConcent = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "CookieConcent", "ConfigurationValue");
+
+    string FooterJavaScripts = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "FooterJavaScripts", "ConfigurationValue");
+}
+
+
+@if (Helpers.BooleanParse(ShowCookieConcent))
+{
+    <!-- Cookie Policy Scripts -->
+    <span>
+        @Html.Raw(CookieConcent)
+    </span>
+}
+
+
+@if (Helpers.BooleanParse(EnableJavaScripts) && !string.IsNullOrEmpty(FooterJavaScripts))
+{
+    <!-- JavaScript Scripts (Footer Option) -->
+    <span>
+        @Html.Raw(FooterJavaScripts)
+    </span>
+}

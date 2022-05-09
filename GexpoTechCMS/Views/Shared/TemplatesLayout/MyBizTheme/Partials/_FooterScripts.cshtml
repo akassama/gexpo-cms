@@ -1,0 +1,64 @@
+﻿
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="~/templates/mybiz-theme/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="~/templates/mybiz-theme/assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="~/templates/mybiz-theme/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="~/templates/mybiz-theme/assets/vendor/php-email-form/validate.js"></script>
+<script src="~/templates/mybiz-theme/assets/vendor/purecounter/purecounter.js"></script>
+<script src="~/templates/mybiz-theme/assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+<!-- Template Main JS File -->
+<script src="~/templates/mybiz-theme/assets/js/main.js"></script>
+
+<!-- Owl Carousel -->
+<script src="~/templates/default-theme/assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+
+<!-- Datatables JS -->
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js"></script> -->
+<!-- set Datatables -->
+<script>
+    $(document).ready(function () {
+        $('#dataTable').DataTable();
+    });
+</script>
+
+<!-- Sear div filter -->
+<script>
+    $(document).ready(function () {
+        $("#filterInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#listDiv div").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+<!-- Template Scripts -->
+<script>
+    $(document).ready(function () {
+        $('.owl-carousel').owlCarousel({
+            loop: false,
+            margin: 10,
+            nav: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 3
+                },
+                1000: {
+                    items: 5
+                }
+            }
+        })
+    });
+</script>
+
+
+<!-- SHARED FOOTER JAVASCRIPTS -->
+<partial name="~/Views/Shared/TemplatesLayout/Common/_FooterJavaScripts.cshtml" />

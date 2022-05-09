@@ -1,0 +1,50 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.DocumentResourcesModel>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    ViewData["Title"] = "Resources Page";
+    string active_theme = Helpers.GetActiveTheme();
+}
+
+@if (active_theme == "Mamba")
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_Navigation.cshtml" />
+
+        <main id="main">
+
+            <!-- Action messages partial -->
+            <partial name="~/Views/Shared/TemplatesLayout/Common/_ProcessMessage.cshtml" />
+
+            <!-- RESOURCES PARTIAL -->
+            <partial name="~/Views/Shared/TemplatesLayout/Common/_ResourceDocuments.cshtml" />
+
+        </main>
+        <!-- End #main -->
+        <!-- BS4 POPPER JS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_BS4PopperJS.cshtml" />
+
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_Footer.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+</html>
+}

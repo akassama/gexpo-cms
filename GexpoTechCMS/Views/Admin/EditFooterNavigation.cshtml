@@ -1,0 +1,98 @@
+﻿@model GexpoTechCMS.Models.AppModels.FooterNavigationModel
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Edit Footer Navigation";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = "FooterNavigation";
+    ViewData["BreadCrumb-0-Text"] = "Footer Navigation";
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "FooterNavigation";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Edit Footer Navigation</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Navigation Details</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditFooterNavigation" asp-controller="Admin" method="Post" class="g-3 needs-validation" novalidate enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide navigation name">
+                                Name
+                            </label>
+                            <input type="text" class="form-control navigation-name letters-only count-chars" maxlength="50" data-chars-max="50" data-msg-color="danger" asp-for="NavigationName" placeholder="Name" required="">
+                            <div class="invalid-feedback callback-input-validation-navigationname">
+                                Please provide navigation name.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide navigation link. Use '/' to start from domain name, '#' to link to page section id, or 'http://page-url.com' to link to an external page">
+                                Link
+                            </label>
+                            <input type="text" class="form-control navigation-link count-reach" asp-for="NavigationLink" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Link" required="">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set navigation status">Status</label>
+                            <select class="form-control mb-3" asp-for="Status" required="">
+                                <option value="">Select status</option>
+                                <option class="navigation-published" value="1">Published</option>
+                                <option class="navigation-pending" value="0">Pending</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set navigation order">Order</label>
+                            <select class="form-control mb-3" asp-for="Order">
+                                <option class="navigation-order" value="" selected>Select navigation order</option>
+                                <option value="@Model.Order" selected>@Model.Order</option>
+                                @for (int i = 1; i <= 25; i++)
+                                {
+                                    <option value="@i">
+                                        @i
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                        <input type="hidden" class="form-control" asp-for="ID" value="@Model.ID" />
+                        <input type="hidden" class="form-control" asp-for="NavigationID" />
+                        <br />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="align-middle" data-feather="save"></i> Save
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

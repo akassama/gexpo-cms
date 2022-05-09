@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    string PartnerHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Partners", "ContentID");
+    string PartnerHeader = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Partners", "ContentValue");
+}
+
+@if (CMSHelpers.ContentDisplay("Partners"))
+{
+    <!-- ======= Our Partners ======= -->
+    <section id="partners" class="inner-page">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title">
+                <h2>Partners</h2>
+                <p class="">
+                    @Helpers.GetTranslatableData(PartnerHeader, SessionLanguage, PartnerHeaderID, "ContentManagement", "Description")
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="owl-carousel owl-theme">
+                        @TemplateHelpers.GetPartners(SessionLanguage)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Our Partners -->
+}

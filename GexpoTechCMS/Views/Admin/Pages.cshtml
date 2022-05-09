@@ -1,0 +1,140 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.PageModel>
+@using NgoExpoApp.App_Code
+@{
+    ViewData["Title"] = "Pages";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = null;
+    ViewData["BreadCrumb-0-Text"] = null;
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Pages";
+
+    int row_count = 0;
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Pages</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">@Helpers.FormatAlert(Model.Count()) Pages</h5>
+                    <a asp-action="NewPage" asp-controller="Admin" class="btn btn-outline-primary float-right">
+                        <i class="align-middle" data-feather="plus"></i>
+                        Add Page
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <table class="table dataTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Image</th>
+                                    <th>Title</th>
+                                    <th>Link</th>
+                                    <th class="d-none d-md-table-cell">Created At</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    row_count++;
+                                    <tr>
+                                        <td>
+                                            @row_count
+                                        </td>
+                                        <td>
+                                            <a asp-action="EditPage" asp-controller="Admin" asp-route-id="@item.PageID" class="text-decoration-none text-dark">
+                                                <img src="@Helpers.GetPostImage(item.PageID, "Page")" class="img-thumbnail" width="150" height="100" alt="@Helpers.FormatLongText(item.Title, 100)">
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a asp-action="EditPage" asp-controller="Admin" asp-route-id="@item.PageID" class="text-decoration-none text-dark">
+                                                @Helpers.FormatLongText(item.Title, 100)
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <!-- Copy text field -->
+                                            <div class="input-group mb-3">
+                                                <input type="text" class="form-control" value="/Page/@item.Slug" id="copyInput-@row_count">
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-secondary" type="button" onclick="copyFunction(@row_count)" onmouseout="outFunc(@row_count)">
+                                                        <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="click to copy text" id="copyTooltip-@row_count">Copy</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="d-none d-md-table-cell">
+                                            @Helpers.FormatDate(item.CreatedAt.ToString())
+                                        </td>
+                                        <td>
+                                            @Helpers.FormatStatus(item.Status.ToString())
+                                        </td>
+                                        <td class="table-action">
+                                            <a asp-action="EditPage" asp-controller="Admin" asp-route-id="@item.PageID" class="text-decoration-none text-info">
+                                                <i class="align-middle" data-feather="edit-2"></i>
+                                            </a>
+                                            <a class="text-decoration-none text-danger delete-record" data-title="Delete Page" data-label="Page"
+                                               data-key="@item.PageID" data-action="/Admin/DeleteRecord" data-model="Pages" data-view="Pages" data-route-id="">
+                                                <i class="align-middle" data-feather="trash"></i>
+                                            </a>
+                                            <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@item.PageID" asp-route-key-name="PageID" asp-route-model="Pages" asp-route-title="Title"
+                                               asp-route-desc="ShortDescription" asp-route-cont="Content" asp-route-view="Pages" class="text-decoration-none text-info">
+                                                <i class="align-middle" data-feather="globe"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <paging total-records="ViewBag.TotalRecords"
+                    page-no="ViewBag.PageNo"
+                    page-size="ViewBag.PageSize"
+                    show-prev-next="true"
+                    show-first-last="true"
+                    show-total-pages="false"
+                    show-total-records="false"
+                    show-page-size-nav="true"
+                    show-gap="true">
+            </paging>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

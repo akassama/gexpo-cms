@@ -1,0 +1,126 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.DonationCampaignsModel>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Donate";
+    string active_theme = Helpers.GetActiveTheme();
+
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+}
+
+@if (active_theme == "Default" || string.IsNullOrEmpty(active_theme))
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Navigation.cshtml" />
+
+        <main id="main">
+            <!-- ======= Breadcrumbs ======= -->
+            <section id="breadcrumbs" class="breadcrumbs">
+                <div class="container">
+
+                    <ol>
+                        <li><a asp-action="Index" asp-controller="Home" class="theme-color">Home</a></li>
+                        <li>Donate</li>
+                    </ol>
+
+                </div>
+            </section>
+            <!-- End Breadcrumbs -->
+
+            <section class="inner-page">
+                <div class="container-fluid">
+                    @foreach (var item in Model)
+                    {
+                        string DonateTitle = (SessionLanguage == "en") ? item.CampaignTitle : Helpers.GetTranslatableData(item.CampaignTitle, SessionLanguage, item.DonationID, "DonationCampaigns", "Title");
+                        string DonateDescription = (SessionLanguage == "en") ? item.CampaignDescription : Helpers.GetTranslatableData(item.CampaignDescription, SessionLanguage, item.DonationID, "DonationCampaigns", "Description");
+                        string CampaignImage = (!string.IsNullOrEmpty(item.CampaignImage)) ? "/campaigns/images/" + item.CampaignImage : "/images/default-donation.jpg";
+                        string DonateImage = (!string.IsNullOrEmpty(item.CampaignImage)) ? "/campaigns/images/" + item.CampaignImage : "/images/default-donation-button.png";
+                        string DonateLink = (!string.IsNullOrEmpty(item.Link)) ? item.Link : "#";
+
+
+                        if (item.DonationType == "Bank")
+                        {
+                            <div class="row">
+                                <h1 class="text-lead text-center">@DonateTitle</h1>
+                                <div class="col-sm-12">
+                                    @DonateDescription
+                                </div>
+                            </div>
+                            <hr class="mt-5 mb-5" />
+                        }
+                        else if (item.DonationType == "Embed")
+                        {
+                            <div class="row">
+                                <div class="col-sm-12 col-md-7">
+                                    <iframe src="@item.Link" class="w-100 donor-iframe" title="@DonateTitle">
+                                    </iframe>
+                                </div>
+                                <div class="col-sm-12 col-md-5">
+                                    <img src="@CampaignImage" class="w-100 donor-image" alt="@DonateTitle">
+                                    <div class="portfolio-description mt-2">
+                                        <h2>@DonateTitle</h2>
+                                        @Html.Raw(DonateDescription)
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="mt-5 mb-5" />
+                        }
+                        else if (item.DonationType == "Url")
+                        {
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-8 offset-md-2">
+                                            <a href="@DonateLink" target="_blank" class="text-dark text-decoration-none">
+                                                <img src="@DonateImage" target="_blank" class="w-100 donor-image" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="portfolio-description mt-2">
+                                        <div class="portfolio-description mt-2">
+                                            <h2>
+                                                <a href="@DonateLink" target="_blank" class="text-dark text-decoration-none">
+                                                    @DonateTitle
+                                                </a>
+                                            </h2>
+                                            <a href="@DonateLink" target="_blank" class="text-dark text-decoration-none">
+                                                @Html.Raw(DonateDescription)
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="mt-5 mb-5" />
+                        }
+                    }
+                </div>
+            </section>
+
+
+        </main>
+        <!-- End #main -->
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Footer.cshtml" />
+
+        <!-- PRELOADER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_Preloader.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+</html>
+}

@@ -1,0 +1,101 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    string ContactUsHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "ContactUs", "ContentID");
+    string ContactUsHeader = SqlHelpers.GetTableData("ContentManagement", "ContentName", "ContactUs", "ContentValue");
+}
+
+
+@if (CMSHelpers.ContentDisplay("ContactUs"))
+{
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact section-bg">
+        <div class="container" data-aos="fade-up">
+
+            <div class="section-title">
+                <h2>Contact</h2>
+                <p class="">
+                    @Helpers.GetTranslatableData(ContactUsHeader, SessionLanguage, ContactUsHeaderID, "ContentManagement", "Description")
+                </p>
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-6">
+                    @{
+                        string OrganizationAddress = SqlHelpers.GetTableData("ContentManagement", "ContentName", "OrganizationAddress", "ContentValue");
+                        string PhoneNumber = SqlHelpers.GetTableData("ContentManagement", "ContentName", "PhoneNumber", "ContentValue");
+                        string OptionalPhoneNumber = SqlHelpers.GetTableData("ContentManagement", "ContentName", "OptionalPhoneNumber", "ContentValue");
+                        string Email = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Email", "ContentValue");
+                    }
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="info-box">
+                                <i class="bx bx-map"></i>
+                                <h3>Our Address</h3>
+                                <p>@OrganizationAddress</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-box mt-4">
+                                <i class="bx bx-envelope"></i>
+                                <h3>Email Us</h3>
+                                <p>@Email</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-box mt-4">
+                                <i class="bx bx-phone-call"></i>
+                                <h3>Call Us</h3>
+                                <p>@PhoneNumber</p>
+                                <p>@OptionalPhoneNumber</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-6">
+                    <form asp-action="SendContact" asp-controller="Home" method="post" class="contact-form g-3">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <input type="text" name="Name" class="form-control" id="Name" placeholder="Your Name" required>
+                                <div class="invalid-feedback">
+                                    Please provide a name.
+                                </div>
+                            </div>
+                            <div class="col-md-6 form-group mt-3 mt-md-0">
+                                <input type="email" class="form-control" name="Email" id="Email" placeholder="Your Email" required>
+                                <div class="invalid-feedback">
+                                    Please provide an email.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <input type="text" class="form-control" name="Subject" id="Subject" placeholder="Subject">
+                            <div class="invalid-feedback">
+                                Please provide a subject.
+                            </div>
+                        </div>
+                        <div class="form-group mt-3 mb-3">
+                            <textarea class="form-control" name="Message" id="Message" rows="5" placeholder="Message" required></textarea>
+                            <div class="invalid-feedback">
+                                Please provide a message.
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+    <!-- End Contact Section -->
+}

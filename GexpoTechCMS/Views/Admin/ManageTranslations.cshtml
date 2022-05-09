@@ -1,0 +1,123 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.DataTranslationsModel>
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Manage Translations";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = "ContentManagement";
+    ViewData["BreadCrumb-0-Text"] = "Content Management";
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "ContentManagement";
+
+    int row_count = 0;
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Manage Translations</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">@Helpers.FormatAlert(Model.Count()) Translation(s)</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <table class="table dataTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Document Model</th>
+                                    <th>Language</th>
+                                    <th>Trans. Title</th>
+                                    <th>Trans. Description</th>
+                                    <th>Trans. Content</th>
+                                    <th class="d-none d-md-table-cell">Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    row_count++;
+                                    <tr>
+                                        <td>
+                                            @row_count
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.DocumentModel)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Language)
+                                        </td>
+                                        <td>
+                                            @Helpers.FormatLongText(item.TranslationTitle, 150)
+                                        </td>
+                                        <td>
+                                            @Helpers.FormatLongText(item.TranslationDescription, 150)
+                                        </td>
+                                        <td>
+                                            @Helpers.FormatLongText(Helpers.StripHTML(item.TranslationContent), 250)
+                                        </td>
+                                        <td class="d-none d-md-table-cell">
+                                            @Helpers.FormatDate(item.CreatedAt.ToString())
+                                        </td>
+                                        <td class="table-action">
+                                            <a class="text-decoration-none text-danger delete-record" data-title="Delete Translations" data-label="Translations"
+                                               data-key="@item.ID" data-action="/Admin/DeleteRecord" data-model="DataTranslations" data-view="ManageTranslations" data-route-id="">
+                                                <i class="align-middle" data-feather="trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <paging total-records="ViewBag.TotalRecords"
+                    page-no="ViewBag.PageNo"
+                    page-size="ViewBag.PageSize"
+                    show-prev-next="true"
+                    show-first-last="true"
+                    show-total-pages="false"
+                    show-total-records="false"
+                    show-page-size-nav="true"
+                    show-gap="true">
+            </paging>
+        </div>
+    </div>
+
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

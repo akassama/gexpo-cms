@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{ 
+    string PhoneNumber = SqlHelpers.GetTableData("ContentManagement", "ContentName", "PhoneNumber", "ContentValue");
+    string Email = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Email", "ContentValue");
+
+    string FacebookLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "FacebookLink", "ContentValue");
+    string TwitterLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "TwitterLink", "ContentValue");
+    string InstagramLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "InstagramLink", "ContentValue");
+    string YouTubeLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "YouTubeLink", "ContentValue");
+    string LinkedInLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "LinkedInLink", "ContentValue");
+}
+
+<!-- ======= Top Bar ======= -->
+<section id="topbar" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex justify-content-center justify-content-md-between">
+        <div class="contact-info d-flex align-items-center">
+            <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:@Email">@Email</a></i>
+            <i class="bi bi-phone d-flex align-items-center ms-4"><span>@PhoneNumber</span></i>
+        </div>
+        <div class="social-links d-none d-md-flex">
+            @if (CMSHelpers.ContentDisplay("SocialMedia"))
+            {
+                if (!string.IsNullOrEmpty(TwitterLink))
+                {
+                    <a href="@TwitterLink" class="twitter"><i class="bi bi-twitter"></i></a>
+                }
+                @if (!string.IsNullOrEmpty(FacebookLink))
+                {
+                    <a href="@FacebookLink" class="facebook"><i class="bi bi-facebook"></i></a>
+                }
+                @if (!string.IsNullOrEmpty(InstagramLink))
+                {
+                    <a href="@InstagramLink" class="instagram"><i class="bi bi-instagram"></i></a>
+                }
+                @if (!string.IsNullOrEmpty(YouTubeLink))
+                {
+                    <a href="@YouTubeLink" class="google-plus"><i class="bi bi-youtube"></i></a>
+                }
+                @if (!string.IsNullOrEmpty(LinkedInLink))
+                {
+                    <a href="@LinkedInLink" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                }
+            }
+        </div>
+    </div>
+</section>

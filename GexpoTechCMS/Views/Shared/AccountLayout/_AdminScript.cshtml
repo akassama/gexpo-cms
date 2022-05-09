@@ -1,0 +1,137 @@
+﻿@using Microsoft.AspNetCore.Http
+@using System.Web
+
+<script>
+    // set active Left Sidebar
+    $(document).ready(function () {
+        var active = '@(ViewBag.ActiveTab)';
+        if (active !== '') {
+            $('#' + active).addClass('active');
+
+            //if tab is layout content or posts, expand
+            var layoutContentList = ['Services', 'Portfolio', 'Team', 'Partners', 'Faq', 'Testimonials'];
+            var postsContentList = ['Posts', 'Categories'];
+            if ($.inArray(active, layoutContentList) > -1) {
+                //click to expand  
+                $('.layout-contents-tab')[0].click();
+            }
+            else if ($.inArray(active, postsContentList) > -1) {
+                //click to expand  
+                $('.blogs-tab')[0].click();
+            }
+        }
+        else {
+            $('#Index').addClass('active');
+        }
+    });
+
+
+    //load activity
+    $(document).ready(function() {
+	    //set default activity count
+        var activityCount = 0;
+
+        //load more activity on click
+	    $("#load-btn").click(function() {
+            activityCount += 6; //new activity count
+            $.getJSON("@Url.Action("GetRecentActivitiesCall", "Admin")", { newActivityCount: activityCount },function(response){
+                if (response !== '') {
+                    $("#activity-div").append(response);
+                }
+                else {
+                    //disable/hide load button if response is empty
+                    $("#load-btn").addClass("disabled");
+                }
+
+                //scroll to bottom of page
+                scrollToBottom();
+            });
+        });
+
+        //function to scroll to bottom of page
+        function scrollToBottom() {
+            $("html, body").animate({ scrollTop: $(document).height() - $(window).height() }, 750);
+        }
+    });
+
+    $(document).ready(function () {
+        // Read a page's GET URL variables and return them as an associative array.
+        function getUrlVars() {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        }
+
+        //get complete url
+        var url = $(location).attr('href');
+        //set active tab if in url parameter
+        if (url.indexOf("tab") >= 0) {
+
+            //get url parameter for tab
+            var selectedTab = getUrlVars()["tab"];
+
+            //if not empty, set tab
+            if (selectedTab != '' && selectedTab != 'undefined') { 
+                $('.' + selectedTab)[0].click();
+            }
+        }
+
+
+        //preview image on change
+        $('.preview-input').change(function (e) {
+            var previewClass = $(this).data('preview-class');
+
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL($('.preview-input').get(0).files[0]);
+
+            oFReader.onload = function (oFREvent) {
+                $("." + previewClass).attr('src', oFREvent.target.result);
+            };
+        });
+    });
+
+
+    //copy to clipboard
+    function copyFunction(document_id) {
+        var copyText = document.getElementById("copyInput-" + document_id);
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+
+        var tooltip = document.getElementById("copyTooltip-" + document_id);
+        tooltip.innerHTML = "Copied: " + copyText.value;
+
+        //wait 2 seconds and reset
+        setTimeout(
+            function () {
+                tooltip.innerHTML = "Copy";
+        }, 2000);
+    }
+
+    function outFunc() {
+        var tooltip = document.getElementById("copyTooltip-" + document_id);
+        tooltip.innerHTML = "Copy";
+    }
+
+
+    //TODO
+    //if site scripts clicked set codemirror input editor
+    //$(document).ready(function () {
+    //    $(".site-scripts").click(function (e) {
+    //        setTimeout(
+    //            function () {
+    //                //reset
+    //                var editorData = $('#codemirror-editor').val();
+    //                //$("#codemirror-editor").val(editorData).focus().val(editorData);
+    //                $("#codemirror-editor").focus().val("").val(editorData);
+    //                //alert("Fertig!");
+    //            }, 1000);
+    //    });
+
+    //});
+</script>

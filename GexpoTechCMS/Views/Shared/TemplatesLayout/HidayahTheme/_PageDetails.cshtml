@@ -1,0 +1,48 @@
+﻿@model GexpoTechCMS.Models.AppModels.PageModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = Model.Title;
+    ViewData["PropertyImage"] = Helpers.BaseUrl(Helpers.GetPostImage(Model.PageID, "Page"));
+    string active_theme = Helpers.GetActiveTheme();
+
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    string PageTitle = (SessionLanguage == "en") ? Model.Title : Helpers.GetTranslatableData(Model.Title, SessionLanguage, Model.PageID, "Pages", "Title");
+    string PageContent = (SessionLanguage == "en") ? Model.Content : Helpers.GetTranslatableData(Model.Content, SessionLanguage, Model.PageID, "Pages", "Content");
+
+}
+
+@if (active_theme == "Hidayah")
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- CHECK TO SHOW FB COMMENTS -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_ShowFBCheck.cshtml" />
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_Navigation.cshtml" />
+
+        <!-- PAGE DETAILS MAIN -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_PageDetailsMain.cshtml" />
+
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_Footer.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+</html>
+}

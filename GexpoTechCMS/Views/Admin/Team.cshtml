@@ -1,0 +1,106 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.TeamModel>
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Team";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = null;
+    ViewData["BreadCrumb-0-Text"] = null;
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Team";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Team</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">@Helpers.FormatAlert(Model.Count()) Team Member(s)</h5>
+                    <a asp-action="NewTeamMember" asp-controller="Admin" class="btn btn-outline-primary float-right">
+                        <i class="align-middle" data-feather="plus"></i>
+                        Add Team Member
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <table class="table table-striped table-hover dataTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Title</th>
+                                    <th class="d-none d-md-table-cell">Created At</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        @{
+                                            var FullName = $@"{item.FirstName} {item.LastName}";
+                                        }
+                                        <td>
+                                            <img src="~/team/images/@item.ProfileImage" width="48" height="48" class="rounded-circle mr-2" alt="@FullName"> @FullName
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Title)
+                                        </td>
+                                        <td class="d-none d-md-table-cell">
+                                            @Helpers.FormatDate(item.CreatedAt.ToString())
+                                        </td>
+                                        <td>
+                                            @Helpers.FormatStatus(item.Status.ToString())
+                                        </td>
+                                        <td class="table-action">
+                                            <a asp-action="EditTeamMember" asp-controller="Admin" asp-route-id="@item.TeamID" class="text-primary text-decoration-none">
+                                                <i class="align-middle" data-feather="edit-2"></i>
+                                            </a>
+                                            <a class="text-decoration-none text-danger delete-record" data-title="Remove Team Member" data-label="Team"
+                                               data-key="@item.TeamID" data-action="/Admin/DeleteRecord" data-model="Team" data-view="Team" data-route-id="">
+                                                <i class="align-middle" data-feather="trash"></i>
+                                            </a>
+                                            <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@item.TeamID" asp-route-key-name="TeamID" asp-route-model="Team" asp-route-title="Title"
+                                               asp-route-desc="" asp-route-cont="" asp-route-view="Team" class="text-decoration-none text-info">
+                                                <i class="align-middle" data-feather="globe"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

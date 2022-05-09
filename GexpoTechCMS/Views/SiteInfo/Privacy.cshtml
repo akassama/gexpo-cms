@@ -1,0 +1,30 @@
+﻿@model GexpoTechCMS.Models.AppModels.LoginViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Privacy";
+    ViewData["LoggedInPage"] = "false";
+
+    string OrganizationName = SqlHelpers.GetTableData("ContentManagement", "ContentName", "OrganizationName", "ContentValue");
+}
+
+<div class="container-fluid p-0">
+
+    <h1 class="h3 mb-3 text-center">Privacy</h1>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                
+                <div class="row p-2">
+                    <p>
+                        Write terms here.... /Views/SiteInfo/Privacy.cshtml
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

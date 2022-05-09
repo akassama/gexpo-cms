@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    //Home Video Data
+    string HomeVideoLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "HomeVideo", "ContentValue");
+    string HomeVideoTitle = SqlHelpers.GetTableData("ContentManagement", "ContentName", "HomeVideoTitle", "ContentValue");
+    string HomeVideoDescription = SqlHelpers.GetTableData("ContentManagement", "ContentName", "HomeVideoDescription", "ContentValue");
+    string HomeVideoID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "HomeVideoTitle", "ContentID");
+}
+
+@if (CMSHelpers.ContentDisplay("HomeVideo"))
+{
+    <!-- ======= Home Video Section ======= -->
+    <section id="about-list" class="about-list">
+        <div class="container">
+
+            <div class="row">
+                @if (string.IsNullOrEmpty(HomeVideoTitle) && string.IsNullOrEmpty(HomeVideoDescription))
+                {
+                    <div class="col-lg-12 order-1 order-lg-2">
+                        <a href="@HomeVideoLink" target="_blank">
+                            <div class="image" style='background-image: url("https://i3.ytimg.com/vi/@Helpers.GetYouTubeVideoID(HomeVideoLink)/hqdefault.jpg");'></div>
+                        </a>
+                    </div>
+                }
+                else if (!string.IsNullOrEmpty(HomeVideoTitle) && string.IsNullOrEmpty(HomeVideoDescription))
+                {
+                    <h3 class="text-center m-3">
+                        @HomeVideoTitle
+                    </h3>
+                    <div class="col-lg-12 order-1 order-lg-2">
+                        <a href="@HomeVideoLink" target="_blank">
+                            <div class="image" style='background-image: url("https://i3.ytimg.com/vi/@Helpers.GetYouTubeVideoID(HomeVideoLink)/hqdefault.jpg");'></div>
+                        </a>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-lg-6 order-2 order-lg-1">
+                        <div class="icon-box mt-5 mt-2">
+                            <h1>@HomeVideoTitle</h1>
+                            @Helpers.GetTranslatableData(HomeVideoDescription, SessionLanguage, HomeVideoID, "ContentManagement", "Description")
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mt-lg-2 order-1 order-lg-2">
+                        <a href="@HomeVideoLink" target="_blank">
+                            <div class="image border border-light" style='background-image: url("https://i3.ytimg.com/vi/@Helpers.GetYouTubeVideoID(HomeVideoLink)/hqdefault.jpg");'></div>
+                        </a>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </section>
+    <!-- End Home Video Section -->
+}

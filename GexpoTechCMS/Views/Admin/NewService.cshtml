@@ -1,0 +1,100 @@
+﻿@model GexpoTechCMS.Models.AppModels.ServiceModel
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "New Service";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = "Services";
+    ViewData["BreadCrumb-0-Text"] = "Services";
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Services";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>New Service</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Service Details</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="NewService" asp-controller="Admin" method="Post" class="g-3 needs-validation" novalidate enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide page title">
+                                Title
+                            </label>
+                            <input type="text" class="form-control count-chars" asp-for="ServiceTitle" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Title" required="">
+                            <div class="invalid-feedback">
+                                Please provide a title.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Short description for page (optional)">
+                                Short Description
+                            </label>
+                            <textarea class="form-control count-reach" asp-for="ShortDescription" maxlength="500" data-chars-max="500" data-msg-color="danger"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide page link.  Use '/' to start from domain name, or 'http://page-url.com' to link to an external page">
+                                Link
+                            </label>
+                            <input type="text" class="form-control count-reach" asp-for="ServiceLink" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Link">
+                        </div>
+                        <div class="mb-3">
+                            <small class="float-right">
+                                <a href="https://icons.getbootstrap.com/" target="_blank">
+                                    Icons
+                                </a>
+                            </small>
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide icon class (optional)">
+                                Icon
+                            </label>
+                            <input type="text" class="form-control count-reach" asp-for="ServiceIcon" placeholder="bi bi-icon" maxlength="50" data-chars-max="50" data-msg-color="danger">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set status">Status</label>
+                            <select class="form-control mb-3" asp-for="Status" required="">
+                                <option value="" selected>Select status</option>
+                                <option value="1">Published</option>
+                                <option value="0">Pending</option>
+                            </select>
+                        </div>
+                        <br />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="align-middle" data-feather="save"></i> Save
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

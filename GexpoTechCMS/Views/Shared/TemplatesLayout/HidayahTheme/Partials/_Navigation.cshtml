@@ -1,0 +1,61 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+    string LanguageClass = Helpers.GetLanguageClass(SessionLanguage);
+
+    string CurrentUrl = ($"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}{Context.Request.QueryString}");
+    if (CurrentUrl.Contains("?"))
+    {
+        CurrentUrl = CurrentUrl.Substring(0, CurrentUrl.IndexOf("?"));
+    }
+}
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top header-inner-pages">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <h1 class="logo">
+            <a asp-action="Index" asp-controller="Home">
+                @{
+                    string logo_format = Helpers.DefaultData(SqlHelpers.GetTableData("ContentManagement", "ContentName", "LogoFormat", "ContentValue"), "1");
+                    string logo_width = Helpers.DefaultData(SqlHelpers.GetTableData("ContentManagement", "ContentName", "LogoWidth", "ContentValue"), "150");
+                }
+                @Helpers.GetSiteLogo(logo_format, Helpers.Int32Parse(logo_width))
+            </a>
+        </h1>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                @TemplateHelpers.GetNavagation(SessionLanguage, ViewBag.ActiveNav)
+                <li>
+                    <a href="#searchModal" class="nav-link scrollto" data-bs-toggle="modal" data-bs-target="#searchModal">
+                        <i class="bi bi-search"></i>
+                    </a>
+                </li>
+                @if (Helpers.GetCurrentLanguages() > 0)
+                {
+                    <li class="dropdown ml-5">
+                        <a href="#!">
+                            <span><span class="flag-icon flag-icon-@LanguageClass"></span> @Helpers.GetLanguageName(SessionLanguage)</span>
+                            <i class="bi bi-chevron-down"></i>
+                        </a>
+                        <ul>
+                            @TemplateHelpers.LanguageDropDown(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), CurrentUrl)
+                        </ul>
+                    </li>
+                }
+                <li>
+                    <a asp-action="Index" asp-controller="SignIn">
+                        <i class="bi bi-person-circle"></i>
+                    </a>
+                </li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+        <!-- .navbar -->
+    </div>
+</header>
+<!-- End Header -->

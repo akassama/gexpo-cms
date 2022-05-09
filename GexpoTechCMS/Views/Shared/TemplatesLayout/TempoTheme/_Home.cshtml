@@ -1,0 +1,137 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    ViewData["Title"] = "Home Page";
+    string active_theme = Helpers.GetActiveTheme();
+}
+
+
+@if (active_theme == "Tempo")
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_Navigation.cshtml" />
+
+        <!-- HOME SLIDERS PARTIAL -->
+        @*<partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_HomeSliders.cshtml" />*@
+        <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_HomeSlidersGexpo.cshtml" />
+
+
+        <main id="main">
+
+            <!-- Action messages partial -->
+            <partial name="~/Views/Shared/TemplatesLayout/Common/_ProcessMessage.cshtml" />
+
+            @foreach (var section_data in ViewBag.PageSectionsData)
+            {
+                if (section_data.SectionName == "AboutUs")
+                {
+                    <!-- ABOUT US PARTIAL -->
+                    <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_AboutUs.cshtml" />
+                }
+                else if (section_data.SectionName == "SiteStats")
+                {
+                    <!-- SERVICE STATS PARTIAL -->
+                    <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_ServiceStat.cshtml" />
+                }
+                else if (section_data.SectionName == "HomeVideo")
+                {
+                    <!-- HOME VIDEO PARTIAL -->
+                    <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_HomeVideo.cshtml" />
+                }
+                else if (section_data.SectionName == "Services")
+                {
+                    <!-- SERVICES PARTIAL -->
+                    <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_Services.cshtml" />
+                }
+                else if (section_data.SectionName == "Donate" || section_data.SectionName == "CalltoAction")
+                {
+                    <!-- ACTION CALL PARTIAL -->
+                    <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_ActionCallSection.cshtml" />
+                }
+                else if (section_data.SectionName == "Portfolio")
+                {
+                    <!-- PORTFOLIO PARTIAL -->
+                    <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_Portfolio.cshtml" />
+                }
+                else if (section_data.SectionName == "FAQ")
+                {
+                    <!-- FAQ PARTIAL -->
+                    <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_Faq.cshtml" />
+                }
+                else if (section_data.SectionName == "OurTeam")
+                {
+                    <!-- TEAM PARTIAL -->
+                    <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_TeamSection.cshtml" />
+                }
+                else if (section_data.SectionName == "Partners")
+                {
+                    <!-- PARTNERS PARTIAL -->
+                    <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_Partners.cshtml" />
+                }
+                else if (section_data.SectionName == "Testimonials")
+                {
+                    <!-- TESTIMONIAL PARTIAL -->
+                    <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_Testimonials.cshtml" />
+                }
+                else if (section_data.SectionName == "Posts")
+                {
+                    <!-- POSTS PARTIAL -->
+                    <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_HomePosts.cshtml" />
+                }
+                else if (section_data.SectionName == "TwitterFeed")
+                {
+                    <!-- TWITTER FEEDS PARTIAL -->
+                    <partial name="~/Views/Shared/TemplatesLayout/Common/_TwitterFeeds.cshtml" />
+                }
+                else if (section_data.SectionName == "ContactUs")
+                {
+                    <!-- CONTACT PARTIAL -->
+                    <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_ContactUs.cshtml" />
+                }
+                else
+                {
+                    <!-- ======= Begin Section ======= -->
+                    <section id="@section_data.SectionID" class="inner-page">
+                        <div class="container" data-aos="fade-up">
+                            <h1 class="text-center">
+                                @Helpers.GetTranslatableData(section_data.SectionTitle, SessionLanguage, section_data.SectionID, "ContentManagement", "Title")
+                            </h1>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    @Html.Raw(section_data.SectionContent)
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- End Section -->
+                }
+            }
+
+
+        </main>
+        <!-- End #main -->
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_Footer.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+    </html>
+}

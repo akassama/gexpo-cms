@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    //Call To Action Data
+    string CallToActionoLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "CallToActionoLink", "ContentValue");
+    string CallToActionID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "CallToAction", "ContentID");
+    string CallToActionHeader = SqlHelpers.GetTableData("ContentManagement", "ContentName", "CallToAction", "ContentValue");
+}
+
+@if (CMSHelpers.ContentDisplay("CallToAction"))
+{
+    <!-- ======= Cta Section ======= -->
+    <section id="cta" class="cta ">
+        <div class="container bg-light" data-aos="zoom-in">
+            <div class="text-center">
+                <a class="cta-btn "href="@CallToActionoLink">
+                    @Helpers.GetTranslatableData(CallToActionHeader, SessionLanguage, CallToActionID, "ContentManagement", "Description")
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- End Cta Section -->
+}

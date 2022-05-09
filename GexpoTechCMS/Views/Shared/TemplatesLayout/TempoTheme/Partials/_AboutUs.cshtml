@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    //About Header Data
+    string AboutHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "AboutUs", "ContentID");
+    string AboutHeader = SqlHelpers.GetTableData("ContentManagement", "ContentName", "AboutUs", "ContentValue");
+
+
+    //About Content Data
+    string AboutSummary = SqlHelpers.GetTableData("ContentManagement", "ContentName", "AboutSummary", "ContentValue");
+    string AboutSummaryLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "AboutSummaryLink", "ContentValue");
+    string AboutSummaryID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "AboutSummary", "ContentID");
+}
+
+@if (CMSHelpers.ContentDisplay("AboutUs"))
+{
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+        <div class="container">
+
+            <div class="section-title">
+                <h2>About</h2>
+                <h3><span>@Helpers.GetTranslatableData(AboutHeader, SessionLanguage, AboutHeaderID, "ContentManagement", "Description")</span></h3>
+            </div>
+
+            <div class="row content">
+                <div class="col-lg-12">
+                    @Helpers.GetTranslatableData(AboutSummary, SessionLanguage, AboutSummaryID, "ContentManagement", "Description")
+                    @if (!string.IsNullOrEmpty(AboutSummaryLink))
+                    {
+                        <br />
+                        <a href="@AboutSummaryLink" class="btn-learn-more">Learn More</a>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- End About Section -->
+}

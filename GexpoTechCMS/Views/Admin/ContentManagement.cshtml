@@ -1,0 +1,1482 @@
+﻿@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Content Management";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = null;
+    ViewData["BreadCrumb-0-Text"] = null;
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "ContentManagement";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Content Management</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+
+    <div class="row">
+        <div class="col-md-3 col-xl-2">
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">CMS Settings</h5>
+                </div>
+
+                <div class="list-group list-group-flush" role="tablist">
+                    <a class="list-group-item list-group-item-action active" data-toggle="list" href="#organization" role="tab">
+                        Organization
+                    </a>
+                    <a class="list-group-item list-group-item-action page-sections" data-toggle="list" href="#page-sections" role="tab">
+                        Page Sections
+                    </a>
+                    <a class="list-group-item list-group-item-action social" data-toggle="list" href="#social" role="tab">
+                        Social Media
+                    </a>
+                    <a class="list-group-item list-group-item-action service-stat" data-toggle="list" href="#service-stat" role="tab">
+                        Service Stats
+                    </a>
+                    <a class="list-group-item list-group-item-action about-info" data-toggle="list" href="#about-info" role="tab">
+                        About Info
+                    </a>
+                    <a class="list-group-item list-group-item-action donations" data-toggle="list" href="#donations" role="tab">
+                        Donations
+                    </a>
+                    <a class="list-group-item list-group-item-action resources" data-toggle="list" href="#resources" role="tab">
+                        Resource Documents
+                    </a>
+                    <a class="list-group-item list-group-item-action videos" data-toggle="list" href="#videos" role="tab">
+                        Videos
+                    </a>
+                    <a class="list-group-item list-group-item-action header-text" data-toggle="list" href="#header-text" role="tab">
+                        Header Text
+                    </a>
+                    <a class="list-group-item list-group-item-action content-display" data-toggle="list" href="#content-display" role="tab">
+                        Content Display
+                    </a>
+                    <a class="list-group-item list-group-item-action seo" data-toggle="list" href="#seo" role="tab">
+                        SEO
+                    </a>
+                    <a class="list-group-item list-group-item-action seo" asp-action="ManageTranslations" asp-controller="Admin" role="tab">
+                        Manage Translations
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9 col-xl-10">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="organization" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Organization Info</h5>
+                        </div>
+                        <div class="card-body">
+                            <form asp-action="UpdateOrganizationInfo" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate enctype="multipart/form-data">
+                                @{
+                                    //get input values
+                                    string OrganizationName = SqlHelpers.GetTableData("ContentManagement", "ContentName", "OrganizationName", "ContentValue");
+                                    string OrganizationAddress = SqlHelpers.GetTableData("ContentManagement", "ContentName", "OrganizationAddress", "ContentValue");
+                                    string PhoneNumber = SqlHelpers.GetTableData("ContentManagement", "ContentName", "PhoneNumber", "ContentValue");
+                                    string OptionalPhoneNumber = SqlHelpers.GetTableData("ContentManagement", "ContentName", "OptionalPhoneNumber", "ContentValue");
+                                    string Email = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Email", "ContentValue");
+                                    string Logo = CMSHelpers.GetCmsData("Logo");
+                                    Logo = (!string.IsNullOrEmpty(Logo)) ? "/images/" + Logo : "https://via.placeholder.com/300x175?text=Logo+Preview";
+                                    string LogoFormat = SqlHelpers.GetTableData("ContentManagement", "ContentName", "LogoFormat", "ContentValue");
+                                    string LogoWidth = SqlHelpers.GetTableData("ContentManagement", "ContentName", "LogoWidth", "ContentValue");
+                                    string Favicon = CMSHelpers.GetCmsData("Favicon");
+                                    Favicon = (!string.IsNullOrEmpty(Favicon)) ? "/images/" + Favicon : "https://via.placeholder.com/35x35?text=IC";
+                                }
+                                <div class="mb-3">
+                                    <label class="form-label" for="OrganizationName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your organization's name">
+                                        Name
+                                        @*
+                                <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@SqlHelpers.GetTableData("ContentManagement", "ContentName", "OrganizationName", "ContentID")" asp-route-key-name="ContentID" asp-route-model="ContentManagement" asp-route-title="ContentName"
+                                   asp-route-desc="" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info float-right">
+                                    <i class="align-middle" data-feather="globe"></i>
+                                </a>
+                                        *@
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="OrganizationName" id="OrganizationName" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@OrganizationName" required="">
+                                    <div class="invalid-feedback">
+                                        Please provide name.
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="OrganizationAddress" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your organization's address">
+                                        Address
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="OrganizationAddress" id="OrganizationAddress" maxlength="500" data-chars-max="500" data-msg-color="danger" value="@OrganizationAddress" required="">
+                                    <div class="invalid-feedback">
+                                        Please provide an address.
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="PhoneNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your organization's phone number">
+                                        Primary Phone Number
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="PhoneNumber" id="PhoneNumber" maxlength="20" data-chars-max="20" data-msg-color="danger" value="@PhoneNumber" required="">
+                                    <div class="invalid-feedback">
+                                        Please provide phone number.
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="OptionalPhoneNumber" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your optional phone number">
+                                        Optional Phone Number
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="OptionalPhoneNumber" id="OptionalPhoneNumber" maxlength="20" data-chars-max="20" data-msg-color="danger" value="@OptionalPhoneNumber">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="Email" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your organization's email">
+                                        Email
+                                    </label>
+                                    <input type="email" class="form-control count-reach" name="Email" id="Email" maxlength="100" data-chars-max="100" data-msg-color="danger" value="@Email" required="">
+                                    <div class="invalid-feedback">
+                                        Please provide an email.
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="mb-3">
+                                            <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your organization's logo">
+                                                Logo
+                                            </label>
+                                            <input type="file" class="form-control accept-imgs upload-file-select" name="Logo" id="Logo">
+                                            <small class="form-text text-muted">Max size 5mb.</small>
+                                            <div class="invalid-feedback">
+                                                Please provide logo.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 file-preview-div mt-1">
+                                        <img src="@Logo" height="175" class="img-thumbnail img-fluid file-preview" alt="logo image preview">
+                                        <small>
+                                            <span class="text-danger text-left file-preview-name"></span>
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label" for="LogoFormat" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set display format">
+                                            Logo Display Format
+                                        </label>
+                                        <select name="LogoFormat" id="LogoFormat" class="form-control">
+                                            <option>Select format</option>
+                                            <option value="1" selected="@((LogoFormat == "1") ? "selected" : ""))">Rectangle</option>
+                                            <option value="2" selected="@((LogoFormat == "2") ? "selected" : ""))">Square</option>
+                                            <option value="3" selected="@((LogoFormat == "3") ? "selected" : ""))">Circle</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3 col-md-12">
+                                        <label class="form-label" for="LogoWidth" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set logo width. For rectanglar format, height is half width.">
+                                            Logo Width (px)
+                                        </label>
+                                        <select name="LogoWidth" id="LogoWidth" class="form-control">
+                                            <option>Select width</option>
+                                            <option value="50" selected="@((LogoWidth == "50") ? "selected" : ""))">50</option>
+                                            <option value="75" selected="@((LogoWidth == "75") ? "selected" : ""))">75</option>
+                                            <option value="100" selected="@((LogoWidth == "100") ? "selected" : ""))">100</option>
+                                            <option value="125" selected="@((LogoWidth == "125") ? "selected" : ""))">125</option>
+                                            <option value="150" selected="@((LogoWidth == "150") ? "selected" : ""))">150</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your organization's favicon">
+                                        Favicon <img src="@Favicon" class="rounded border border-light ml-1 favicon-preview" alt="favicon" width="35" height="35">
+                                    </label>
+                                    <input type="file" class="form-control preview-input accept-imgs" data-preview-class="favicon-preview" name="Favicon" id="Favicon">
+                                    <small class="form-text text-muted">Select image file. 5mb max</small>
+                                    <div class="invalid-feedback">
+                                        Please provide a favicon.
+                                    </div>
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="page-sections" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-0">Page Sections</h5>
+                            <div class="row">
+                                <div class="mb-4 col-md-12">
+                                    <a href="#addPageSectionodal" class="btn btn-outline-primary float-right" data-bs-toggle="modal" data-bs-target="#addPageSectionodal">
+                                        <i class="align-middle" data-feather="plus"></i>
+                                        Add Page Section
+                                    </a>
+                                </div>
+                                <div class="mb-3 col-md-12">
+                                    @if (ViewBag.PageSectionsCount > 0)
+                                    {
+                                        <table class="table dataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Section Order</th>
+                                                    <th>Title</th>
+                                                    <th>Section Content</th>
+                                                    <th class="d-none d-md-table-cell">Created At</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var sect_data in ViewBag.PageSectionsData)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @sect_data.SectionOrder
+                                                        </td>
+                                                        <td>
+                                                            @sect_data.SectionTitle
+                                                        </td>
+                                                        <td>
+                                                            @Helpers.FormatLongText(Helpers.StripHTML(sect_data.SectionContent), 150)
+                                                        </td>
+                                                        <td class="d-none d-md-table-cell">
+                                                            @Helpers.FormatDate(sect_data.CreatedAt.ToString())
+                                                        </td>
+                                                        <td class="table-action">
+                                                            @if (sect_data.SectionType != "Default")
+                                                            {
+                                                                <a class="text-decoration-none text-primary" asp-action="EditPageSection" asp-controller="Admin" asp-route-id="@sect_data.SectionID">
+                                                                    <i class="align-middle" data-feather="edit-2"></i>
+                                                                </a>
+                                                                <a class="text-decoration-none text-danger delete-record" data-title="Delete Section" data-label="Page Section" data-key="@sect_data.SectionID"
+                                                                   data-action="/Admin/DeleteRecord" data-model="PageSections" data-view="ContentManagement" data-route-id="">
+                                                                    <i class="align-middle" data-feather="trash"></i>
+                                                                </a>
+                                                                <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@sect_data.SectionID" asp-route-key-name="SectionID" asp-route-model="PageSections" asp-route-title="SectionTitle"
+                                                                   asp-route-desc="" asp-route-cont="SectionContent" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                                                    <i class="align-middle" data-feather="globe"></i>
+                                                                </a>
+                                                            }
+                                                            else if (sect_data.SectionType == "Default" && sect_data.SectionName != "HomeSliders")
+                                                            {
+                                                                <a class="text-decoration-none text-primary" asp-action="EditPageSection" asp-controller="Admin" asp-route-id="@sect_data.SectionID">
+                                                                    <i class="align-middle" data-feather="edit-2"></i>
+                                                                </a>
+                                                                <a class="text-decoration-none text-danger disabled">
+                                                                    <i class="align-middle" data-feather="minus"></i>
+                                                                </a>
+                                                                <a class="text-decoration-none text-danger disabled">
+                                                                    <i class="align-middle" data-feather="minus"></i>
+                                                                </a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a class="text-decoration-none text-danger disabled">
+                                                                    <i class="align-middle" data-feather="minus"></i>
+                                                                </a>
+                                                                <a class="text-decoration-none text-danger disabled">
+                                                                    <i class="align-middle" data-feather="minus"></i>
+                                                                </a>
+                                                                <a class="text-decoration-none text-danger disabled">
+                                                                    <i class="align-middle" data-feather="minus"></i>
+                                                                </a>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                        @*<hr />
+                                <h5 class="card-title mb-0">Section Order</h5>
+                                <table class="table dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th class="d-none d-md-table-cell">Order</th>
+                                            <th class="d-none d-md-table-cell">Created At</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var sect in ViewBag.PageSectionsData)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @sect.SectionTitle
+                                                </td>
+                                                <td class="d-none d-md-table-cell">
+                                                    @sect.SectionOrder
+                                                </td>
+                                                <td class="d-none d-md-table-cell">
+                                                    @Helpers.FormatDate(sect.CreatedAt.ToString())
+                                                </td>
+                                                <td class="table-action">
+                                                    <a class="text-decoration-none text-primary">
+                                                        <i class="align-middle" data-feather="edit-2"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>*@
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-primary alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <div class="alert-message">
+                                                <strong>No service stat added</strong>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="social" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Social info</h5>
+                        </div>
+                        <div class="card-body">
+                            @{
+                                //get input values
+                                string FacebookLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "FacebookLink", "ContentValue");
+                                string TwitterLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "TwitterLink", "ContentValue");
+                                string InstagramLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "InstagramLink", "ContentValue");
+                                string YouTubeLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "YouTubeLink", "ContentValue");
+                                string LinkedInLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "LinkedInLink", "ContentValue");
+                            }
+                            <form asp-action="UpdateSocialInfo" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <label class="form-label" for="FacebookLink" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your organization's facebook link">
+                                        Facebook Link
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="FacebookLink" id="FacebookLink" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@FacebookLink">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="TwitterLink" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your twitter's facebook link">
+                                        Twitter Link
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="TwitterLink" id="TwitterLink" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@TwitterLink">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="InstagramLink" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your organization's instagram link">
+                                        Instagram Link
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="InstagramLink" id="InstagramLink" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@InstagramLink">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="YouTubeLink" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your organization's youtube link">
+                                        YouTube Link
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="YouTubeLink" id="YouTubeLink" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@YouTubeLink">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="LinkedInLink" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your organization's linkedin link">
+                                        LinkedIn Link
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="LinkedInLink" id="LinkedInLink" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@LinkedInLink">
+                                </div>
+                                <br />
+
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="service-stat" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Service Statistics</h5>
+                            <div class="row">
+                                <div class="mb-4 col-md-12">
+                                    <a href="#ServiceStatForm" class="btn btn-outline-primary smooth-scroll clear-category-form float-right">
+                                        <i class="align-middle" data-feather="plus"></i>
+                                        Add Service Stat
+                                    </a>
+                                </div>
+                                <div class="mb-3 col-md-12">
+                                    @if (ViewBag.ServiceStatsCount > 0)
+                                    {
+                                        <table class="table dataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Stat Value</th>
+                                                    <th>Icon</th>
+                                                    <th>Link (Find out more)</th>
+                                                    <th class="d-none d-md-table-cell">Order</th>
+                                                    <th>Status</th>
+                                                    <th class="d-none d-md-table-cell">Created At</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var stat in ViewBag.ServiceStatsData)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @stat.Title
+                                                        </td>
+                                                        <td>
+                                                            @stat.StatValue
+                                                        </td>
+                                                        <td>
+                                                            @stat.Icon
+                                                            <br />
+                                                            <i class="@stat.Icon"></i>
+                                                        </td>
+                                                        <td>
+                                                            @stat.Link
+                                                        </td>
+                                                        <td class="d-none d-md-table-cell">
+                                                            @stat.Order
+                                                        </td>
+                                                        <td>
+                                                            @Helpers.FormatStatus(stat.Status.ToString())
+                                                        </td>
+                                                        <td class="d-none d-md-table-cell">
+                                                            @Helpers.FormatDate(stat.CreatedAt.ToString())
+                                                        </td>
+                                                        <td class="table-action">
+                                                            <a class="text-decoration-none text-primary edit-service-stat" data-id="@stat.ServiceStatID" data-title="@stat.Title"
+                                                               data-stat-value="@stat.StatValue" data-link="@stat.Link" data-icon="@stat.Icon" data-order="@stat.Order" data-status="@stat.Status">
+                                                                <i class="align-middle" data-feather="edit-2"></i>
+                                                            </a>
+                                                            <a class="text-decoration-none text-danger delete-record" data-title="Delete Stat" data-label="Service Stat" data-key="@stat.ServiceStatID"
+                                                               data-action="/Admin/DeleteRecord" data-model="ServiceStats" data-view="ContentManagement" data-route-id="">
+                                                                <i class="align-middle" data-feather="trash"></i>
+                                                            </a>
+                                                            <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@stat.ServiceStatID" asp-route-key-name="ServiceStatID" asp-route-model="ServiceStats" asp-route-title="Title"
+                                                               asp-route-desc="" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                                                <i class="align-middle" data-feather="globe"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-primary alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <div class="alert-message">
+                                                <strong>No page sections added</strong>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                            <form asp-action="NewServiceStat" asp-controller="Admin" id="ServiceStatForm" method="post" class="g-3 needs-validation" novalidate>
+                                <h3>Add Service Stat</h3>
+                                <div class="mb-3">
+                                    <label class="form-label" for="Title" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide service name">
+                                        Name
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="Title" id="Title" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Title" required="">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="StatsValue" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide service stat value, like numbers">
+                                        Stat Value
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="StatValue" id="StatValue" maxlength="10" data-chars-max="10" data-msg-color="danger" placeholder="e.g 21" required="">
+                                </div>
+                                <div class="mb-3">
+                                    <small class="float-right">
+                                        <a href="https://icons.getbootstrap.com/" target="_blank">
+                                            Icons
+                                        </a>
+                                    </small>
+                                    <label class="form-label" for="Icon" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide service icon (optional)">
+                                        Icon
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="Icon" id="Icon" maxlength="100" data-chars-max="100" data-msg-color="danger" placeholder="e.g. bi bi-icon">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="Link" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide navigation link. Use '/' to start from domain name, '#' to link to page section id, or 'http://page-url.com' to link to an external page">
+                                        Link (Find out more)
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="Link" id="Link" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Link">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set listing order">Order</label>
+                                    <select class="form-control mb-3" name="Order" id="Order">
+                                        <option class="category-order" value="" selected>Select order</option>
+                                        @for (int i = 1; i <= 25; i++)
+                                        {
+                                            <option value="@i">
+                                                @i
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3">
+                                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set status">Status</label>
+                                        <select class="form-control mb-3" name="Status" id="Status" required="">
+                                            <option value="" selected>Select status</option>
+                                            <option value="1">Published</option>
+                                            <option value="0">Pending</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="about-info" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">About Info</h5>
+                            <a data-bs-toggle="collapse" href="#editAboutSummary" role="button" aria-expanded="false" aria-controls="editAboutSummary" class="btn btn-outline-primary clear-category-form float-right">
+                                <i class="align-middle" data-feather="edit-2"></i>
+                                Edit
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            @{
+                                string AboutSummary = SqlHelpers.GetTableData("ContentManagement", "ContentName", "AboutSummary", "ContentValue");
+                                string AboutSummaryLink = SqlHelpers.GetTableData("ContentManagement", "ContentName", "AboutSummaryLink", "ContentValue");
+                                string AboutUsDisplay = SqlHelpers.GetTableData("ContentDisplay", "ContentName", "AboutUs", "DisplayStatus");
+                                string AboutSummaryUpdated = SqlHelpers.GetTableData("ContentManagement", "ContentName", "AboutSummary", "UpdatedAt");
+                                string AboutSummaryID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "AboutSummary", "ContentID");
+                            }
+                            <form action="" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="row">
+                                    <div class="mb-3 col-md-12">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>About Summary</th>
+                                                    <th>Link (Learn more)</th>
+                                                    <th class="d-none d-md-table-cell">Updated At</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        @Helpers.FormatLongText(AboutSummary, 250)
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(AboutSummaryLink))
+                                                        {
+                                                            <span>
+                                                                @AboutSummaryLink
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                    <td class="d-none d-md-table-cell">
+                                                        @Helpers.FormatDate(AboutSummaryUpdated)
+                                                    </td>
+                                                    <td>
+                                                        @Helpers.FormatStatus(Helpers.BooleanParse(AboutUsDisplay))
+                                                    </td>
+                                                    <td class="table-action">
+                                                        <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@AboutSummaryID" asp-route-key-name="ContentID" asp-route-model="ContentManagement" asp-route-title=""
+                                                           asp-route-desc="ContentValue" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                                            <i class="align-middle" data-feather="globe"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="collapse hide" id="editAboutSummary">
+                                <div class="card card-body">
+                                    <form asp-action="UpdateAboutSummary" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="Title" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide summary info">
+                                                About Summary
+                                            </label>
+                                            <textarea class="form-control count-reach" name="AboutSummary" id="AboutSummary" maxlength="5000" data-chars-max="5000" data-msg-color="danger" required="">@AboutSummary</textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide navigation link. Use '/' to start from domain name, '#' to link to page section id, or 'http://page-url.com' to link to an external page">
+                                                Link
+                                            </label>
+                                            <input type="text" class="form-control count-reach" name="AboutSummaryLink" id="AboutSummaryLink" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@AboutSummaryLink">
+                                        </div>
+                                        <br />
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Home video</h5>
+                            <a data-bs-toggle="collapse" href="#editHomeVideo" role="button" aria-expanded="false" aria-controls="editHomeVideo" class="btn btn-outline-primary clear-category-form float-right">
+                                <i class="align-middle" data-feather="edit-2"></i>
+                                Edit
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            @{
+                                string HomeVideo = SqlHelpers.GetTableData("ContentManagement", "ContentName", "HomeVideo", "ContentValue");
+                                string HomeVideoTitle = SqlHelpers.GetTableData("ContentManagement", "ContentName", "HomeVideoTitle", "ContentValue");
+                                string HomeVideoDescription = SqlHelpers.GetTableData("ContentManagement", "ContentName", "HomeVideoDescription", "ContentValue");
+                                string HomeVideoUpdated = SqlHelpers.GetTableData("ContentManagement", "ContentName", "HomeVideo", "UpdatedAt");
+                                string HomeVideoDisplay = SqlHelpers.GetTableData("ContentDisplay", "ContentName", "HomeVideo", "DisplayStatus");
+                                string HomeVideoID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "HomeVideoTitle", "ContentID");
+                            }
+                            <form action="" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="row">
+                                    <div class="mb-3 col-md-12">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Video Title</th>
+                                                    <th>Video Link (YouTube)</th>
+                                                    <th>Description</th>
+                                                    <th class="d-none d-md-table-cell">Updated At</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        @Helpers.FormatLongText(HomeVideoTitle, 250)
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(HomeVideo))
+                                                        {
+                                                            <span>
+                                                                <a href="@HomeVideo" target="_blank">
+                                                                    @HomeVideo
+                                                                </a>
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @Helpers.FormatLongText(HomeVideoDescription, 500)
+                                                    </td>
+                                                    <td class="d-none d-md-table-cell">
+                                                        @Helpers.FormatDate(HomeVideoUpdated)
+                                                    </td>
+                                                    <td>
+                                                        @Helpers.FormatStatus(Helpers.BooleanParse(HomeVideoDisplay))
+                                                    </td>
+                                                    <td class="table-action">
+                                                        <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@HomeVideoID" asp-route-key-name="ContentID" asp-route-model="ContentManagement" asp-route-title=""
+                                                           asp-route-desc="ContentValue" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                                            <i class="align-middle" data-feather="globe"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="collapse hide" id="editHomeVideo">
+                                <div class="card card-body">
+                                    <form asp-action="UpdateHomeVideo" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                        <div class="mb-3">
+                                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide title for the video">
+                                                Video Title
+                                            </label>
+                                            <input type="text" class="form-control count-reach" name="HomeVideoTitle" id="HomeVideoTitle" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@HomeVideoTitle">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide navigation link. Use '/' to start from domain name, '#' to link to page section id, or 'http://page-url.com' to link to an external page">
+                                                Video Link
+                                            </label>
+                                            <input type="url" class="form-control count-reach" name="HomeVideo" id="HomeVideo" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@HomeVideo">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="Title" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide summary info">
+                                                Description
+                                            </label>
+                                            <textarea class="form-control count-reach" name="HomeVideoDescription" id="HomeVideoDescription" maxlength="5000" data-chars-max="5000" data-msg-color="danger" required="">@HomeVideoDescription</textarea>
+                                        </div>
+                                        <br />
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="donations" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Manage Donations</h5>
+                            <div class="row">
+                                <div class="mb-4 col-md-12">
+                                    <a href="#DonationForm" class="btn btn-outline-primary smooth-scroll clear-category-form float-right">
+                                        <i class="align-middle" data-feather="plus"></i>
+                                        Add Donation
+                                    </a>
+                                </div>
+                                <div class="mb-3 col-md-12">
+                                    @if (ViewBag.DonationsCount > 0)
+                                    {
+                                        <table class="table dataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Title</th>
+                                                    <th>Description</th>
+                                                    <th>Type</th>
+                                                    <th>Link</th>
+                                                    <th class="d-none d-md-table-cell">
+                                                        Created At
+                                                    </th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (var donation in ViewBag.DonationsData)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @Helpers.FormatLongText(donation.CampaignTitle, 100)
+                                                        </td>
+                                                        <td>
+                                                            @Helpers.FormatLongText(Helpers.StripHTML(donation.CampaignDescription), 200)
+                                                        </td>
+                                                        <td>
+                                                            @donation.DonationType
+                                                        </td>
+                                                        <td>
+                                                            @if (!string.IsNullOrEmpty(donation.Link))
+                                                            {
+                                                                <a href="@donation.Link" target="_blank">
+                                                                    @Helpers.FormatLongText(donation.Link, 100)
+                                                                </a>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @Helpers.FormatStatus(donation.Status.ToString())
+                                                        </td>
+                                                        <td class="d-none d-md-table-cell">
+                                                            @Helpers.FormatDate(donation.CreatedAt.ToString())
+                                                        </td>
+                                                        <td class="table-action">
+                                                            <a class="text-decoration-none text-primary edit-donation" data-id="@donation.DonationID" data-title="@donation.CampaignTitle"
+                                                               data-desc="@donation.CampaignDescription" data-image="@donation.CampaignImage" data-type="@donation.DonationType" data-link="@donation.Link" data-status="@donation.Status">
+                                                                <i class="align-middle" data-feather="edit-2"></i>
+                                                            </a>
+                                                            <a class="text-decoration-none text-danger delete-record" data-title="Delete Donation Campaign" data-label="Donation Campaign" data-key="@donation.DonationID"
+                                                               data-action="/Admin/DeleteRecord" data-model="DonationCampaigns" data-view="ContentManagement" data-route-id="">
+                                                                <i class="align-middle" data-feather="trash"></i>
+                                                            </a>
+                                                            <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@donation.DonationID" asp-route-key-name="DonationID" asp-route-model="DonationCampaigns" asp-route-title="CampaignTitle"
+                                                               asp-route-desc="CampaignDescription" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                                                <i class="align-middle" data-feather="globe"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-primary alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <div class="alert-message">
+                                                <strong>No donation campaigns added</strong>
+                                            </div>
+                                        </div>
+
+                                    }
+                                </div>
+                            </div>
+                            <form asp-action="NewDonationCampaign" asp-controller="Admin" id="DonationForm" method="post" class="g-3 needs-validation" novalidate enctype="multipart/form-data">
+                                <h3>Add Donation Form</h3>
+                                <div class="mb-3">
+                                    <label class="form-label" for="CampaignTitle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide donation name">
+                                        Title
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="CampaignTitle" id="CampaignTitle" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Donation Campaign Title" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="CampaignDescription" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide description. (optional)">
+                                        Description
+                                    </label>
+                                    <textarea class="form-control count-reach" name="CampaignDescription" id="CampaignDescription" maxlength="1000" data-chars-max="1000" data-msg-color="danger" placeholder="Campaign Description"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="mb-2">
+                                                <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide campaign image. (optional)">
+                                                    Campaign Image
+                                                </label>
+                                                <input type="file" class="form-control accept-imgs upload-file-select" name="CampaignImage" id="CampaignImage">
+                                                <small class="form-text text-muted">Max size 5mb.</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 file-preview-div mt-1">
+                                            <img src="https://via.placeholder.com/300x175?text=Preview" height="175" class="img-thumbnail img-fluid file-preview" alt="post image preview">
+                                            <small>
+                                                <span class="text-danger text-left file-preview-name"></span>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set donation type">Donation Type</label>
+                                    <select class="form-control mb-3" name="DonationType" id="DonationType" required="">
+                                        <option value="" selected>Select type</option>
+                                        <option value="Bank">Bank Info</option>
+                                        <option value="Embed">Embed</option>
+                                        <option value="Url">Url Link</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="Link" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide campaign link. Use 'http://donation-url.com' to link/embed an external page. (optional)">
+                                        Link
+                                    </label>
+                                    <input type="url" class="form-control count-reach" name="Link" id="Link" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Link">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set status">Status</label>
+                                    <select class="form-control mb-3" name="Status" id="Status" required="">
+                                        <option value="" selected>Select status</option>
+                                        <option value="1">Published</option>
+                                        <option value="0">Pending</option>
+                                    </select>
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="resources" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Resources</h5>
+                            <div class="row">
+                                <div class="mb-4 col-md-12">
+                                    <a href="#ResourceDocForm" class="btn btn-outline-primary smooth-scroll clear-category-form float-right">
+                                        <i class="align-middle" data-feather="plus"></i>
+                                        Add Resource Document
+                                    </a>
+                                </div>
+                                <div class="mb-3 col-md-12">
+                                    @if (ViewBag.ResourcesDataCount > 0)
+                                    {
+                                        <table class="table dataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>File Name</th>
+                                                    <th>Status</th>
+                                                    <th class="d-none d-md-table-cell">Created At</th>
+                                                    <th class="text-center">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var resource in ViewBag.ResourcesData)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @resource.DocumentName
+                                                        </td>
+                                                        <td>
+                                                            @resource.FileName
+                                                        </td>
+                                                        <td>
+                                                            @Helpers.FormatStatus(resource.Status.ToString())
+                                                        </td>
+                                                        <td class="d-none d-md-table-cell">
+                                                            @Helpers.FormatDate(resource.CreatedAt.ToString())
+                                                        </td>
+                                                        <td class="table-action text-center">
+                                                            <a class="text-decoration-none text-primary edit-resource" data-id="@resource.DocumentID" data-name="@resource.DocumentName"
+                                                               data-desc="@resource.ShortDescription" data-status="@resource.Status">
+                                                                <i class="align-middle" data-feather="edit-2"></i>
+                                                            </a>
+                                                            <a class="text-decoration-none text-danger delete-record" data-title="Delete Document" data-label="Document Resource" data-key="@resource.DocumentID"
+                                                               data-action="/Admin/DeleteRecord" data-model="DocumentResources" data-view="ContentManagement" data-route-id="resources">
+                                                                <i class="align-middle" data-feather="trash"></i>
+                                                            </a>
+                                                            <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@resource.DocumentID" asp-route-key-name="DocumentID" asp-route-model="DocumentResources" asp-route-title="DocumentName"
+                                                               asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                                                <i class="align-middle" data-feather="globe"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-primary alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <div class="alert-message">
+                                                <strong>No resource document available</strong>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                            <form asp-action="NewResourceDocument" asp-controller="Admin" id="ResourceDocForm" method="post" class="g-3 needs-validation" enctype="multipart/form-data" novalidate>
+                                <h3>Add Resource Document</h3>
+                                <div class="mb-3">
+                                    <label class="form-label" for="DocumentName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide document name">
+                                        Document Name
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="DocumentName" id="DocumentName" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Document Name" required="">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="DocumentFile" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Select document file">
+                                        Select Document
+                                    </label>
+                                    <input type="file" class="form-control" name="DocumentFile" id="DocumentFile" accept=".xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf" required="" />
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3">
+                                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set status">Status</label>
+                                        <select class="form-control mb-3" name="Status" id="Status" required="">
+                                            <option value="" selected>Select status</option>
+                                            <option value="1">Published</option>
+                                            <option value="0">Pending</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="videos" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Videos</h5>
+                            <div class="row">
+                                <div class="mb-4 col-md-12">
+                                    <a href="#VideoForm" class="btn btn-outline-primary smooth-scroll clear-category-form float-right">
+                                        <i class="align-middle" data-feather="plus"></i>
+                                        Add Video
+                                    </a>
+                                </div>
+                                <div class="mb-3 col-md-12">
+                                    @if (ViewBag.VideosDataCount > 0)
+                                    {
+                                        <table class="table dataTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Video</th>
+                                                    <th>Status</th>
+                                                    <th class="d-none d-md-table-cell">Created At</th>
+                                                    <th class="text-center">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var video in ViewBag.VideosData)
+                                                {
+                                                <tr>
+                                                    <td>
+                                                        @video.VideoTitle
+                                                    </td>
+                                                    <td style="width: 250px">
+                                                        <div class="embed-responsive embed-responsive-16by9">
+                                                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/@Helpers.GetYouTubeVideoID(video.VideoLink)" allowfullscreen></iframe>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        @Helpers.FormatStatus(video.Status.ToString())
+                                                    </td>
+                                                    <td class="d-none d-md-table-cell">
+                                                        @Helpers.FormatDate(video.CreatedAt.ToString())
+                                                    </td>
+                                                    <td class="table-action text-center">
+                                                        <a class="text-decoration-none text-primary edit-video" data-id="@video.VideoID" data-title="@video.VideoTitle" data-link="@video.VideoLink" data-status="@video.Status">
+                                                            <i class="align-middle" data-feather="edit-2"></i>
+                                                        </a>
+                                                        <a class="text-decoration-none text-danger delete-record" data-title="Delete Video" data-label="Video" data-key="@video.VideoID"
+                                                           data-action="/Admin/DeleteRecord" data-model="Videos" data-view="ContentManagement" data-route-id="videos">
+                                                            <i class="align-middle" data-feather="trash"></i>
+                                                        </a>
+                                                        <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@video.VideoID" asp-route-key-name="VideoID" asp-route-model="Videos" asp-route-title="VideoTitle"
+                                                           asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                                            <i class="align-middle" data-feather="globe"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-primary alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <div class="alert-message">
+                                                <strong>No resource document available</strong>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                            <form asp-action="NewVideo" asp-controller="Admin" id="VideoForm" method="post" class="g-3 needs-validation" enctype="multipart/form-data" novalidate>
+                                <h3>Add Video</h3>
+                                <div class="mb-3">
+                                    <label class="form-label" for="VideoTitle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide video title">
+                                        Video Title
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="VideoTitle" id="VideoTitle" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Video Title" required="">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="VideoLink" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide video link">
+                                        Video Link
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="VideoLink" id="VideoLink" maxlength="250" data-chars-max="250" data-msg-color="danger" placeholder="Video Link" required="">
+                                </div>
+                                <div class="row">
+                                    <div class="mb-3">
+                                        <label class="form-label w-100" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Set status">Status</label>
+                                        <select class="form-control mb-3" name="Status" id="Status" required="">
+                                            <option value="" selected>Select status</option>
+                                            <option value="1">Published</option>
+                                            <option value="0">Pending</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="header-text" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Header Texts</h5>
+                            <br />
+                            @{
+                                string AboutUs = SqlHelpers.GetTableData("ContentManagement", "ContentName", "AboutUs", "ContentValue");
+                                string Services = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Services", "ContentValue");
+                                string Testimonials = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Testimonials", "ContentValue");
+                                string Posts = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Posts", "ContentValue");
+                                string Donate = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Donate", "ContentValue");
+                                string Portfolio = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Portfolio", "ContentValue");
+                                string Team = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Team", "ContentValue");
+                                string FAQ = SqlHelpers.GetTableData("ContentManagement", "ContentName", "FAQ", "ContentValue");
+                                string Partners = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Partners", "ContentValue");
+                                string ContactUs = SqlHelpers.GetTableData("ContentManagement", "ContentName", "ContactUs", "ContentValue");
+                            }
+                            <form asp-action="UpdateHeaderTexts" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <label class="form-label" for="AboutUs" data-bs-toggle="tooltip" data-bs-placement="bottom" title="About Us text">
+                                        About Us
+                                    </label>
+                                    <span class="float-right mr-1">
+                                        @{
+                                            string AboutUsHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "AboutUs", "ContentID");
+                                        }
+                                        <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@AboutUsHeaderID" asp-route-key-name="ContentID" asp-route-model="ContentManagement" asp-route-title=""
+                                           asp-route-desc="ContentValue" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                            <i class="align-middle" data-feather="globe"></i>
+                                        </a>
+                                    </span>
+                                    <input type="text" class="form-control count-reach" name="AboutUs" id="AboutUs" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@AboutUs">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="Services" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Services text">
+                                        Services
+                                    </label>
+                                    <span class="float-right mr-1">
+                                        @{
+                                            string ServicesHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Services", "ContentID");
+                                        }
+                                        <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@ServicesHeaderID" asp-route-key-name="ContentID" asp-route-model="ContentManagement" asp-route-title=""
+                                           asp-route-desc="ContentValue" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                            <i class="align-middle" data-feather="globe"></i>
+                                        </a>
+                                    </span>
+                                    <input type="text" class="form-control count-reach" name="Services" id="Services" maxlength="250" data-chars-max="250" data-msg-color="danger" value="CHECK OUR SERVICES">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="Testimonials" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Testimonials text">
+                                        Testimonials
+                                    </label>
+                                    <span class="float-right mr-1">
+                                        @{
+                                            string TestimonialsHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Testimonials", "ContentID");
+                                        }
+                                        <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@TestimonialsHeaderID" asp-route-key-name="ContentID" asp-route-model="ContentManagement" asp-route-title=""
+                                           asp-route-desc="ContentValue" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                            <i class="align-middle" data-feather="globe"></i>
+                                        </a>
+                                    </span>
+                                    <input type="text" class="form-control count-reach" name="Testimonials" id="Testimonials" maxlength="250" data-chars-max="250" data-msg-color="danger" value="TESTIMONIALS">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="Posts" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Posts text">
+                                        Posts
+                                    </label>
+                                    <span class="float-right mr-1">
+                                        @{
+                                            string PostsHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Posts", "ContentID");
+                                        }
+                                        <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@PostsHeaderID" asp-route-key-name="ContentID" asp-route-model="ContentManagement" asp-route-title=""
+                                           asp-route-desc="ContentValue" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                            <i class="align-middle" data-feather="globe"></i>
+                                        </a>
+                                    </span>
+                                    <input type="text" class="form-control count-reach" name="Posts" id="Posts" maxlength="250" data-chars-max="250" data-msg-color="danger" value="OUR RECENT POSTS">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="Donate" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Donate text">
+                                        Donate
+                                    </label>
+                                    <span class="float-right mr-1">
+                                        @{
+                                            string DonateHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Donate", "ContentID");
+                                        }
+                                        <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@DonateHeaderID" asp-route-key-name="ContentID" asp-route-model="ContentManagement" asp-route-title=""
+                                           asp-route-desc="ContentValue" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                            <i class="align-middle" data-feather="globe"></i>
+                                        </a>
+                                    </span>
+                                    <input type="text" class="form-control count-reach" name="Donate" id="Donate" maxlength="250" data-chars-max="250" data-msg-color="danger" value="DONATE">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="Portfolio" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Portfolio text">
+                                        Portfolio
+                                    </label>
+                                    <span class="float-right mr-1">
+                                        @{
+                                            string PortfolioHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Portfolio", "ContentID");
+                                        }
+                                        <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@PortfolioHeaderID" asp-route-key-name="ContentID" asp-route-model="ContentManagement" asp-route-title=""
+                                           asp-route-desc="ContentValue" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                            <i class="align-middle" data-feather="globe"></i>
+                                        </a>
+                                    </span>
+                                    <input type="text" class="form-control count-reach" name="Portfolio" id="Portfolio" maxlength="250" data-chars-max="250" data-msg-color="danger" value="CHECK OUR PORTFOLIO">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="Team text">
+                                        Team
+                                    </label>
+                                    <span class="float-right mr-1">
+                                        @{
+                                            string TeamHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Team", "ContentID");
+                                        }
+                                        <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@TeamHeaderID" asp-route-key-name="ContentID" asp-route-model="ContentManagement" asp-route-title=""
+                                           asp-route-desc="ContentValue" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                            <i class="align-middle" data-feather="globe"></i>
+                                        </a>
+                                    </span>
+                                    <input type="text" class="form-control count-reach" name="Team" id="Team" maxlength="250" data-chars-max="250" data-msg-color="danger" value="CHECK OUR TEAM">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="FAQ" data-bs-toggle="tooltip" data-bs-placement="bottom" title="FAQ text">
+                                        F.A.Q
+                                    </label>
+                                    <span class="float-right mr-1">
+                                        @{
+                                            string FAQHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "FAQ", "ContentID");
+                                        }
+                                        <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@FAQHeaderID" asp-route-key-name="ContentID" asp-route-model="ContentManagement" asp-route-title=""
+                                           asp-route-desc="ContentValue" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                            <i class="align-middle" data-feather="globe"></i>
+                                        </a>
+                                    </span>
+                                    <input type="text" class="form-control count-reach" name="FAQ" id="FAQ" maxlength="250" data-chars-max="250" data-msg-color="danger" value="FREQUENTLY ASKED QUESTIONS">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="Partners" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Partners text">
+                                        Partners
+                                    </label>
+                                    <span class="float-right mr-1">
+                                        @{
+                                            string PartnersHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Partners", "ContentID");
+                                        }
+                                        <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@PartnersHeaderID" asp-route-key-name="ContentID" asp-route-model="ContentManagement" asp-route-title=""
+                                           asp-route-desc="ContentValue" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                            <i class="align-middle" data-feather="globe"></i>
+                                        </a>
+                                    </span>
+                                    <input type="text" class="form-control count-reach" name="Partners" id="Partners" maxlength="250" data-chars-max="250" data-msg-color="danger" value="OUR PARTNERS">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="ContactUs" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Contact Us text">
+                                        Contact Us
+                                    </label>
+                                    <span class="float-right mr-1">
+                                        @{
+                                            string ContactUsHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "ContactUs", "ContentID");
+                                        }
+                                        <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@ContactUsHeaderID" asp-route-key-name="ContentID" asp-route-model="ContentManagement" asp-route-title=""
+                                           asp-route-desc="ContentValue" asp-route-cont="" asp-route-view="ContentManagement" class="text-decoration-none text-info">
+                                            <i class="align-middle" data-feather="globe"></i>
+                                        </a>
+                                    </span>
+                                    <input type="text" class="form-control count-reach" name="ContactUs" id="ContactUs" maxlength="250" data-chars-max="250" data-msg-color="danger" value="CONTACT US">
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="content-display" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Display Content Settings</h5>
+
+                            <form asp-action="UpdateDisplaySettings" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="mb-4">
+                                    <label class="form-label" for="HomeSliders">Home Sliders</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="HomeSliders" name="HomeSliders" value="1" @CMSHelpers.GetContentDisplayCheck("HomeSliders")>
+                                        <label class="form-check-label" for="HomeSliders">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="SocialMedia">Social Media</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="SocialMedia" name="SocialMedia" value="1" @CMSHelpers.GetContentDisplayCheck("SocialMedia")>
+                                        <label class="form-check-label" for="SocialMedia">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="ServiceStatistics">Service Statistics</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="ServiceStatistics" name="ServiceStatistics" value="1" @CMSHelpers.GetContentDisplayCheck("ServiceStatistics")>
+                                        <label class="form-check-label" for="ServiceStatistics">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="AboutUs">About Us</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="AboutUs" name="AboutUs" value="1" @CMSHelpers.GetContentDisplayCheck("AboutUs")>
+                                        <label class="form-check-label" for="AboutUs">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="HomeVideo">Home Video</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="HomeVideo" name="HomeVideo" value="1" @CMSHelpers.GetContentDisplayCheck("HomeVideo")>
+                                        <label class="form-check-label" for="HomeVideo">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="Services">Services</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="Services" name="Services" value="1" @CMSHelpers.GetContentDisplayCheck("Services")>
+                                        <label class="form-check-label" for="Services">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="Testimonials">Testimonials</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="Testimonials" name="Testimonials" value="1" @CMSHelpers.GetContentDisplayCheck("Testimonials")>
+                                        <label class="form-check-label" for="Testimonials">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="Posts">Posts</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="Posts" name="Posts" value="1" @CMSHelpers.GetContentDisplayCheck("Posts")>
+                                        <label class="form-check-label" for="Posts">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="TwitterFeed">Twitter Feed</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="TwitterFeed" name="TwitterFeed" value="1" @CMSHelpers.GetContentDisplayCheck("TwitterFeed")>
+                                        <label class="form-check-label" for="TwitterFeed">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="Donate">Donate</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="Donate" name="Donate" value="1" @CMSHelpers.GetContentDisplayCheck("Donate")>
+                                        <label class="form-check-label" for="Donate">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="Portfolio">Portfolio</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="Portfolio" name="Portfolio" value="1" @CMSHelpers.GetContentDisplayCheck("Portfolio")>
+                                        <label class="form-check-label" for="Services">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="Team">Team</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="Team" name="Team" value="1" @CMSHelpers.GetContentDisplayCheck("Team")>
+                                        <label class="form-check-label" for="Team">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="FAQ">F.A.Q</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="FAQ" name="FAQ" value="1" @CMSHelpers.GetContentDisplayCheck("FAQ")>
+                                        <label class="form-check-label" for="FAQ">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="Partners">Partners</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="Partners" name="Partners" value="1" @CMSHelpers.GetContentDisplayCheck("Partners")>
+                                        <label class="form-check-label" for="Partners">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label" for="ContactUs">Contact Us</label>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="ContactUs" name="ContactUs" value="1" @CMSHelpers.GetContentDisplayCheck("ContactUs")>
+                                        <label class="form-check-label" for="ContactUs">
+                                            Show/Hide
+                                        </label>
+                                    </div>
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="tab-pane fade" id="seo" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Default SEO Settings</h5>
+                            @{
+                                string SEOAuthor = SqlHelpers.GetTableData("ContentManagement", "ContentName", "SEOAuthor", "ContentValue");
+                                string SEODescription = SqlHelpers.GetTableData("ContentManagement", "ContentName", "SEODescription", "ContentValue");
+                                string SEOKeywords = SqlHelpers.GetTableData("ContentManagement", "ContentName", "SEOKeywords", "ContentValue");
+                            }
+                            <form asp-action="UpdateSeoData" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <label class="form-label" for="SEOAuthor" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide author name">
+                                        SEO Author
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="SEOAuthor" id="SEOAuthor" maxlength="100" data-chars-max="100" data-msg-color="danger" value="@SEOAuthor">
+                                    <div class="invalid-feedback">
+                                        Please provide default SEO Author.
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="SEODescription" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide organization short description">
+                                        SEO Description
+                                    </label>
+                                    <textarea type="text" class="form-control count-reach" name="SEODescription" id="SEODescription" maxlength="500" data-chars-max="500" data-msg-color="danger">@SEODescription</textarea>
+                                    <div class="invalid-feedback">
+                                        Please provide default SEO Description.
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="SEOKeywords" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide organization keywords">
+                                        SEO Keywords
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="SEOKeywords" id="SEOKeywords" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@SEOKeywords">
+                                    <div class="invalid-feedback">
+                                        Please provide default SEO Keywords.
+                                    </div>
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

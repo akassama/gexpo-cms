@@ -1,0 +1,469 @@
+﻿@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Configuration";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = null;
+    ViewData["BreadCrumb-0-Text"] = null;
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Configuration";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Configuration</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+
+    <div class="row">
+        <div class="col-md-3 col-xl-2">
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Platform Configuration</h5>
+                </div>
+
+                <div class="list-group list-group-flush" role="tablist">
+                    <a class="list-group-item list-group-item-action google active" data-toggle="list" href="#google" role="tab">
+                        Google
+                    </a>
+                    <a class="list-group-item list-group-item-action facebook" data-toggle="list" href="#facebook" role="tab">
+                        Facebook
+                    </a>
+                    <a class="list-group-item list-group-item-action twitter" data-toggle="list" href="#twitter" role="tab">
+                        Twitter
+                    </a>
+                    <a class="list-group-item list-group-item-action email-config" data-toggle="list" href="#email-config" role="tab">
+                        Email
+                    </a>
+                    <a class="list-group-item list-group-item-action concent" data-toggle="list" href="#concent" role="tab">
+                        Cookie Concent
+                    </a>
+                    <a class="list-group-item list-group-item-action share" data-toggle="list" href="#share" role="tab">
+                        Share
+                    </a>
+                    <a class="list-group-item list-group-item-action languages" data-toggle="list" href="#languages" role="tab">
+                        Languages
+                    </a>
+                    <a class="list-group-item list-group-item-action site-scripts" data-toggle="list" href="#site-scripts" role="tab">
+                        Scripts
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9 col-xl-10">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="google" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Google settings</h5>
+                        </div>
+                        <div class="card-body">
+                            @{
+                                //get input values
+                                string GoogleAnalyticsKey = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "GoogleAnalyticsKey", "ConfigurationValue");
+                                string GoogleAdvertKey = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "GoogleAdvertKey", "ConfigurationValue");
+                            }
+                            <form asp-action="UpdateGoogleSettings" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <small class="float-right">
+                                        <a href="https://accounts.google.com/Login?service=analytics" target="_blank">
+                                            Setup
+                                        </a>
+                                    </small>
+                                    <label class="form-label" for="Website" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide google analytics key">
+                                        Google Analytics Key
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="GoogleAnalyticsKey" id="GoogleAnalyticsKey" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@GoogleAnalyticsKey">
+                                </div>
+                                <div class="mb-3">
+                                    <small class="float-right">
+                                        <a href="https://www.google.com/adsense/start/" target="_blank">
+                                            Setup
+                                        </a>
+                                    </small>
+                                    <label class="form-label" for="Facebook" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide google advert key">
+                                        Google Advert Key
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="GoogleAdvertKey" id="GoogleAdvertKey" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@GoogleAdvertKey">
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="tab-pane fade" id="facebook" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Facebook Settings</h5>
+                        </div>
+                        <div class="card-body">
+                            @{
+                                //get input values
+                                string FacebookCommentId = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "FacebookCommentId", "ConfigurationValue");
+                            }
+                            <form asp-action="UpdateFacebookSettings" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="ShowFacebookComments" name="ShowFacebookComments" value="1" @ConfigurationHelpers.GetConfigurationCheck("ShowFacebookComments")>
+                                        <label class="form-check-label" for="ShowFacebookComments">
+                                            Enable/Disable
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="float-right">
+                                        <a href="https://developers.facebook.com/docs/plugins/comments/" target="_blank">
+                                            Setup
+                                        </a>
+                                    </small>
+                                    <label class="form-label" for="FacebookCommentId" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide facebook comment id">
+                                        Facebook Comment App ID
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="FacebookCommentId" id="FacebookCommentId" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@FacebookCommentId">
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="twitter" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Twitter Settings</h5>
+                        </div>
+                        <div class="card-body">
+                            @{
+                                //get input values
+                                string TwitterFeed = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "TwitterFeed", "ConfigurationValue");
+                            }
+                            <form asp-action="UpdateTwitterSettings" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="ShowTwitterFeeds" name="ShowTwitterFeeds" value="1" @ConfigurationHelpers.GetConfigurationCheck("ShowTwitterFeeds")>
+                                        <label class="form-check-label" for="ShowTwitterFeeds">
+                                            Enable/Disable
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="float-right">
+                                        <a href="https://help.twitter.com/en/using-twitter/embed-twitter-feed" target="_blank">
+                                            How to Embed
+                                        </a>
+                                    </small>
+                                    <label class="form-label" for="TwitterFeed" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide twitter feed script">
+                                        Twitter Feed Script
+                                    </label>
+                                    <textarea class="form-control count-reach bg-dark text-warning" rows="4" name="TwitterFeed" id="TwitterFeed" maxlength="2500" data-chars-max="2500" data-msg-color="danger">@TwitterFeed</textarea>
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="email-config" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Email Configuration</h5>
+                        </div>
+                        <div class="card-body">
+                            @{
+                                //get input values
+                                string SmtpEmail = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "SmtpEmail", "ConfigurationValue");
+                                string SmtpPassword = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "SmtpPassword", "ConfigurationValue");
+                                string SmtpPort = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "SmtpPort", "ConfigurationValue");
+                                string SmtpHost = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "SmtpHost", "ConfigurationValue");
+                                string SenderEmail = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "SenderEmail", "ConfigurationValue");
+                                string EmailDisplayName = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "EmailDisplayName", "ConfigurationValue");
+                                string EmailClosureText = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "EmailClosureText", "ConfigurationValue");
+                                string SendGridKey = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "SendGridKey", "ConfigurationValue");
+                            }
+                            <form asp-action="UpdateEmailConfigSettings" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <label class="form-label" for="SmtpEmail" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide smtp email">
+                                        SMTP Email
+                                    </label>
+                                    <input type="email" class="form-control count-reach" name="SmtpEmail" id="SmtpEmail" maxlength="100" data-chars-max="100" data-msg-color="danger" autocomplete="off" value="@SmtpEmail">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="SmtpPassword" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide smtp password">
+                                        SMTP Password
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="password" class="form-control count-reach" name="SmtpPassword" id="SmtpPassword" maxlength="100" data-chars-max="100" data-msg-color="danger" value="@SmtpPassword">
+                                        <span class="input-group-text" id="input-group-right-example">
+                                            <a href="#" class="text-decoration-none no-scroll text-dark unmask" data-unmask="SmtpPassword">
+                                                <i class="align-middle mr-2" data-feather="eye"></i>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="SmtpPort" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide smtp port number. e.g. 547">
+                                        SMTP Port
+                                    </label>
+                                    <input type="text" class="form-control integer-plus-only count-reach" name="SmtpPort" id="SmtpPort" maxlength="4" data-chars-max="4" data-msg-color="danger" placeholder="e.g. 547" value="@SmtpPort">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="SmtpHost" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide smtp host">
+                                        SMTP Host
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="SmtpHost" id="SmtpHost" maxlength="100" data-chars-max="100" data-msg-color="danger" autocomplete="off" value="@SmtpHost">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="SenderEmail" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide smtp email">
+                                        Sender Email
+                                    </label>
+                                    <input type="email" class="form-control count-reach" name="SenderEmail" id="SenderEmail" maxlength="100" data-chars-max="100" data-msg-color="danger" value="@SenderEmail">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="EmailDisplayName" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide email display name">
+                                        Email Display Name
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="EmailDisplayName" id="EmailDisplayName" maxlength="100" data-chars-max="100" data-msg-color="danger" value="@EmailDisplayName">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="EmailClosureText" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Closure text in footer of email">
+                                        Email Closure Text (optional)
+                                    </label>
+                                    <input type="text" class="form-control count-reach" name="EmailClosureText" id="EmailClosureText" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@EmailClosureText">
+                                </div>
+                                <div class="mb-1">
+                                    <a data-bs-toggle="collapse" href="#collapseSendGrid" aria-expanded="false" aria-controls="collapseSendGrid">
+                                        SendGrid Settings (optional)
+                                    </a>
+                                </div>
+                                <div class="collapse" id="collapseSendGrid">
+                                    <div class="card card-body">
+                                        <div class="mb-3">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="UseSendGrid" name="UseSendGrid" value="1" @ConfigurationHelpers.GetConfigurationCheck("UseSendGrid")>
+                                                <label class="form-check-label" for="UseSendGrid">
+                                                    Use SendGrid
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <small class="float-right">
+                                                <a href="https://app.sendgrid.com/" target="_blank">
+                                                    Setup
+                                                </a>
+                                            </small>
+                                            <label class="form-label" for="SendGridKey" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide send grid api key">
+                                                SendGrid Api Key
+                                            </label>
+                                            <input type="text" class="form-control count-reach" name="SendGridKey" id="SendGridKey" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@SendGridKey">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="concent" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Cookie Concent</h5>
+                        </div>
+                        <div class="card-body">
+                            @{
+                                //get input values
+                                string CookieConcent = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "CookieConcent", "ConfigurationValue");
+                            }
+                            <form asp-action="UpdateCookieConcentSettings" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="ShowCookieConcent" name="ShowCookieConcent" value="1" @ConfigurationHelpers.GetConfigurationCheck("ShowCookieConcent")>
+                                        <label class="form-check-label" for="ShowCookieConcent">
+                                            Enable/Disable
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="float-right">
+                                        <a href="https://www.freeprivacypolicy.com/free-cookie-consent/" target="_blank">
+                                            Get script
+                                        </a>
+                                    </small>
+                                    <label class="form-label" for="TwitterFeed" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide cookie concent script">
+                                        Cookie Concent Script
+                                    </label>
+                                    <textarea class="form-control count-reach bg-dark text-warning" rows="4" name="CookieConcent" id="CookieConcent" maxlength="2500" data-chars-max="2500" data-msg-color="danger">@CookieConcent</textarea>
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="share" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Share Settings</h5>
+                        </div>
+                        <div class="card-body">
+                            @{
+                                //get input values
+                                string ShareThisUrl = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "ShareThisUrl", "ConfigurationValue");
+                            }
+                            <form asp-action="UpdateShareSettings" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="ShowShareThis" name="ShowShareThis" value="1" @ConfigurationHelpers.GetConfigurationCheck("ShowShareThis")>
+                                        <label class="form-check-label" for="ShowShareThis">
+                                            Enable/Disable
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="float-right">
+                                        <a href="https://sharethis.com/social-media-buttons/the-sharethis-button/" target="_blank">
+                                            Setup
+                                        </a>
+                                    </small>
+                                    <label class="form-label" for="ShareThisUrl" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide 'sharethis' id">
+                                        ShareThis Url
+                                    </label>
+                                    <input type="text" class="form-control count-reach" id="ShareThisUrl" name="ShareThisUrl" maxlength="250" data-chars-max="250" data-msg-color="danger" value="@ShareThisUrl">
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="languages" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                Language Settings
+                            </h5>
+                            <a href="#addLanguageModal" data-toggle="modal" data-target="#addLanguageModal" class="btn btn-outline-primary float-right">
+                                <i class="align-middle" data-feather="plus"></i>
+                                Add Language
+                            </a>
+                            <br />
+                            @if (ViewBag.LanguagesDataCount > 0)
+                            {
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Language</th>
+                                            <th>Created At</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var lang in ViewBag.LanguagesData)
+                                        {
+                                            string LanguageName = SqlHelpers.GetTableData("Languages", "ISO", lang.Language, "Name");
+                                            <tr>
+                                                <td>@LanguageName</td>
+                                                <td>@lang.Language</td>
+                                                <td>
+                                                    @Helpers.FormatDate(lang.CreatedAt.ToString())
+                                                </td>
+                                                <td class="table-action">
+                                                    <a class="text-decoration-none text-danger delete-record" data-title="Delete Site Language" data-label="Language" data-key="@lang.LanguageID"
+                                                       data-action="/Admin/DeleteRecord" data-model="SiteLanguages" data-view="Configuration" data-route-id="">
+                                                        <i class="align-middle" data-feather="trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <div class="alert alert-primary alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <div class="alert-message">
+                                        <strong>No languages available</strong>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="site-scripts" role="tabpanel">
+                    <div class="card">
+                        <div class="card-body">
+                            @{
+                                //get input values
+                                string HeaderJavaScripts = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "HeaderJavaScripts", "ConfigurationValue");
+                                string FooterJavaScripts = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "FooterJavaScripts", "ConfigurationValue");
+                                string ScriptsLocation = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "JavaScriptsLocation", "ConfigurationValue");
+                            }
+                            <form asp-action="UpdateJavaScripts" asp-controller="Admin" method="post" class="g-3 needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="EnableJavaScripts" name="EnableJavaScripts" value="1" @ConfigurationHelpers.GetConfigurationCheck("EnableJavaScripts")>
+                                        <label class="form-check-label" for="EnableJavaScripts">
+                                            Enable/Disable
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="HeaderJavaScripts" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide javascript scripts">
+                                        Scripts (Header)
+                                    </label>
+                                    <textarea class="form-control count-reach codemirror-editor" name="HeaderJavaScripts" id="HeaderJavaScripts" maxlength="2500" data-chars-max="2500" data-msg-color="danger">@HeaderJavaScripts</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="FooterJavaScripts" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide javascript scripts">
+                                        Scripts (Footer)
+                                    </label>
+                                    <textarea class="form-control count-reach codemirror-editor" name="FooterJavaScripts" id="FooterJavaScripts" maxlength="2500" data-chars-max="2500" data-msg-color="danger">@FooterJavaScripts</textarea>
+                                </div>
+                                <br />
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

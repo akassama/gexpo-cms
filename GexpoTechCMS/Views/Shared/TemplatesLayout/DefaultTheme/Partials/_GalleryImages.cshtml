@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    string PortfolioHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Portfolio", "ContentID");
+    string PortfolioHeader = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Portfolio", "ContentValue");
+}
+
+@if (CMSHelpers.ContentDisplay("Portfolio"))
+{
+    <!-- ======= Portfolio Section ======= -->
+    <section id="portfolio" class="portfolio">
+        <div class="container" data-aos="fade-up">
+
+            <div class="section-title mt-3">
+                <h2>Gallery/Portfolio</h2>
+                <p class="">
+                    @Helpers.GetTranslatableData(PortfolioHeader, SessionLanguage, PortfolioHeaderID, "ContentManagement", "Description")
+                </p>
+            </div>
+
+            <div class="row portfolio-container d-flex justify-content-center" data-aos="fade-up" data-aos-delay="200">
+
+                @TemplateHelpers.GetHomePortfolio(SessionLanguage, 12)
+
+            </div>
+
+        </div>
+    </section>
+    <!-- End Portfolio Section -->
+}

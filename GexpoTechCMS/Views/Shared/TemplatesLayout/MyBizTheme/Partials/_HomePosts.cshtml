@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    string PostsHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Posts", "ContentID");
+    string PostsHeader = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Posts", "ContentValue");
+}
+
+@if (CMSHelpers.ContentDisplay("Posts"))
+{
+    <!-- ======= Recent Posts ======= -->
+    <section id="posts" class="services">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title">
+                <h2>Post</h2>
+                <p class="">
+                    @Helpers.GetTranslatableData(PostsHeader, SessionLanguage, PostsHeaderID, "ContentManagement", "Description")
+                </p>
+            </div>
+            <div class="row d-flex justify-content-center">
+                @MyBizTemplateHelpers.GetHomePosts(SessionLanguage, 9)
+            </div>
+        </div>
+    </section>
+    <!-- End Posts Section -->
+}

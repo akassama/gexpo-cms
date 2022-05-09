@@ -1,0 +1,207 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.PostModel>
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    ViewData["Title"] = "Posts";
+    string active_theme = Helpers.GetActiveTheme();
+
+    //inner page navigation
+    ViewBag.InnNav = "header-inner-pages";
+}
+
+
+@if (active_theme == "Tempo")
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_Navigation.cshtml" />
+
+
+        <main id="main">
+            <!-- Action messages partial -->
+            <partial name="~/Views/Shared/TemplatesLayout/Common/_ProcessMessage.cshtml" />
+
+            <!-- ======= Breadcrumbs ======= -->
+            <section id="breadcrumbs" class="breadcrumbs">
+                <div class="container">
+
+                    <ol>
+                        <li><a asp-action="Index" asp-controller="Home">Home</a></li>
+                        <li>Posts</li>
+                    </ol>
+                    <h2>Posts</h2>
+
+                </div>
+            </section><!-- End Breadcrumbs -->
+            <!-- ======= Blog Section ======= -->
+            <section id="blog" class="blog">
+                <div class="container" data-aos="fade-up">
+
+                    <div class="row">
+
+                        <div class="col-lg-8 entries">
+
+                            @foreach (var item in Model)
+                            {
+                                <article class="entry">
+
+                                    <div class="entry-img">
+                                        <img src="@Helpers.GetPostImage(item.PostID, "Post")" alt="" class="img-fluid w-100">
+                                    </div>
+
+                                    <h2 class="entry-title">
+                                        <a href="/Post/@item.Slug">
+                                            @Helpers.FormatLongText(item.Title, 100)
+                                        </a>
+                                    </h2>
+
+                                    <div class="entry-meta">
+                                        <ul>
+                                            <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="/Post/@item.Slug">@ProfileHelpers.GetAccountData(item.Author, "FullName")</a></li>
+                                            <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="/Post/@item.Slug"><time datetime="@item.CreatedAt"> @Helpers.FormatDate(item.CreatedAt.ToString())</time></a></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="entry-content">
+                                        <p>
+                                            @Helpers.FormatLongText(Helpers.StripHTML(item.Content), 250)
+                                        </p>
+                                        <div class="read-more">
+                                            <a href="/Post/@item.Slug">Read More</a>
+                                        </div>
+                                    </div>
+
+                                </article>
+                                <!-- End blog entry -->
+                            }
+
+
+                            <div class="row mb-5">
+                                <div class="col-12">
+                                    <paging total-records="ViewBag.TotalRecords"
+                                            page-no="ViewBag.PageNo"
+                                            page-size="ViewBag.PageSize"
+                                            show-prev-next="true"
+                                            show-first-last="true"
+                                            show-total-pages="false"
+                                            show-total-records="false"
+                                            show-page-size-nav="true"
+                                            show-gap="true">
+                                    </paging>
+                                </div>
+                            </div>
+
+                        </div><!-- End blog entries list -->
+
+                        <div class="col-lg-4">
+
+                            <div class="sidebar">
+
+                                <h3 class="sidebar-title">Search</h3>
+                                <div class="sidebar-item search-form">
+                                    <form asp-action="Index" asp-controller="Search" method="get" id="searchInput">
+                                        <input type="text" id="q" name="q" placeholder="What would you like to search for?" pattern=".{2,}" title="please type 2 or more characters" required>
+                                        <button type="submit"><i class="bi bi-search"></i></button>
+                                    </form>
+                                </div><!-- End sidebar search formn-->
+
+                                <h3 class="sidebar-title">Categories</h3>
+                                <div class="sidebar-item categories">
+                                    <ul>
+                                        @{
+                                            if (!string.IsNullOrEmpty(ViewBag.PopularCategories))
+                                            {
+
+                                                string[] PopularCategoriesList = ViewBag.PopularCategories.Split(",");
+
+                                                // Loop over categories list.
+                                                foreach (string category in PopularCategoriesList)
+                                                {
+                                                    <li><a asp-action="@category" asp-controller="Category">@category <span>(@PostsHelpers.GetCategoryCount(category))</span></a></li>
+                                                }
+                                            }
+                                        }
+                                    </ul>
+                                </div><!-- End sidebar categories-->
+
+
+                                <div class="sidebar-item recent-posts">
+
+                                    @if (ViewBag.PopularPostsCount > 0)
+                                    {
+                                        <h3 class="sidebar-title">Popular Posts</h3>
+                                        <div class="row">
+                                            @foreach (var post in ViewBag.PopularPostsData)
+                                            {
+                                                string PostTitle = PostsHelpers.GetPostData(post.DocumentID, "Title");
+                                                string Slug = PostsHelpers.GetPostData(post.DocumentID, "Slug");
+                                                string CreatedAt = PostsHelpers.GetPostData(post.DocumentID, "CreatedAt");
+                                                <div class="post-item clearfix">
+                                                    <img src="@Helpers.GetPostImage(post.DocumentID, "Post")" alt="@Helpers.FormatLongText(PostTitle, 100)">
+                                                    <h4><a href="/Post/@Slug">@Helpers.FormatLongText(PostTitle, 100)</a></h4>
+                                                    <time datetime="@CreatedAt"> @Helpers.FormatDate(CreatedAt)</time>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+
+                                </div>
+                                <!-- End sidebar recent posts-->
+
+                                <h3 class="sidebar-title">Tags</h3>
+                                <div class="sidebar-item tags">
+                                    <ul>
+                                        @{
+                                            if (!string.IsNullOrEmpty(ViewBag.PopularTags))
+                                            {
+                                                string[] PopularTagsList = ViewBag.PopularTags.Split(",");
+
+                                                // Loop over categories list.
+                                                foreach (string tag in PopularTagsList)
+                                                {
+                                                    <li><a asp-action="@tag" asp-controller="Tags">@tag</a></li>
+                                                }
+                                            }
+                                        }
+                                    </ul>
+                                </div><!-- End sidebar tags-->
+
+                            </div><!-- End sidebar -->
+
+                        </div><!-- End blog sidebar -->
+
+                    </div>
+
+                </div>
+            </section><!-- End Blog Section -->
+
+        </main>
+        <!-- End #main -->
+
+        <!-- BS4 POPPER JS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_BS4PopperJS.cshtml" />
+
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_Footer.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+</html>
+}

@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+
+    //Donate Header Data
+    string DonateHeaderID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Donate", "ContentID");
+    string DonateHeader = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Donate", "ContentValue");
+}
+
+@if (CMSHelpers.ContentDisplay("Donate") || CMSHelpers.ContentDisplay("CallToAction"))
+{
+    <!-- ======= Cta Section ======= -->
+    <section id="cta" class="cta">
+        <div class="container">
+
+            <div class="text-center">
+                <h3>Get In Touch With Us</h3>
+                <a class="cta-btn" href="#contact">Contact</a>
+            </div>
+
+        </div>
+    </section>
+    <!-- End Cta Section -->
+}

@@ -1,0 +1,21 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+}
+@if (CMSHelpers.ContentDisplay("ServiceStatistics"))
+{
+    <!-- ======= Service Stats Section ======= -->
+    <section id="counts" class="counts">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row no-gutters d-flex justify-content-center">
+                @TempoTemplateHelpers.GetServiceStats(SessionLanguage)
+            </div>
+
+        </div>
+    </section>
+    <!-- End Service Stats Section -->
+}

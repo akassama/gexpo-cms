@@ -1,0 +1,113 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.PostModel>
+
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    ViewData["Title"] = "Posts";
+    string active_theme = Helpers.GetActiveTheme();
+
+    //inner page navigation
+    ViewBag.InnNav = "header-inner-pages";
+
+    int delay = 0;
+}
+
+
+@if (active_theme == "Mamba")
+{
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <!-- HEAD PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_Head.cshtml" />
+    </head>
+
+    <body>
+
+        <!-- TOP BAR PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_TopBar.cshtml" />
+
+        <!-- HEAD NAV PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_Navigation.cshtml" />
+
+        <main id="main">
+            <!-- Action messages partial -->
+            <partial name="~/Views/Shared/TemplatesLayout/Common/_ProcessMessage.cshtml" />
+
+            <!-- ======= Breadcrumbs ======= -->
+            <section id="breadcrumbs" class="breadcrumbs">
+                <div class="container">
+
+                    <ol>
+                        <li><a asp-action="Index" asp-controller="Home">Home</a></li>
+                        <li>Posts</li>
+                    </ol>
+                    <h2>Recent Posts</h2>
+
+                </div>
+            </section><!-- End Breadcrumbs -->
+            <!-- ======= Blog Section ======= -->
+            <section class="about-lists">
+                <div class="container">
+
+                    <div class="row no-gutters mt-2">
+                        @foreach (var item in Model)
+                        {
+
+                            <div class="col-lg-4 col-md-6 content-item" data-aos="fade-up" data-aos-delay="@delay">
+                                <span>
+                                    <a href="/Post/@item.Slug">
+                                        <img src="@Helpers.GetPostImage(item.PostID, "Post")" class="img-fluid" alt="@Helpers.FormatLongText(item.Title, 100)">
+                                    </a>
+                                </span>
+                                <h4>
+                                    <a href="/Post/@item.Slug" class="text-dark text-decoration-none">
+                                        @Helpers.FormatLongText(item.Title, 100)
+                                    </a>
+                                </h4>
+                                <p>@Helpers.FormatLongText(Helpers.StripHTML(item.Content), 250)</p>
+                            </div>
+
+                            delay += 100;
+                        }
+                    </div>
+
+                    <div class="row mb-5">
+                        <div class="col-12">
+                            <paging total-records="ViewBag.TotalRecords"
+                                    page-no="ViewBag.PageNo"
+                                    page-size="ViewBag.PageSize"
+                                    show-prev-next="true"
+                                    show-first-last="true"
+                                    show-total-pages="false"
+                                    show-total-records="false"
+                                    show-page-size-nav="true"
+                                    show-gap="true">
+                            </paging>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+            <!-- End Blog Section -->
+
+        </main>
+        <!-- End #main -->
+        <!-- BS4 POPPER JS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/Common/_BS4PopperJS.cshtml" />
+
+        <!-- FOOTER PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_Footer.cshtml" />
+
+        <!-- FOOTER SCRIPTS PARTIAL -->
+        <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/Partials/_FooterScripts.cshtml" />
+
+    </body>
+
+</html>
+}

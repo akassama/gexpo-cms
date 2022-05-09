@@ -1,0 +1,85 @@
+﻿@model GexpoTechCMS.Models.AppModels.LoginViewModel
+@{
+    ViewData["Title"] = "Sign-In Page";
+    ViewData["LoggedInPage"] = "false";
+}
+
+<div class="container-fluid p-0">
+
+    <h1 class="h3 mb-3 text-center">Sign In</h1>
+
+    <div class="row">
+        <div class="col-12 col-md-4 offset-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Login details</h5>
+                </div>
+                <!-- Action messages partial -->
+                <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+                <div class="card-body">
+                    <form asp-controller="SignIn" asp-action="Index" method="post" class="g-3 needs-validation" novalidate>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <ul>
+                            @foreach (var error in ViewData.ModelState.SelectMany(x => x.Value.Errors))
+                            {
+                                <li class="text-danger">@Html.Raw(error.ErrorMessage)</li>
+                            }
+                        </ul>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your email address">
+                                Email
+                            </label>
+                            <input type="email" class="form-control count-reach" asp-for="Email" maxlength="100" data-chars-max="100" data-msg-color="danger" placeholder="Email" required="">
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <div class="invalid-feedback">
+                                Please provide an email address.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide your password">
+                                Password
+                            </label>
+                            <input type="password" class="form-control" asp-for="Password" maxlength="100" placeholder="Password" required="">
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <div class="invalid-feedback">
+                                Please provide a password.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <dnt-captcha asp-captcha-generator-max="9000"
+                                             asp-captcha-generator-min="1"
+                                             asp-captcha-generator-language="English"
+                                             asp-captcha-generator-display-mode="ShowDigits"
+                                             asp-use-relative-urls="true"
+                                             asp-placeholder="Security code as a number"
+                                             asp-validation-error-message="Please enter the security code as a number."
+                                             asp-font-name="Tahoma"
+                                             asp-font-size="20"
+                                             asp-fore-color="#333333"
+                                             asp-back-color="#ccc"
+                                             asp-text-box-class="text-box form-control"
+                                             asp-text-box-template="<div class='input-group flex-nowrap'><span class='input-group-text' id='addon-wrapping'><i class='fas fa-lock'></i></span>{0}</div>"
+                                             asp-validation-message-class="text-danger"
+                                             asp-refresh-button-class="fas fa-redo btn-sm"
+                                             asp-use-noise="false" />
+                            </div>
+                        </div>
+                        <br />
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                        <a asp-controller="SignUp" asp-action="Index" class="float-right">
+                            Need an account? Sign up!
+                        </a>
+                        <br />
+                        <a asp-controller="Home" asp-action="Index" class="float-right mt-4">
+                            <i class="bi bi-house-fill"></i>
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

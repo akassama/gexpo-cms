@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+
+    string OurServicesID = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Services", "ContentID");
+    string OurServicesHeader = SqlHelpers.GetTableData("ContentManagement", "ContentName", "Services", "ContentValue");
+}
+@if (CMSHelpers.ContentDisplay("ServiceStatistics"))
+{
+    <!-- ======= Service Stats Section ======= -->
+    <section id='counts' class='counts'>
+        <div class='container position-relative'>
+
+            <div class='row counters d-flex justify-content-center'>
+                @MyBizTemplateHelpers.GetServiceStats(SessionLanguage)
+            </div>
+
+        </div>
+    </section>
+    <!-- End Service Stats Section -->
+}

@@ -1,0 +1,111 @@
+﻿@model IEnumerable<GexpoTechCMS.Models.AppModels.PortfolioModel>
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Portfolio";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = null;
+    ViewData["BreadCrumb-0-Text"] = null;
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "Portfolio";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Portfolio</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">@Helpers.FormatAlert(Model.Count()) Portfolio(s)</h5>
+                    <a asp-action="NewPortfolio" asp-controller="Admin" class="btn btn-outline-primary float-right">
+                        <i class="align-middle" data-feather="plus"></i>
+                        Add Portfolio
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <table class="table dataTable">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Description</th>
+                                    <th class="d-none d-md-table-cell">Created At</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="@PortfolioHelpers.GetPreviewImage(item.PortfolioID)" class="img-thumbnail" width="175" alt="img-thumbnail">
+                                        </td>
+                                        <td>
+                                            @Helpers.FormatLongText(item.PortfolioTitle, 100)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Category)
+                                        </td>
+                                        <td>
+                                            @Helpers.FormatLongText(Helpers.StripHTML(item.PortfolioContent), 250)
+                                        </td>
+                                        <td class="d-none d-md-table-cell">
+                                            @Helpers.FormatDate(item.CreatedAt.ToString())
+                                        </td>
+                                        <td>
+                                            @Helpers.FormatStatus(item.Status.ToString())
+                                        </td>
+                                        <td class="table-action">
+                                            <a asp-action="EditPortfolio" asp-controller="Admin" asp-route-id="@item.PortfolioID" class="text-primary text-decoration-none">
+                                                <i class="align-middle" data-feather="edit-2"></i>
+                                            </a>
+                                            <a class="text-decoration-none text-danger delete-record" data-title="Delete Portfolio" data-label="Portfolio"
+                                               data-key="@item.PortfolioID" data-action="/Admin/DeleteRecord" data-model="Portfolio" data-view="Portfolio" data-route-id="">
+                                                <i class="align-middle" data-feather="trash"></i>
+                                            </a>
+                                            <a asp-action="AddDataTranslation" asp-controller="Admin" asp-route-key="@item.PortfolioID" asp-route-key-name="PortfolioID" asp-route-model="Portfolio" asp-route-title="PortfolioTitle"
+                                               asp-route-desc="" asp-route-cont="PortfolioContent" asp-route-view="Portfolio" class="text-decoration-none text-info">
+                                                <i class="align-middle" data-feather="globe"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

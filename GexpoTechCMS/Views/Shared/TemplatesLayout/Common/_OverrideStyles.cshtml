@@ -1,0 +1,878 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    //Set custom theme classes
+    string ThemeColor = SqlHelpers.GetTableData("ThemeSettings", "SettingName", "ThemeColor", "SettingValue");
+    string active_theme = Helpers.GetActiveTheme();
+}
+
+<style>
+    .theme-color {
+        color: @ThemeColor;
+    }
+
+    .theme-bg {
+        background: @ThemeColor;
+    }
+</style>
+@if (active_theme == "Default")
+{
+<style>
+    /* override primary default theme style */
+    .back-to-top {
+        background: @ThemeColor;
+    }
+
+    .navbar a:hover, .navbar .active, .navbar li:hover > a {
+        color: @ThemeColor;
+    }
+
+    .navbar .getstarted {
+        background: @ThemeColor;
+    }
+
+    .navbar .getstarted:hover {
+        background: @ThemeColor;
+    }
+
+    .navbar .dropdown ul a:hover, .navbar .dropdown ul .active:hover, .navbar .dropdown ul li:hover > a {
+        color: @ThemeColor;
+    }
+
+    .navbar-mobile a:hover, .navbar-mobile .active, .navbar-mobile li:hover > a {
+        color: @ThemeColor;
+    }
+
+    .navbar-mobile .dropdown ul a:hover, .navbar-mobile .dropdown ul .active:hover, .navbar-mobile .dropdown ul li:hover > a {
+        color: @ThemeColor;
+    }
+
+    #hero .carousel-indicators li.active {
+        opacity: 1;
+        background: @ThemeColor;
+    }
+
+    #hero .btn-get-started {
+        background: @ThemeColor;
+    }
+
+    #hero .btn-get-started:hover {
+        background: @ThemeColor;
+    }
+
+    .about .content ul i {
+        color: @ThemeColor;
+    }
+
+    .about .content .btn-learn-more {
+        color: @ThemeColor;
+        border: 2px solid @ThemeColor;
+    }
+
+    .about .content .btn-learn-more:hover {
+        background: @ThemeColor;
+    }
+
+    .counts .count-box i {
+        color: @ThemeColor;
+    }
+
+    .why-us .accordion-list span {
+        color: @ThemeColor;
+    }
+
+    .why-us .play-btn {
+        background: radial-gradient(@ThemeColor 50%, rgba(237, 80, 46, 0.4) 52%);
+    }
+
+    .why-us .play-btn:hover::after {
+        border-left: 15px solid @ThemeColor;
+    }
+
+    .why-us .accordion-list a.collapsed:hover {
+        color: @ThemeColor;
+    }
+
+    .services .icon-box .icon {
+        background: @ThemeColor;
+    }
+
+    .services .icon-box:hover {
+        background: @ThemeColor;
+        border-color: @ThemeColor;
+    }
+
+    .services .icon-box:hover .icon i {
+        color: @ThemeColor;
+    }
+
+    .testimonials .swiper-pagination .swiper-pagination-bullet {
+        border: 1px solid @ThemeColor;
+    }
+
+    .testimonials .swiper-pagination .swiper-pagination-bullet-active {
+        background-color: @ThemeColor;
+    }
+
+    .cta .cta-btn {
+        border: 2px solid @ThemeColor;
+    }
+
+    .cta .cta-btn:hover {
+        background: @ThemeColor;
+        border: 2px solid @ThemeColor;
+    }
+
+    .portfolio #portfolio-flters li:hover, .portfolio #portfolio-flters li.filter-active {
+        color: @ThemeColor;
+    }
+
+    .portfolio .portfolio-item .portfolio-info .preview-link:hover, .portfolio .portfolio-item .portfolio-info .details-link:hover {
+        color: @ThemeColor;
+    }
+
+    .portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet {
+        border: 1px solid @ThemeColor;
+    }
+
+    .portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet-active {
+        background-color: @ThemeColor;
+    }
+
+    .team .member .social a:hover {
+        color: @ThemeColor;
+    }
+
+    .pricing ul i {
+        color: @ThemeColor;
+    }
+
+    .pricing .featured {
+        border: 4px solid @ThemeColor;
+    }
+
+    .pricing .featured .get-started-btn {
+        background: @ThemeColor;
+        border-color: @ThemeColor;
+    }
+
+    .contact .info-box i {
+        color: @ThemeColor;
+    }
+
+    .contact .php-email-form input:focus, .contact .php-email-form textarea:focus {
+        border-color: @ThemeColor;
+    }
+
+    .contact .php-email-form button[type="submit"] {
+        background: @ThemeColor;
+    }
+
+    .contact .php-email-form button[type="submit"]:hover {
+        background: @ThemeColor;
+    }
+
+    .text-center button{
+        background: @ThemeColor !important;
+    }
+
+    #footer .footer-top .footer-info {
+        border-top: 4px solid @ThemeColor;
+    }
+
+    #footer .footer-top .social-links a:hover {
+        background: @ThemeColor;
+    }
+
+    #footer .footer-top .footer-newsletter form input[type="submit"] {
+        background: @ThemeColor;
+    }
+
+    #footer .footer-top .footer-newsletter form input[type="submit"]:hover {
+        background: @ThemeColor;
+    }
+</style>
+}
+else if (active_theme == "Hidayah")
+{
+    <style>
+        a {
+            color: @ThemeColor;
+            text-decoration: none;
+        }
+
+        #preloader:before {
+            border: 6px solid @ThemeColor;
+        }
+
+        .back-to-top {
+            background: @ThemeColor;
+        }
+
+        .navbar .dropdown ul a:hover, .navbar .dropdown ul .active:hover, .navbar .dropdown ul li:hover > a {
+            color: @ThemeColor;
+        }
+
+        .navbar-mobile a:hover, .navbar-mobile .active, .navbar-mobile li:hover > a {
+            color: @ThemeColor;
+        }
+
+        .navbar-mobile .dropdown ul a:hover, .navbar-mobile .dropdown ul .active:hover, .navbar-mobile .dropdown ul li:hover > a {
+            color: @ThemeColor;
+        }
+
+        #hero .carousel-indicators li.active {
+            background: @ThemeColor;
+        }
+
+        #hero .btn-get-started {
+            background: @ThemeColor;
+        }
+
+        .section-title h2 {
+            color: @ThemeColor;
+        }
+
+        .section-title h3 span {
+            color: @ThemeColor;
+        }
+
+        .about .icon-box .icon i {
+            color: @ThemeColor;
+            font-size: 32px;
+        }
+
+        .about .icon-box:hover .icon {
+            background: @ThemeColor;
+            border-color: @ThemeColor;
+        }
+
+        .about .icon-box .title a:hover {
+            color: @ThemeColor;
+        }
+
+        .about .play-btn {
+            background: radial-gradient(@ThemeColor 50%, rgba(66, 139, 202, 0.4) 52%);
+        }
+
+        .about .play-btn:hover::after {
+            border-left: 15px solid @ThemeColor;
+        }
+
+        .counts .counters span {
+            color: @ThemeColor;
+        }
+
+        .skills .progress-bar {
+            background-color: @ThemeColor;
+        }
+
+        .services .icon i {
+            color: @ThemeColor;
+        }
+
+        .services .icon-box:hover .title a {
+            color: @ThemeColor;
+        }
+
+        .cta .cta-btn {
+            background: @ThemeColor;
+        }
+
+        .portfolio #portfolio-flters li:hover, .portfolio #portfolio-flters li.filter-active {
+            color: #fff;
+            background: @ThemeColor;
+        }
+
+        .portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet {
+            border: 1px solid @ThemeColor;
+        }
+
+        .portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet-active {
+            background-color: @ThemeColor;
+        }
+
+        .team .member .social a:hover {
+            color: @ThemeColor;
+        }
+
+        .contact .php-email-form input:focus, .contact .php-email-form textarea:focus {
+            border-color: @ThemeColor;
+        }
+
+        .contact .php-email-form button[type="submit"] {
+            border: 2px solid @ThemeColor;
+            background: @ThemeColor;
+        }
+
+        #footer .footer-newsletter form input[type="submit"] {
+            background: @ThemeColor;
+        }
+
+        #footer .footer-top .social-links a:hover {
+            background: @ThemeColor;
+        }
+    </style>
+}
+else if (active_theme == "MyBiz")
+{
+    <style>
+        a {
+            color: @ThemeColor;
+        }
+
+        .back-to-top {
+            background: @ThemeColor;
+        }
+
+        #topbar .contact-info i {
+            font-style: normal;
+            color: @ThemeColor;
+        }
+        
+        #topbar .contact-info i a:hover {
+          color: @ThemeColor;
+        }
+
+        #topbar .social-links a:hover {
+            color: @ThemeColor;
+        }
+
+        #header .logo h1 a span, #header .logo h1 a:hover span {
+            color: @ThemeColor;
+        }
+
+        .navbar a:hover, .navbar .active, .navbar li:hover > a {
+            color: @ThemeColor;
+        }
+
+        .navbar .dropdown ul a:hover, .navbar .dropdown ul .active:hover, .navbar .dropdown ul li:hover > a {
+            color: @ThemeColor;
+        }
+
+        .navbar-mobile a:hover, .navbar-mobile .active, .navbar-mobile li:hover > a {
+            color: @ThemeColor;
+        }
+
+        .navbar-mobile .dropdown ul a:hover, .navbar-mobile .dropdown ul .active:hover, .navbar-mobile .dropdown ul li:hover > a {
+            color: @ThemeColor;
+        }
+
+        #hero .carousel-indicators li.active {
+            background-color: @ThemeColor;
+        }
+
+        #hero .btn-get-started {
+            background: @ThemeColor;
+        }
+
+        .about .content ul i {
+            color: @ThemeColor;
+        }
+
+        .counts .counters span {
+            color: @ThemeColor;
+        }
+
+        .services .icon-box i {
+            color: @ThemeColor;
+        }
+
+        .services .icon-box:hover h4 a {
+            color: @ThemeColor;
+        }
+
+        .portfolio #portfolio-flters li:hover, .portfolio #portfolio-flters li.filter-active {
+            background: @ThemeColor;
+        }
+
+        .portfolio .portfolio-wrap .portfolio-info .portfolio-links a {
+            color: @ThemeColor;
+        }
+
+        .portfolio .portfolio-wrap .portfolio-info .portfolio-links a:hover {
+            background: @ThemeColor;
+        }
+
+        .portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet {
+            border: 1px solid @ThemeColor;
+        }
+
+        .portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet-active {
+            background-color: @ThemeColor;
+        }
+
+        .testimonials .swiper-pagination .swiper-pagination-bullet-active {
+            background-color: @ThemeColor;
+        }
+
+        .contact .info i {
+            color: @ThemeColor;
+        }
+
+        .contact .info:hover i {
+            background: @ThemeColor;
+            color: #fff;
+        }
+
+        .contact .php-email-form button[type="submit"] {
+            background: @ThemeColor;
+        }
+
+        #footer .footer-top .social-links a:hover {
+            background: @ThemeColor;
+        }
+
+        #footer .footer-top .footer-newsletter form input[type="submit"] {
+            background: @ThemeColor;
+        }
+    </style>
+}
+else if (active_theme == "Mamba")
+{
+    <style>
+        a {
+            color: @ThemeColor;
+        }
+
+        .back-to-top {
+            background: @ThemeColor;
+        }
+
+        #topbar .contact-info a:hover {
+            color: @ThemeColor;
+        }
+
+        #topbar .contact-info i {
+            color: @ThemeColor;
+        }
+
+        #topbar .social-links a:hover {
+            color: @ThemeColor;
+        }
+
+        .navbar a:hover, .navbar .active, .navbar li:hover > a {
+            color: @ThemeColor;
+        }
+
+        .navbar .dropdown ul a:hover, .navbar .dropdown ul .active:hover, .navbar .dropdown ul li:hover > a {
+            color: @ThemeColor;
+        }
+
+        .navbar-mobile a:hover, .navbar-mobile .active, .navbar-mobile li:hover > a {
+            color: @ThemeColor;
+        }
+
+        .navbar-mobile .dropdown ul a:hover, .navbar-mobile .dropdown ul .active:hover, .navbar-mobile .dropdown ul li:hover > a {
+            color: @ThemeColor;
+        }
+
+        #hero .btn-get-started {
+            background: @ThemeColor;
+        }
+
+        .about .icon-box .icon i {
+            color: @ThemeColor;
+            font-size: 32px;
+        }
+
+        .about .icon-box:hover .icon {
+            background: @ThemeColor;
+        }
+
+        .about .icon-box .title a:hover {
+            color: @ThemeColor;
+        }
+
+        .about .play-btn {
+            background: radial-gradient(@ThemeColor 50%, rgba(66, 139, 202, 0.4) 52%);
+        }
+
+        .about .play-btn:hover::after {
+            border-left: 15px solid @ThemeColor;
+        }
+
+        .services .icon {
+            color: @ThemeColor;
+        }
+
+        .services .title a:hover {
+            color: @ThemeColor;
+        }
+
+        .services .title::after {
+            background: @ThemeColor;
+        }
+
+        .portfolio #portfolio-flters li:hover, .portfolio #portfolio-flters li.filter-active {
+            background: @ThemeColor;
+            color: #fff;
+        }
+
+        .portfolio .portfolio-wrap .portfolio-info a {
+            color: @ThemeColor;
+        }
+
+        .portfolio .portfolio-wrap .portfolio-info a:hover {
+            background: @ThemeColor;
+        }
+
+        .portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet {
+            border: 1px solid @ThemeColor;
+        }
+
+        .portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet-active {
+            background-color: @ThemeColor;
+        }
+
+        .contact .info-box i {
+            color: @ThemeColor;
+        }
+
+        .contact .php-email-form input::focus, .contact .php-email-form textarea::focus {
+            background-color: @ThemeColor;
+        }
+
+        .contact .php-email-form button[type="submit"] {
+            background: @ThemeColor;
+        }
+
+        #footer .footer-top .social-links a:hover {
+            background: @ThemeColor;
+        }
+
+        #footer .footer-top .footer-newsletter form input[type="submit"] {
+            background: @ThemeColor;
+        }
+
+    </style>
+}
+else if (active_theme == "Shuffle")
+{
+    <style>
+        a {
+            color: @ThemeColor;
+        }
+
+        .back-to-top {
+            background: @ThemeColor;
+        }
+
+        .navbar a:hover, .navbar .active, .navbar li:hover > a {
+            color: @ThemeColor;
+        }
+
+        .navbar .getstarted {
+            background: @ThemeColor;
+        }
+
+        .navbar .dropdown ul a:hover, .navbar .dropdown ul .active:hover, .navbar .dropdown ul li:hover > a {
+            color: @ThemeColor;
+        }
+
+        .navbar-mobile a:hover, .navbar-mobile .active, .navbar-mobile li:hover > a {
+            color: @ThemeColor;
+        }
+
+        .navbar-mobile .dropdown ul a:hover, .navbar-mobile .dropdown ul .active:hover, .navbar-mobile .dropdown ul li:hover > a {
+            color: @ThemeColor;
+        }
+
+        #hero .carousel-indicators .active {
+            background-color: @ThemeColor;
+        }
+
+        #hero .btn-get-started {
+            border: 2px solid @ThemeColor;
+        }
+
+        #hero .btn-get-started:hover {
+            background: @ThemeColor;
+        }
+
+        .about .content ul i {
+            color: @ThemeColor;
+        }
+
+        .about .progress-bar {
+            background-color: @ThemeColor;
+        }
+
+        .counts .count-box i {
+            color: @ThemeColor;
+        }
+
+        .services .icon-box:hover::before {
+            background: @ThemeColor;
+        }
+
+        .services .icon {
+            background: @ThemeColor;
+        }
+
+        .services .icon-box:hover .icon i {
+            color: @ThemeColor;
+        }
+
+        .cta .cta-btn {
+            border: 2px solid @ThemeColor;
+        }
+
+        .cta .cta-btn:hover {
+            background: @ThemeColor;
+            border: 2px solid @ThemeColor;
+        }
+
+        .more-services .card-title a:hover {
+            color: @ThemeColor;
+        }
+
+        .more-services .btn {
+            border: 2px solid @ThemeColor;
+        }
+
+        .more-services .btn:hover {
+            color: #fff;
+            background: @ThemeColor;
+        }
+
+        .info-box .accordion-list a:hover {
+            color: @ThemeColor;
+        }
+
+        .info-box .accordion-list a.collapsed:hover {
+            color: @ThemeColor;
+        }
+
+        .portfolio #portfolio-flters li:hover, .portfolio #portfolio-flters li.filter-active {
+            color: @ThemeColor;
+        }
+
+        .portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet {
+            border: 1px solid @ThemeColor;
+        }
+
+        .portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet-active {
+            background-color: @ThemeColor;
+        }
+
+        .team .member .social a:hover {
+            color: @ThemeColor;
+        }
+
+        .contact .php-email-form input::focus, .contact .php-email-form textarea::focus {
+            background-color: @ThemeColor;
+        }
+
+        .contact .php-email-form button[type="submit"] {
+            border: 2px solid @ThemeColor;
+            color: @ThemeColor;
+        }
+
+        .contact .php-email-form button[type="submit"]:hover {
+            background: @ThemeColor;
+        }
+
+        #footer .footer-top .social-links a:hover {
+            background: @ThemeColor;
+        }
+
+        #footer .footer-top .footer-newsletter form input[type="submit"] {
+            background: @ThemeColor;
+        }
+
+    </style>
+}
+else if (active_theme == "Tempo")
+{
+    <style>
+        a {
+            color: @ThemeColor;
+            text-decoration: none;
+        }
+
+        .back-to-top {
+            background: @ThemeColor;
+        }
+
+        .navbar > ul > li > a:before {
+            background-color: @ThemeColor;
+        }
+
+        .navbar .dropdown ul a:hover, .navbar .dropdown ul .active:hover, .navbar .dropdown ul li:hover > a {
+            color: @ThemeColor;
+        }
+
+        .navbar-mobile a:hover, .navbar-mobile .active, .navbar-mobile li:hover > a {
+            color: @ThemeColor;
+        }
+
+        .navbar-mobile .dropdown ul a:hover, .navbar-mobile .dropdown ul .active:hover, .navbar-mobile .dropdown ul li:hover > a {
+            color: @ThemeColor;
+        }
+
+        #hero .btn-get-started:hover {
+            background: @ThemeColor;
+            border: 2px solid @ThemeColor;
+        }
+
+        .section-title h2 {
+            background: #fdeff2;
+            color: @ThemeColor;
+        }
+
+        .section-title h3 span {
+            color: @ThemeColor;
+        }
+
+        .about .content ul i {
+            color: @ThemeColor;
+        }
+
+        .about .content .btn-learn-more {
+            color: @ThemeColor;
+            border: 2px solid @ThemeColor;
+        }
+
+        .about .content .btn-learn-more:hover {
+            background: @ThemeColor;
+        }
+
+        .services .icon-box:hover::before {
+            background: @ThemeColor;
+        }
+
+        .services .icon i {
+            color: @ThemeColor;
+        }
+
+        .features .icon-box:hover a {
+            color: @ThemeColor;
+        }
+
+        .cta .cta-btn:hover {
+            background: @ThemeColor;
+            border: 2px solid @ThemeColor;
+        }
+
+        .portfolio #portfolio-flters li:hover, .portfolio #portfolio-flters li.filter-active {
+            background: @ThemeColor;
+        }
+
+        .portfolio .portfolio-item .portfolio-info {
+            background: @ThemeColor;
+        }
+
+        .portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet {
+            border: 1px solid @ThemeColor;
+        }
+
+        .portfolio-details .portfolio-details-slider .swiper-pagination .swiper-pagination-bullet-active {
+            background-color: @ThemeColor;
+        }
+
+        .pricing .box h4 {
+            color: @ThemeColor;
+        }
+
+        .pricing .box ul i {
+            color: @ThemeColor;
+        }
+
+        .pricing .box .btn-buy {
+            border: 2px solid @ThemeColor;
+            color: @ThemeColor;
+        }
+
+        .pricing .box .btn-buy:hover {
+            background: @ThemeColor;
+        }
+
+        .pricing .recommended {
+            border-color: @ThemeColor;
+        }
+
+        .pricing .recommended .btn-buy {
+            background: @ThemeColor;
+        }
+
+        .faq .faq-list .question {
+            font-family: @ThemeColor;
+        }
+
+        .faq .faq-list .collapsed:hover {
+            color: @ThemeColor;
+        }
+
+        .team .member .social a:hover {
+            color: @ThemeColor;
+        }
+
+        .contact .info i {
+            color: @ThemeColor;
+        }
+
+        .contact .info .email:hover i, .contact .info .address:hover i, .contact .info .phone:hover i {
+            background: @ThemeColor;
+        }
+
+        .contact .php-email-form input:focus, .contact .php-email-form textarea:focus {
+            border-color: @ThemeColor;
+        }
+
+        .contact .php-email-form button[type="submit"] {
+            background: @ThemeColor;
+        }
+
+        .blog .entry .entry-title a:hover {
+            color: @ThemeColor;
+        }
+
+        .blog .entry .entry-content .read-more a {
+            background: @ThemeColor;
+        }
+
+        .blog .entry .entry-footer a:hover {
+            color: @ThemeColor;
+        }
+
+        .blog .blog-comments .comment h5 a:hover {
+            color: @ThemeColor;
+        }
+
+        .blog .blog-pagination li.active, .blog .blog-pagination li:hover {
+            background: @ThemeColor;
+        }
+
+        .blog .sidebar .search-form form button {
+            background: @ThemeColor;
+        }
+
+        .blog .sidebar .categories ul a:hover {
+            color: @ThemeColor;
+        }
+
+        .blog .sidebar .recent-posts h4 a:hover {
+            color: @ThemeColor;
+        }
+
+        .blog .sidebar .tags ul a:hover {
+            border: 1px solid @ThemeColor;
+            background: @ThemeColor;
+        }
+
+        #footer .footer-top .footer-links ul a:hover {
+            color: @ThemeColor;
+        }
+
+        #footer .footer-newsletter form input[type="submit"] {
+            background: @ThemeColor;
+        }
+
+        #footer .social-links a {
+            background: @ThemeColor;
+        }
+    </style>
+}

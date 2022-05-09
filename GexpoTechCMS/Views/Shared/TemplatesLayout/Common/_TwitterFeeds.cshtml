@@ -1,0 +1,28 @@
+﻿@using NgoExpoApp.App_Code
+
+@{
+    //get twitter feed script
+    string TwitterFeed = SqlHelpers.GetTableData("Configurations", "ConfigurationKey", "TwitterFeed", "ConfigurationValue");
+}
+
+@if (CMSHelpers.ContentDisplay("TwitterFeed") && !string.IsNullOrEmpty(TwitterFeed))
+{
+    <!-- ======= Twtter Feeds ======= -->
+    <section id="twitter" class="twitter">
+        <div class="container" data-aos="fade-up">
+
+            <div class="section-title">
+                <h2>Twitter Feed</h2>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-sm-12 col-md-10 col-lg-8 fixed-feed-content">
+                    <!-- Embed Feed -->
+                    <span>
+                        @Html.Raw(TwitterFeed)
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Twtter Feeds -->
+}

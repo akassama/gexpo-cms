@@ -1,0 +1,52 @@
+﻿<!-- COMMON TEMPLATE SCRIPTS (TOP) -->
+<partial name="~/Views/Shared/TemplatesLayout/Common/_HeadTop.cshtml" />
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+<!-- Vendor CSS Files -->
+<link href="~/templates/hidayah-theme/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+<link href="~/templates/hidayah-theme/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="~/templates/hidayah-theme/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+<link href="~/templates/hidayah-theme/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+<link href="~/templates/hidayah-theme/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+<link href="~/templates/hidayah-theme/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+<link href="~/templates/hidayah-theme/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+<!-- fontawesome -->
+<link rel="stylesheet" href="~/templates/shared/fontawesome-web/css/all.css">
+
+<!-- Template Main CSS File -->
+<link href="~/templates/hidayah-theme/assets/css/style.css" rel="stylesheet">
+<!-- Custom CSS File -->
+<link href="~/templates/hidayah-theme/assets/css/custom.css" rel="stylesheet">
+
+<!-- Standard Tempo Page CSS Style -->
+<link href="~/templates/shared/css/tempo-style.css" rel="stylesheet">
+
+<script src="~/templates/tempo-theme/assets/vendor/jquery/jquery.min.js"></script>
+
+<!-- Owl Carousel -->
+<link href="~/templates/shared/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+<link rel="stylesheet" href="~/templates/shared/owl.carousel/assets/owl.theme.default.min.css">
+
+<!-- COMMON TEMPLATE SCRIPTS (BOTTOM) -->
+<partial name="~/Views/Shared/TemplatesLayout/Common/_HeadBottom.cshtml" />
+
+<!-- COMMON TEMPLATE SCRIPTS (STYLES) -->
+<partial name="~/Views/Shared/TemplatesLayout/Common/_OverrideStyles.cshtml" />
+
+<script>
+    //function to get base url
+    function getBaseUrl() {
+        return window.location.href.match(/^.*\//);
+    }
+
+    //remove Home if it exists in url
+    function removeHome(url) {
+        if (url.indexOf("/Home") >= 0) {
+            url = url.replace('/Home', '');
+        }
+        return url;
+    }
+</script>

@@ -1,0 +1,94 @@
+﻿@model GexpoTechCMS.Models.AppModels.PageSectionsModel
+@using NgoExpoApp.App_Code
+
+@{
+    ViewData["Title"] = "Edit Page Section";
+
+    //used to enable admin sidebar
+    ViewBag.LoggedInPage = "true";
+
+    //used for setting breadcrumb
+    ViewData["BreadCrumb-0"] = "ContentManagement";
+    ViewData["BreadCrumb-0-Text"] = "Content Management";
+    ViewData["BreadCrumb-1"] = null;
+    ViewData["BreadCrumb-1-Text"] = null;
+
+    //used for setting active left sidebar
+    ViewBag.ActiveTab = "ContentManagement";
+}
+
+<div class="container-fluid p-0">
+
+    <!-- ADMIN SCRIPTS -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminScript.cshtml" />
+
+    <!-- SEARCH RESULT DIV -->
+    <partial name="~/Views/Shared/AccountLayout/_AdminSearchList.cshtml" />
+
+    <div class="row mb-2 mb-xl-3">
+        <div class="col-auto d-none d-sm-block">
+            <h3><strong>Edit Page Section</strong></h3>
+        </div>
+
+        <!-- BREADCRUMB RECENT VISITS -->
+        <partial name="~/Views/Shared/AccountLayout/_Breadcrumbs.cshtml" />
+    </div>
+
+    <!-- Action messages partial -->
+    <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Page Section Details</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="UpdatePageSection" asp-controller="Admin" method="Post" class="g-3 needs-validation" novalidate enctype="multipart/form-data">
+                        @if (Model.SectionType == "Content")
+                        {
+                            <div class="mb-3">
+                                <label class="form-label edit-modal-label" for="SectionTitle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide section title">
+                                    Section Title
+                                </label>
+                                <input type="text" class="form-control count-reach" asp-for="SectionTitle" placeholder="Section Title" maxlength="250" data-chars-max="250" data-msg-color="danger" required>
+                                <div class="invalid-feedback">
+                                    Please provide section Title
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label edit-modal-label" for="SectionContent" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Provide section content">
+                                    Section Content
+                                </label>
+                                <textarea class="form-control text-editor" asp-for="SectionContent" rows="5" placeholder="Section Content" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please provide content.
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <!-- set default hidden values -->
+                            <input type="hidden" class="form-control" asp-for="SectionTitle" />
+                            <input type="hidden" class="form-control" asp-for="SectionContent" />
+                        }
+                        <!-- Hidden inputs -->
+                        <div class="col-sm-12">
+                            <input type="hidden" class="form-control" asp-for="ID" value="@Model.ID" />
+                            <input type="hidden" class="form-control" asp-for="SectionID" />
+                            <input type="hidden" class="form-control" asp-for="SectionOrder" />
+                            <input type="hidden" class="form-control" asp-for="SectionType" />
+                        </div>
+                        <br />
+                        <button type="submit" class="btn btn-primary">
+                            <i class="align-middle" data-feather="save"></i> Save
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<partial name="~/Views/Shared/AccountLayout/_AdminModals.cshtml" />

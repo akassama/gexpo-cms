@@ -1,0 +1,46 @@
+﻿@model GexpoTechCMS.Models.AppModels.LoginViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Request Error - 400 Error";
+    ViewData["LoggedInPage"] = "false";
+}
+
+<div class="container-fluid p-0">
+
+    <h1 class="h3 mb-3 text-center">Opps... There was an error on your request</h1>
+
+    <div class="row">
+        <div class="col-12 col-md-4 offset-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Error</h5>
+                </div>
+                <!-- Action messages partial -->
+                <partial name="~/Views/Shared/_ProcessMessage.cshtml" />
+                <div class="card-body">
+                    <h1>
+                        400
+                    </h1>
+                    <p class="lead">There was an error processing your request.</p>
+                    @if (HttpContextAccessor.HttpContext.Session.GetString("_SessionKey") != null)
+                    {
+                        <a asp-controller="Admin" asp-action="Index">
+                            <i class="fas fa-arrow-left mr-1"></i>
+                            Return to Dashboard
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Home" asp-action="Index">
+                            <i class="fas fa-arrow-left mr-1"></i>
+                            Return Home
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

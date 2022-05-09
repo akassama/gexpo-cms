@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+    string LanguageClass = Helpers.GetLanguageClass(SessionLanguage);
+
+    string OrganizationName = SqlHelpers.GetTableData("ContentManagement", "ContentName", "OrganizationName", "ContentValue");
+}
+
+@if (CMSHelpers.ContentDisplay("HomeSliders"))
+{
+    <script>
+    // A $( document ).ready() block.
+    $(document).ready(function() {
+        var bg_images = Array("banner-01.jpg", "banner-02.jpg", "banner-03.jpg", "banner-04.jpg", "banner-05.jpg", "banner-06.jpg", "banner-07.jpg", "banner-08.jpg", "banner-09.jpg", "banner-10.jpg");
+
+        var bg_image = getBaseUrl() + "templates/tempo-theme/assets/img/site/banners/"+ bg_images[Math.floor(Math.random() * bg_images.length)];
+
+        bg_image = removeHome(bg_image);
+
+        $('#hero').css("background-image", "url('"+bg_image+"')");
+    });
+    </script>
+
+    <!-- ======= Hero Section ======= -->
+    <section id="hero">
+        <div class="hero-container">
+            <h3>Welcome to <strong>@OrganizationName</strong></h3>
+            <h1>We're Creative Company</h1>
+            <h2>Better websites, custom-built and professionally maintained for businesses and organizations like yours.</h2>
+            <a href="#about" class="btn-get-started scrollto">Get Started</a>
+        </div>
+    </section>
+    <!-- End Hero -->
+}

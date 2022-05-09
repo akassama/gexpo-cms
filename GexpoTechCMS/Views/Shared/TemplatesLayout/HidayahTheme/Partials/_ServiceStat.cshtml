@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using NgoExpoApp.App_Code
+
+@{
+    string SessionLanguage = Helpers.DefaultData(HttpContextAccessor.HttpContext.Session.GetString("_SessionLanguage"), "en");
+}
+@if (CMSHelpers.ContentDisplay("ServiceStatistics"))
+{
+    <!-- ======= Service Stats Section ======= -->
+    <section id="counts" class="counts section-bg">
+        <div class="container-fluid">
+
+            <div class="row counters">
+                @HidayahTemplateHelpers.GetServiceStats(SessionLanguage)
+            </div>
+        </div>
+    </section>
+    <!-- End Service Stats Section -->
+}

@@ -1,0 +1,44 @@
+﻿
+@using NgoExpoApp.App_Code
+
+@{
+    Layout = null;
+    string active_theme = Helpers.GetActiveTheme();
+}
+
+
+@if (active_theme == "Default" || string.IsNullOrEmpty(active_theme))
+{
+    <!-- POSTS LAYOUT -->
+    <partial name="~/Views/Shared/TemplatesLayout/DefaultTheme/_PortfolioDetails.cshtml" />
+}
+else if (active_theme == "Tempo")
+{
+    <!-- TEMPO PORTFOLIO LAYOUT -->
+    <partial name="~/Views/Shared/TemplatesLayout/TempoTheme/_PortfolioDetails.cshtml" />
+}
+else if (active_theme == "MyBiz")
+{
+    <!-- MYBIZ PORTFOLIO LAYOUT -->
+    <partial name="~/Views/Shared/TemplatesLayout/MyBizTheme/_PortfolioDetails.cshtml" />
+}
+else if (active_theme == "Mamba")
+{
+    <!-- MAMBA PORTFOLIO LAYOUT -->
+    <partial name="~/Views/Shared/TemplatesLayout/MambaTheme/_PortfolioDetails.cshtml" />
+}
+else if (active_theme == "Hidayah")
+{
+    <!-- HIDAYAH PORTFOLIO LAYOUT -->
+    <partial name="~/Views/Shared/TemplatesLayout/HidayahTheme/_PortfolioDetails.cshtml" />
+}
+else if (active_theme == "Shuffle")
+{
+    <!-- SHUFFLE PORTFOLIO LAYOUT -->
+    <partial name="~/Views/Shared/TemplatesLayout/ShuffleTheme/_PortfolioDetails.cshtml" />
+}
+else if (active_theme == "Groovin")
+{
+    <!-- GROOVIN PORTFOLIO LAYOUT -->
+    <partial name="~/Views/Shared/TemplatesLayout/GroovinTheme/_PortfolioDetails.cshtml" />
+}
